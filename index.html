@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Roast My Design — Prototype v1.5.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600;700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2efe8;--ink:#0c0c0c;--muted:#716d65;--line:#111;--hot:#ff4b23;--panel:#faf8f3;--display:'Anton','Arial Narrow',sans-serif;--headline:'Archivo Black','Arial Black',sans-serif;--mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;--sans:'Inter',ui-sans-serif,system-ui,sans-serif}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+button,input,select{font:inherit} .wrap{max-width:1120px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--line);padding-bottom:14px}.brand{font-family:var(--display);font-size:24px;letter-spacing:.015em;text-transform:uppercase}.badge{font:700 12px var(--mono);border:1px solid;padding:5px 8px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;padding:54px 0 34px}.kicker{font:700 12px var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--hot)}h1{font-family:var(--display);font-weight:400;font-size:clamp(58px,9.4vw,122px);line-height:.82;letter-spacing:-.02em;margin:10px 0 26px;max-width:850px;text-transform:uppercase}h1 span{color:var(--hot)}.lead{font-size:20px;line-height:1.45;max-width:590px}.privacy{color:var(--muted);font-size:13px;margin-top:14px}
+.card{background:var(--panel);border:2px solid var(--line);box-shadow:8px 8px 0 var(--line);padding:22px}.textInput{width:100%;border:1.5px solid var(--line);background:#fff;padding:12px 13px;font:600 14px var(--mono);outline:none}.textInput:focus{box-shadow:0 0 0 3px var(--hot)}.fieldHint{font:600 10px/1.4 var(--mono);color:var(--muted);margin-top:6px}.categoryGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.categoryGrid .chip{text-align:left;min-height:48px}.categoryInfo{margin-top:10px;padding:12px;border:1.5px solid var(--line);background:#ebe7de}.categoryInfo b{display:block;font:700 12px var(--mono);margin-bottom:5px}.categoryInfo span{font:600 11px/1.45 var(--mono);color:var(--muted)}.drop{min-height:300px;border:2px dashed #777;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;cursor:pointer;position:relative;overflow:hidden}.drop.drag{background:#fff}.drop img{max-width:100%;max-height:360px;display:none}.drop.has-image{border-style:solid;background:#fff}.drop:focus{outline:3px solid var(--hot);outline-offset:3px}.drop .hint strong{display:block;font-family:var(--headline);font-size:21px;letter-spacing:-.025em;margin-bottom:7px}.controls{display:none;margin-top:18px}.label{font-family:var(--headline);font-size:14px;letter-spacing:-.01em;margin:18px 0 8px}.chips{display:flex;gap:8px;flex-wrap:wrap}.confidenceReaction{display:none;margin-top:10px;border-left:4px solid var(--hot);padding:9px 11px;background:#ebe7de;font:700 12px/1.45 var(--mono);color:var(--ink)}.confidenceReaction.show{display:block}.chip{background:transparent;border:1.5px solid var(--line);padding:10px 13px;cursor:pointer}.chip.active{background:var(--ink);color:white}.cta{width:100%;margin-top:22px;background:var(--hot);border:2px solid var(--line);padding:15px 18px;font-family:var(--headline);font-weight:400;letter-spacing:-.02em;cursor:pointer;box-shadow:4px 4px 0 var(--line)}.cta:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
+#loading,#results{display:none}.loadingBox{border-top:2px solid;padding:42px 0}.loadingTitle{font-family:var(--headline);font-size:42px;letter-spacing:-.035em}.steps{font:700 14px var(--mono);line-height:2;color:var(--muted)}.steps .on{color:var(--ink)}
+.results{border-top:2px solid;padding-top:36px}.resultGrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px}.evidence img{width:100%;display:block;border:2px solid}.scorebox{border:2px solid;padding:25px;background:var(--panel)}.scorelabel{font:700 12px var(--mono);letter-spacing:.15em}.score{display:flex;align-items:flex-end;gap:10px;font-family:var(--display);font-size:116px;line-height:.82;font-weight:400;letter-spacing:-.02em;margin:16px 0 20px}.score small{font-family:var(--headline);font-size:22px;line-height:1;letter-spacing:-.025em;font-weight:400;margin-bottom:8px;white-space:nowrap}.severity{display:inline-block;background:var(--hot);padding:7px 10px;border:1.5px solid;font-family:var(--headline);font-weight:400;letter-spacing:-.02em}.primaryCharge{margin-top:12px;padding-top:11px;border-top:1px solid #aaa;font:700 11px var(--mono);letter-spacing:.04em;color:var(--muted)}.primaryCharge strong{color:var(--ink)}.designProfile{margin-top:10px;padding:10px 12px;border:1.5px solid var(--line);background:#ebe7de}.designProfile b{display:block;font:700 10px var(--mono);color:var(--muted);letter-spacing:.08em;margin-bottom:3px}.designProfile strong{display:block;font-family:var(--headline);font-size:19px;letter-spacing:-.025em}.designProfile span{display:block;font:600 10px/1.35 var(--mono);color:var(--muted);margin-top:3px}.caseAssessment{margin-top:10px;border-top:1px solid #aaa;padding-top:10px;display:grid;gap:6px}.caseAssessment div{display:grid;grid-template-columns:118px 1fr;gap:8px;font:700 10px/1.35 var(--mono)}.caseAssessment b{color:var(--muted);letter-spacing:.05em}.caseAssessment span{color:var(--ink)}.dnaTags{display:flex!important;flex-wrap:wrap;gap:5px!important}.dnaTags i{font-style:normal;border:1px solid #aaa;padding:3px 5px;background:var(--panel)}.scoreHelp{margin:14px 0 0;font:700 12px var(--mono);line-height:1.5;color:var(--muted)}.scoreHelp strong{color:var(--ink)}.verdict{font-family:var(--sans);font-size:25px;font-weight:600;letter-spacing:-.025em;line-height:1.18;margin:22px 0 0;max-width:42ch}
+.forensics{margin-top:14px;border:1.5px solid var(--line);background:#ebe7de;padding:14px 16px}.forensics summary{cursor:pointer;list-style:none}.forensics summary::-webkit-details-marker{display:none}.forensics[open] .forensicGrid{margin-top:10px}.forensicsHead{display:flex;justify-content:space-between;gap:14px;align-items:baseline;margin-bottom:10px}.forensicsHead strong{font:700 12px var(--mono);letter-spacing:.08em}.forensicsHead span{font:600 10px var(--mono);color:var(--muted)}.forensicGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.forensicCell{border:1px solid #aaa;background:var(--panel);padding:9px}.forensicCell b{display:block;font:700 10px var(--mono);color:var(--muted);margin-bottom:4px}.forensicCell span{font:700 15px var(--mono)}.forensicCell small{display:block;font:600 9px var(--mono);color:var(--muted);margin-top:3px;line-height:1.25}.ratingGuide{margin-top:26px;border:2px solid var(--line);background:var(--panel);padding:18px}.ratingGuide h3{margin:0 0 8px;font-size:14px;letter-spacing:.08em}.ratingGuide p{margin:0 0 13px;color:var(--muted);font-size:13px;line-height:1.45}.ratingScale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.ratingScale span{border:1px solid var(--line);padding:8px;font:700 11px var(--mono);line-height:1.25}.metrics{margin-top:26px;border-top:2px solid}.metric{display:grid;grid-template-columns:170px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid #aaa}.metric h3{margin:0;font-family:var(--headline);font-size:18px;letter-spacing:-.02em}.bar{height:12px;border:1.5px solid;margin:5px 0 10px}.fill{height:100%;background:var(--ink)}.roast{font-size:18px;line-height:1.4;margin:0}.num{font:700 12px var(--mono);color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0 60px}.secondary{border:2px solid;background:transparent;padding:13px 17px;font-family:var(--headline);font-weight:400;cursor:pointer}.appeal{border:0;background:transparent;text-decoration:underline;cursor:pointer;color:var(--muted)}
+footer{border-top:1px solid;padding:18px 0;color:var(--muted);font-size:12px}.modal{position:fixed;inset:0;background:#111c;display:none;align-items:center;justify-content:center;padding:20px}.modalIn{background:var(--bg);border:2px solid;max-width:520px;padding:28px;box-shadow:8px 8px 0 var(--hot)}.modalIn h2{font-family:var(--headline);font-size:42px;line-height:.95;margin:0 0 16px;letter-spacing:-.04em}
+@media(max-width:780px){.hero,.resultGrid{grid-template-columns:1fr}.categoryGrid{grid-template-columns:1fr}.ratingScale{grid-template-columns:1fr 1fr}.forensicGrid{grid-template-columns:1fr 1fr}.hero{padding-top:35px}.metric{grid-template-columns:1fr}.score{font-size:90px}.wrap{padding:18px}}
+
+/* v1.4 — interface visual system: forensic editorial, not generic form UI */
+.top{position:relative;padding:15px 0 17px}.top:after{content:"CASE FILE / 001";position:absolute;right:0;bottom:-26px;font:700 10px var(--mono);letter-spacing:.08em;color:var(--muted)}
+.badge{background:var(--hot);border:0;padding:7px 10px;color:var(--ink)}
+.card{position:relative}.card:before{content:"INTAKE / BARANG BUKTI";display:inline-block;margin:-22px 0 18px -22px;padding:9px 12px;background:var(--ink);color:#fff;font:700 10px var(--mono);letter-spacing:.08em}
+.drop{background:linear-gradient(135deg,transparent 0 49.6%,rgba(12,12,12,.035) 49.8% 50.2%,transparent 50.4% 100%);transition:.15s ease}.drop:hover{background-color:#fff}.drop.has-image{background:#fff}.drop.has-image:after{content:"EVIDENCE LOADED";position:absolute;right:12px;bottom:12px;background:var(--hot);padding:5px 7px;font:700 9px var(--mono);letter-spacing:.06em}
+.label{display:flex;align-items:center;gap:8px}.label:before{content:"";width:18px;height:3px;background:var(--hot);display:block;flex:none}
+.categoryInfo{position:relative;padding-left:18px}.categoryInfo:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--hot)}
+.results>.kicker{display:inline-block;background:var(--hot);color:var(--ink);padding:7px 9px;letter-spacing:.08em;margin-bottom:14px}
+.evidence{position:relative;border:2px solid var(--line);background:var(--panel);padding:10px}.evidence:before{content:"BARANG BUKTI";position:absolute;left:18px;top:18px;z-index:2;background:var(--ink);color:#fff;padding:7px 9px;font:700 10px var(--mono);letter-spacing:.06em}.evidence img{border:0;min-height:100%;object-fit:contain;background:#fff}
+.scorebox{box-shadow:7px 7px 0 var(--ink);position:relative}.scorebox:after{content:"VISUAL CRIME REPORT";position:absolute;right:16px;top:15px;font:700 9px var(--mono);letter-spacing:.08em;color:var(--muted)}
+.scorelabel{padding-top:18px}.severity{margin-top:2px}
+.primaryCharge{border-top:2px solid var(--line)}
+.designProfile{border-width:2px}.caseAssessment{border-top:2px solid var(--line)}
+.ratingGuide{box-shadow:5px 5px 0 var(--ink)}
+.metric{position:relative}.metric:before{content:"CHARGE";position:absolute;right:0;top:22px;font:700 9px var(--mono);letter-spacing:.08em;color:var(--muted)}
+.actions{border-top:2px solid var(--line);padding-top:22px}.actions .cta{box-shadow:4px 4px 0 var(--ink)}
+
+
+/* v1.5.1 — export behavior + share-card verdict fix */
+.exportTools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.exportTools .secondary{background:var(--panel)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;border:2px solid var(--hot);padding:11px 14px;font:700 11px var(--mono);letter-spacing:.03em;opacity:0;pointer-events:none;transition:.18s ease;z-index:30;max-width:min(92vw,560px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:780px){
+ body{overflow-x:hidden}.wrap{padding:14px}.top{padding-top:8px}.brand{font-size:20px}.badge{font-size:10px}.top:after{bottom:-22px;font-size:8px}
+ .hero{padding:40px 0 28px;gap:24px}.hero h1{font-size:clamp(58px,22vw,88px);margin-bottom:20px}.lead{font-size:17px}.privacy{line-height:1.45}
+ .card{padding:16px;box-shadow:4px 4px 0 var(--line)}.card:before{margin:-16px 0 14px -16px}.drop{min-height:220px;padding:16px}.drop img{max-height:300px}
+ .categoryGrid{grid-template-columns:1fr 1fr}.categoryGrid .chip{min-height:52px;padding:9px;font-size:13px}.chip{min-height:44px}.textInput{min-height:46px}
+ .loadingTitle{font-size:32px}.results{padding-top:26px}.resultGrid{gap:16px}.evidence{padding:7px}.scorebox{padding:18px;box-shadow:4px 4px 0 var(--ink)}.scorebox:after{display:none}.scorelabel{padding-top:0}.score{font-size:82px;margin:13px 0 17px}.score small{font-size:18px}.severity{font-size:14px}
+ .caseAssessment div{grid-template-columns:1fr;gap:3px}.designProfile strong{font-size:17px}.scoreHelp{font-size:11px}.verdict{font-size:21px;line-height:1.28;max-width:none}
+ .ratingGuide{padding:14px;box-shadow:3px 3px 0 var(--ink)}.ratingScale{grid-template-columns:1fr 1fr}.forensics{padding:12px}.forensicsHead{align-items:flex-start;flex-direction:column;gap:3px}.forensicGrid{grid-template-columns:1fr 1fr}
+ .metric{padding:18px 0;gap:10px}.metric:before{top:18px}.metric h3{font-size:17px}.roast{font-size:16px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding-top:18px;margin-bottom:42px}.actions .cta{grid-column:1/-1;width:100%!important}.actions .secondary{width:100%;min-height:48px;padding:11px 10px;font-size:13px}.actions .appeal{grid-column:1/-1;min-height:44px}.exportTools{display:contents}
+}
+@media(max-width:430px){.categoryGrid{grid-template-columns:1fr}.ratingScale{grid-template-columns:1fr}.score{font-size:74px}.forensicGrid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.actions .cta,.actions .appeal{grid-column:1}.hero h1{font-size:60px}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand">ROAST MY DESIGN 🔥</div><div class="badge">PROTOTYPE 1.5.1</div></header>
+<section id="main" class="hero">
+<div><div class="kicker">Pengadilan desain berbasis browser</div><h1>Upload.<br><span>Diadili.</span><br>Menyesal.</h1><p class="lead">Masukkan desainmu. Kami ukur color, contrast, balance, visual complexity, whitespace dan saturation-nya—lalu kami hina hasilnya tanpa perlu mengirim file ke server.</p><p class="privacy">🔒 Gambar diproses lokal di browser. Tidak disimpan. Tidak ada akun. Tidak ada AI API.</p></div>
+<div class="card">
+<input id="file" type="file" accept="image/png,image/jpeg,image/webp" hidden><div class="drop" id="drop" role="button" tabindex="0" aria-label="Pilih gambar desain"><div class="hint" id="hint"><strong>Taruh barang bukti di sini.</strong><span>Drop JPG/PNG/WebP atau klik untuk memilih.</span></div><img id="preview" alt="Preview desain"></div>
+<div class="controls" id="controls">
+<div class="label">Nama desainer <span style="font:600 10px var(--mono);color:var(--muted)">(opsional)</span></div>
+<input class="textInput" id="designerName" maxlength="28" placeholder="Siapa yang mau dipermalukan?">
+<div class="fieldHint">Nama hanya dipakai di report/share card. Kosongkan kalau ingin anonim.</div>
+<div class="label">Ini apaan?</div>
+<div class="chips categoryGrid" data-group="type">
+<button class="chip active" data-v="identity">Visual Identity</button><button class="chip" data-v="marketing">Marketing & Ads</button>
+<button class="chip" data-v="social">Social Media</button><button class="chip" data-v="editorial">Editorial & Publication</button>
+<button class="chip" data-v="packaging">Packaging</button><button class="chip" data-v="digital">UI / Digital Product</button>
+<button class="chip" data-v="illustration">Illustration</button><button class="chip" data-v="typography">Typography</button>
+<button class="chip" data-v="information">Information Design</button><button class="chip" data-v="presentation">Presentation</button>
+<button class="chip" data-v="environmental">Environmental / Spatial</button><button class="chip" data-v="other">Lainnya / Entahlah</button>
+</div>
+<div class="categoryInfo" id="categoryInfo"></div>
+<div class="label">Seberapa pede?</div><div class="chips" data-group="confidence"><button class="chip" data-v="bangga">Bangga dong</button><button class="chip active" data-v="lumayan">Lumayan lah</button><button class="chip" data-v="ragu">Agak ragu</button><button class="chip" data-v="klien">Klien yang nyuruh</button></div><div class="confidenceReaction" id="confidenceReaction" aria-live="polite"></div><button class="cta" id="judge">🔥 HAKIMI SAYA</button></div>
+</div></section>
+<section id="loading" class="loadingBox"><div class="loadingTitle">Menganalisis barang bukti…</div><div class="steps" id="steps"></div></section>
+<section id="results" class="results"><div class="kicker">Laporan forensik visual</div><div class="resultGrid"><div class="evidence"><img id="resultImg" alt="Barang bukti"></div><div class="scorebox"><div class="scorelabel">DESIGN CRIME SCORE</div><div class="score"><span id="overall">00</span><small>/100</small></div><div class="severity" id="severity">KASUS BERAT</div><div class="primaryCharge" id="primaryCharge"></div><div class="designProfile" id="designProfile"></div><div class="caseAssessment" id="caseAssessment"></div><div class="scoreHelp"><strong>↑ SEMAKIN TINGGI = SEMAKIN BERMASALAH.</strong><br>Ini crime score, bukan nilai kualitas. 100 bukan A+. Itu surat panggilan.</div><p class="verdict" id="verdict"></p></div></div><div class="ratingGuide"><h3>CARA BACA SKOR</h3><p>Overall score bersifat linear: makin besar, makin berat dakwaannya. Metric di bawah menunjukkan intensitas karakter visual; khusus <b>CONTRAST</b> dan <b>SATURATION LEVEL</b>, terlalu rendah maupun terlalu tinggi sama-sama bisa kena roast.</p><div class="ratingScale"><span>0–30<br>AMAN / MEMBOSANKAN</span><span>31–55<br>MULAI MENCURIGAKAN</span><span>56–78<br>PERLU PENGACARA</span><span>79–88<br>KASUS BERAT</span><span>89–100<br>TKP DISEGEL</span></div></div><details class="forensics" id="forensics"><summary class="forensicsHead"><strong>DATA FORENSIK ENGINE</strong><span>buka kalau mau mengintip cara hakim bekerja</span></summary><div class="forensicGrid" id="forensicGrid"></div></details><div class="metrics" id="metrics"></div><div class="actions"><button class="cta" style="width:auto;margin:0" id="share">BAGIKAN DOSA SAYA</button><div class="exportTools"><button class="secondary" id="storyShare">STORY 9:16</button><button class="secondary" id="copyCaption">COPY CAPTION</button></div><button class="secondary" id="again">ROAST LAGI</button><button class="appeal" id="appeal">Saya tidak terima hasilnya</button></div></section>
+<footer>Roast My Design — eksperimen receh untuk desainer yang terlalu berani mengunggah karyanya.</footer>
+</div>
+<div class="modal" id="modal"><div class="modalIn"><div class="kicker">Banding</div><h2>Keberatan ditolak.</h2><p>Desain tidak otomatis membaik hanya karena desainernya tersinggung. Kami sudah cek. Ego juga bukan metric desain.</p><button class="cta" id="closeModal">YA UDAH 😭</button></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div><canvas id="work" hidden></canvas><canvas id="shareCanvas" width="1080" height="1350" hidden></canvas><canvas id="storyCanvas" width="1080" height="1920" hidden></canvas>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let state={type:'identity',confidence:'lumayan',designer:'',dataUrl:null,metrics:null};
+const clamp=(v,min=0,max=100)=>Math.max(min,Math.min(max,v));
+const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const drop=$('#drop'),file=$('#file'),preview=$('#preview');
+function openPicker(){file.value='';file.click()}
+drop.addEventListener('click',openPicker);
+drop.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openPicker()}});
+drop.addEventListener('dragover',e=>{e.preventDefault();e.stopPropagation();drop.classList.add('drag')});
+drop.addEventListener('dragleave',e=>{e.preventDefault();drop.classList.remove('drag')});
+drop.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();drop.classList.remove('drag');const f=e.dataTransfer&&e.dataTransfer.files?e.dataTransfer.files[0]:null;loadFile(f)});
+file.addEventListener('change',()=>loadFile(file.files&&file.files[0]));
+function loadFile(f){
+ if(!f)return;
+ if(f.size>25*1024*1024){alert('File terlalu besar untuk prototype ini. Maksimal 25 MB supaya browser tidak ikut di-roast.');return}
+ if(!/^image\/(png|jpeg|webp)$/i.test(f.type)){alert('Format belum didukung. Pakai JPG, PNG, atau WebP ya.');return}
+ const r=new FileReader();
+ r.onerror=()=>alert('File-nya gagal dibaca. Coba gambar lain.');
+ r.onload=()=>{
+   const test=new Image();
+   test.onload=()=>{state.dataUrl=r.result;preview.src=r.result;preview.style.display='block';$('#hint').style.display='none';$('#controls').style.display='block';drop.classList.add('has-image')};
+   test.onerror=()=>alert('Gambar gagal dibuka. Coba export ulang sebagai JPG/PNG/WebP.');
+   test.src=r.result;
+ };
+ r.readAsDataURL(f);
+}
+const categories={
+ identity:{label:'VISUAL IDENTITY',examples:'Logo • Logotype • Brand Mark • Monogram • Business Card • Stationery • Brand Guidelines • Brand System'},
+ marketing:{label:'MARKETING & ADS',examples:'Poster • Flyer • Brochure • Banner • Billboard • Campaign Visual • Promo Graphic'},
+ social:{label:'SOCIAL MEDIA',examples:'Instagram Post • Story • Carousel • Thumbnail • YouTube Cover • Social Campaign'},
+ editorial:{label:'EDITORIAL & PUBLICATION',examples:'Book Cover • Magazine • Newspaper • Annual Report • Catalog • Ebook • Zine'},
+ packaging:{label:'PACKAGING',examples:'Box • Bottle Label • Pouch • Can • Food Packaging • Cosmetic Packaging • Product Label'},
+ digital:{label:'UI / DIGITAL PRODUCT',examples:'Website • Landing Page • Mobile App • Dashboard • SaaS • Interface • Web App'},
+ illustration:{label:'ILLUSTRATION',examples:'Editorial Illustration • Character • Mascot • Vector Art • Digital Painting • Sticker • Artwork'},
+ typography:{label:'TYPOGRAPHY',examples:'Type Specimen • Lettering • Poster Typography • Experimental Type • Font Presentation • Logotype'},
+ information:{label:'INFORMATION DESIGN',examples:'Infographic • Data Visualization • Diagram • Map • Chart • Report Graphic'},
+ presentation:{label:'PRESENTATION',examples:'Pitch Deck • Company Profile • Proposal • Slide Presentation • Portfolio'},
+ environmental:{label:'ENVIRONMENTAL / SPATIAL',examples:'Signage • Wayfinding • Exhibition • Event Graphic • Retail Graphic • Interior Branding'},
+ other:{label:'LAINNYA / ENTAHLAH',examples:'Kalau kamu sendiri bingung ini kategori apa, kami tetap bisa menemukan masalahnya.'}
+};
+function updateCategoryInfo(){const c=categories[state.type]||categories.other;const el=$('#categoryInfo');if(el)el.innerHTML=`<b>${c.label}</b><span>${c.examples}</span>`}
+const confidenceImmediate={
+ bangga:['Oh, bangga? Bagus. Bukti tambahan sudah kami catat.','Pede sekali. Kami suka terdakwa yang mempermudah penyidikan.','Kepercayaan diri diterima. Kompetensi masih diperiksa.','Bangga boleh. Nanti data yang memutuskan apakah itu keberanian atau delusi.'],
+ lumayan:['“Lumayan” — bunker favorit desainer menjelang deadline.','Lumayan itu bukan pujian. Itu cara sopan untuk berhenti melihat terlalu lama.','Jawaban aman. Biasanya desainnya juga bersembunyi di zona aman.','“Lumayan lah.” Kalimat terakhir sebelum file FINAL_v7_FIX_BENERAN.ai dibuat.'],
+ ragu:['Nah. Insting bertahan hidupmu ternyata masih berfungsi.','Keraguan dicatat. Akhirnya ada satu keputusan yang terasa sehat.','Bagus. Inner critic-mu belum sepenuhnya mati.','Agak ragu? Santai. Sebentar lagi kami bantu jadi sangat ragu.'],
+ klien:['Alibi dicatat. Belum tentu dipercaya.','Klien yang nyuruh. Tentu. Creative Cloud mendengar alasan ini tiap hari.','Baik. Nama klien kami tulis di berkas. Namamu tetap belum dicoret.','Perintah klien bukan surat bebas dari kejahatan visual.']
+};
+function showConfidenceReaction(v){const el=$('#confidenceReaction');if(!el)return;el.textContent=pick(confidenceImmediate[v]||[], 'immediate-'+v);el.classList.add('show')}
+$$('.chips').forEach(g=>g.onclick=e=>{if(!e.target.classList.contains('chip'))return;g.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));e.target.classList.add('active');state[g.dataset.group]=e.target.dataset.v;if(g.dataset.group==='confidence')showConfidenceReaction(state.confidence);if(g.dataset.group==='type')updateCategoryInfo()});updateCategoryInfo();$('#designerName').addEventListener('input',e=>state.designer=e.target.value.trim().slice(0,28));
+$('#judge').onclick=async()=>{if(!state.dataUrl)return;$('#main').style.display='none';$('#loading').style.display='block';const lines=['✓ Menghitung kerusuhan warna','✓ Memeriksa apakah contrast masih hidup','✓ Mencari pihak yang kerja rodi di layout','✓ Mengukur visual complexity','✓ Mencari whitespace yang kabur','✓ Mengukur tekanan saturation','✓ Membandingkan symmetry kiri-kanan','✓ Mencari focal point yang kabur','✓ Memeriksa edge congestion','✓ Membaca mood terang/gelap','✓ Menyiapkan dakwaan'];$('#steps').innerHTML='';for(const l of lines){await wait(250);$('#steps').innerHTML+=`<div class="on">${l}</div>`}state.metrics=analyze(preview);await wait(350);renderResults()};
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function analyze(img){
+ const c=$('#work'),ctx=c.getContext('2d',{willReadFrequently:true});
+ const max=260,scale=Math.min(max/img.naturalWidth,max/img.naturalHeight,1);
+ c.width=Math.max(1,Math.round(img.naturalWidth*scale));c.height=Math.max(1,Math.round(img.naturalHeight*scale));
+ // Transparent pixels are empty canvas, not black ink. Composite on white so PNG logos/lettering are not falsely read as dark/complex.
+ ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);
+ const d=ctx.getImageData(0,0,c.width,c.height).data;
+ let lum=[],sat=[],bins=new Map(),left=0,right=0,top=0,bottom=0,total=0,dark=0,light=0;
+ const masses=[];
+ for(let y=0;y<c.height;y++){
+   for(let x=0;x<c.width;x++){
+     const i=(y*c.width+x)*4,r=d[i],g=d[i+1],b=d[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+     const l=.2126*r+.7152*g+.0722*b,ss=mx?((mx-mn)/mx):0;
+     lum.push(l);sat.push(ss); if(l<72)dark++; if(l>205)light++;
+     const q=`${r>>5}-${g>>5}-${b>>5}`;bins.set(q,(bins.get(q)||0)+1);
+     const mass=Math.abs(l-245)+ss*42; masses.push(mass); if(x<c.width/2)left+=mass;else right+=mass;if(y<c.height/2)top+=mass;else bottom+=mass;total+=mass;
+   }
+ }
+ const px=c.width*c.height,mean=lum.reduce((a,b)=>a+b,0)/lum.length,variance=lum.reduce((a,b)=>a+(b-mean)**2,0)/lum.length,std=Math.sqrt(variance),avgSat=sat.reduce((a,b)=>a+b,0)/sat.length;
+ // Gradient pass: horizontal + vertical transitions. This is less biased than the old diagonal-only complexity check.
+ let edgeAll=0,edgeBorder=0,localDiff=0,neighborN=0;
+ for(let y=0;y<c.height;y++){for(let x=0;x<c.width;x++){
+   const here=lum[y*c.width+x];let gsum=0,gn=0,gmax=0;
+   if(x>0){const df=Math.abs(here-lum[y*c.width+x-1]);gsum+=df;gn++;gmax=Math.max(gmax,df)}
+   if(y>0){const df=Math.abs(here-lum[(y-1)*c.width+x]);gsum+=df;gn++;gmax=Math.max(gmax,df)}
+   localDiff+=gsum;neighborN+=gn;
+   if(gmax>36){edgeAll++;if(x<c.width*.1||x>=c.width*.9||y<c.height*.1||y>=c.height*.9)edgeBorder++;}
+ }}
+ const contrast=clamp(Math.round(std/72*100));
+ const complexity=clamp(Math.round(edgeAll/px*285));
+ // Ignore microscopic anti-alias/noise bins: only colors occupying a meaningful fraction count toward palette chaos.
+ const meaningfulBins=[...bins.values()].filter(n=>n>=Math.max(2,px*.0015));
+ const effectiveColors=meaningfulBins.length;
+ const colorChaos=clamp(Math.round((effectiveColors/95)*58+avgSat*42));
+ const hImbalance=Math.abs(left-right)/(total||1),vImbalance=Math.abs(top-bottom)/(total||1);
+ const balance=clamp(Math.round(Math.hypot(hImbalance,vImbalance)*165));
+ const saturation=clamp(Math.round(avgSat*115));
+ const brightness=Math.round(mean/255*100),darkDominance=Math.round(dark/px*100),lightDominance=Math.round(light/px*100);
+ const localContrast=clamp(Math.round((localDiff/(neighborN||1))/38*100));
+ const edgeCongestion=edgeAll?clamp(Math.round((edgeBorder/edgeAll)*165)):0;
+ const maxBin=Math.max(...bins.values()),colorDominance=Math.round(maxBin/px*100);
+ // Mirror similarity: 100 = near-symmetrical luminance distribution.
+ let mirrorDiff=0,mirrorN=0;
+ for(let y=0;y<c.height;y+=2){for(let x=0;x<Math.floor(c.width/2);x+=2){const a=lum[y*c.width+x],b=lum[y*c.width+(c.width-1-x)];mirrorDiff+=Math.abs(a-b);mirrorN++;}}
+ const symmetry=Math.max(0,Math.min(100,Math.round(100-(mirrorDiff/(mirrorN||1))/128*100)));
+ // Focal concentration: how much visual mass lives in the hottest 20% of coarse cells.
+ const gx=5,gy=5,cells=[];
+ for(let yy=0;yy<gy;yy++){for(let xx=0;xx<gx;xx++){let sum=0,n=0;const x0=Math.floor(xx*c.width/gx),x1=Math.floor((xx+1)*c.width/gx),y0=Math.floor(yy*c.height/gy),y1=Math.floor((yy+1)*c.height/gy);for(let y=y0;y<y1;y+=2){for(let x=x0;x<x1;x+=2){sum+=masses[y*c.width+x];n++;}}cells.push(sum/(n||1));}}
+ const sorted=[...cells].sort((a,b)=>b-a),focalConcentration=Math.min(100,Math.round((sorted.slice(0,5).reduce((a,b)=>a+b,0)/(cells.reduce((a,b)=>a+b,0)||1))*220));
+ // Spatial density spread: high means some zones are much denser than others.
+ const cmean=cells.reduce((a,b)=>a+b,0)/cells.length,cstd=Math.sqrt(cells.reduce((a,b)=>a+(b-cmean)**2,0)/cells.length),densitySpread=Math.min(100,Math.round(cstd/(cmean||1)*115));
+ // Approximate whitespace as visually quiet blocks, regardless of whether background is white.
+ const bs=Math.max(6,Math.round(Math.min(c.width,c.height)/18));let quiet=0,blocks=0;
+ for(let by=0;by<c.height;by+=bs){for(let bx=0;bx<c.width;bx+=bs){let vals=[],ssv=[];for(let yy=by;yy<Math.min(by+bs,c.height);yy+=2){for(let xx=bx;xx<Math.min(bx+bs,c.width);xx+=2){let i=(yy*c.width+xx)*4,r=d[i],g=d[i+1],b=d[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);vals.push(.2126*r+.7152*g+.0722*b);ssv.push(mx?((mx-mn)/mx):0)}}let av=vals.reduce((a,b)=>a+b,0)/(vals.length||1),vv=vals.reduce((a,b)=>a+(b-av)**2,0)/(vals.length||1),sv=Math.sqrt(vv);let sr=Math.max(...ssv)-Math.min(...ssv);if(sv<11&&sr<.16)quiet++;blocks++;}}
+ const whitespacePct=quiet/(blocks||1)*100,whitespaceCrime=Math.max(0,Math.min(100,Math.round(100-whitespacePct*1.15)));
+ const contrastPenalty=clamp(Math.round(Math.abs(contrast-60)*1.65)),satPenalty=clamp(Math.round(Math.abs(saturation-48)*1.25));
+ const partial={colorChaos,contrast,balance,complexity,whitespaceCrime,saturation,whitespacePct:Math.round(whitespacePct),contrastPenalty,satPenalty,brightness,darkDominance,lightDominance,symmetry,focalConcentration,edgeCongestion,localContrast,colorDominance,densitySpread};
+ const rawWeights={identity:[.16,.14,.18,.13,.24,.15],marketing:[.20,.15,.16,.21,.18,.10],social:[.21,.15,.14,.21,.18,.11],editorial:[.14,.16,.13,.19,.29,.09],packaging:[.22,.12,.14,.20,.18,.14],digital:[.12,.22,.14,.16,.29,.07],illustration:[.18,.10,.10,.22,.25,.15],typography:[.15,.18,.13,.19,.27,.08],information:[.13,.22,.12,.19,.27,.07],presentation:[.12,.21,.13,.18,.29,.07],environmental:[.17,.18,.16,.18,.22,.09],other:[.19,.14,.17,.21,.19,.10]}[state.type]||[.19,.14,.17,.21,.19,.10];
+ // Defensive normalization prevents a category from accidentally getting a lower/higher score just because its weights do not total 1.
+ const wsum=rawWeights.reduce((a,b)=>a+b,0)||1,weights=rawWeights.map(v=>v/wsum);
+ const risks=contextualRiskValues(partial);
+ let overall=Math.round(risks.colorChaos*weights[0]+risks.contrast*weights[1]+risks.balance*weights[2]+risks.complexity*weights[3]+risks.whitespaceCrime*weights[4]+risks.saturation*weights[5]);
+ // Hidden heuristics may nudge a verdict, never dominate it.
+ let hiddenPenalty=0;if(edgeCongestion>72)hiddenPenalty+=3;if(focalConcentration<32&&complexity>55)hiddenPenalty+=3;if(localContrast<22&&complexity>45)hiddenPenalty+=2;if(state.type==='identity'&&complexity>70)hiddenPenalty+=4;if(state.type==='digital'&&edgeCongestion>62)hiddenPenalty+=3;if(state.type==='information'&&localContrast<28)hiddenPenalty+=3;if(state.type==='presentation'&&whitespaceCrime>72)hiddenPenalty+=3;if(state.type==='illustration')hiddenPenalty=Math.max(0,hiddenPenalty-2);
+ const adj={identity:1,marketing:0,social:1,editorial:0,packaging:1,digital:1,illustration:0,typography:1,information:1,presentation:1,environmental:1,other:3}[state.type]||0;overall=clamp(overall+adj+hiddenPenalty);
+ return {...partial,overall}
+}
+const roastLib={
+colorChaos:[
+ {max:22,lines:['Paletnya terlalu sopan. Kayak desainer magang yang takut buka color picker.','Warna sedikit sekali. Printer kantor bahkan tidak merasa tertantang.','Ini color palette atau bukti kamu sudah menyerah sebelum mulai?','Monokrom boleh. Tapi ini kelihatannya lebih seperti kehabisan keputusan.','Warnanya aman sekali sampai risiko kreatif minta pindah divisi.','Palet ini begitu takut salah sampai akhirnya tidak berani punya pendapat.','Color decision-nya seperti rapat komite: semua setuju, tidak ada hasil.','Kalau warna ini punya kepribadian, statusnya masih draft.']},
+ {max:45,lines:['Paletnya masih waras. Sayang personality-nya ikut cuti.','Warna-warnanya akur, mungkin karena semuanya sepakat untuk tidak menonjol.','Tidak jelek. Cuma punya energi template presentasi internal.','Color palette ini punya denyut nadi, tapi lemah.','Aman, bersih, dan hampir tidak meninggalkan kesan apa pun. Prestasi juga.','Warna-warnanya sopan sekali. Terlalu sopan. Sampai brand recall pun sungkan masuk.','Paletnya rapi, tapi auranya seperti template “minimal modern” hasil pencarian pertama.','Tidak berisik, tidak salah, tidak menarik. Triple kill.']},
+ {max:70,lines:['Warnanya mulai ribut. Belum tawuran, tapi satpam sudah dipanggil.','Beberapa warna kelihatannya baru kenal lima menit lalu lalu dipaksa satu frame.','Paletnya punya chemistry. Sayangnya chemistry praktikum gagal.','Ada arah warna. Arahnya ke mana, itu perkara lain.','Warnanya cukup ramai untuk bikin brand guideline pura-pura tidak kenal.','Color harmony-nya seperti band yang baru ketemu di parkiran sebelum manggung.','Ada warna utama, warna pendukung, dan beberapa warna yang tampaknya nyasar.','Palette ini bukan eklektik. Ini grup WA tanpa admin.']},
+ {max:101,lines:['Semua warna diundang. Tidak satu pun disuruh pulang.','RGB melihat ini lalu mengajukan cuti panjang.','Color palette-mu seperti grup keluarga: terlalu banyak suara dan tidak ada moderator.','Saturasinya sudah bukan tinggi. Ini keadaan darurat nasional.','Kalau tujuanmu membuat mata pengguna menyerah, selamat. Objective tercapai.','Warna-warna ini tidak harmonis. Mereka cuma kebetulan terjebak dalam file yang sama.','Ini bukan color system. Ini kerusuhan visual dengan izin edar.','Color picker-mu sepertinya punya tombol “pilih semua”.','Pantone tidak bertanggung jawab atas kejadian ini.','Setiap warna ingin jadi protagonis. Hasilnya sinetron ensemble tanpa sutradara.','Kalau pelangi lihat ini, dia akan minta namanya tidak dicatut.']}
+],
+contrast:[
+ {max:22,lines:['Contrast-nya selembut janji revisi terakhir. Tidak ada yang benar-benar terlihat.','Heading dan background sedang LDR walau tinggal serumah.','Mata perlu surat tugas khusus untuk menemukan focal point.','Kontrasnya hilang. Terakhir terlihat sebelum kamu menurunkan opacity semuanya.','Ini desain atau tes mata terselubung?','Hierarki visualnya seperti rapat tanpa pimpinan: semua bicara, tidak ada yang didengar.','Contrast segini membuat accessibility checker ikut menghela napas.','Teksnya ada. Terbaca? Itu urusan iman.','Kalau user harus menyipitkan mata, itu bukan engagement.']},
+ {max:45,lines:['Contrast ada, tapi cuma hadir secara administratif.','Lumayan terbaca. Tidak berarti layak dikenang.','Focal point muncul malu-malu seperti tidak yakin dibayar lembur.','Kontrasnya setengah hati. Sama seperti keputusan font kedua itu.','Masih bisa dibaca, kalau pengguna punya waktu dan niat baik.','Kontrasnya hadir, tapi aura “nanti aja dibenerin” masih kental.','Readable, tapi seperti keputusan yang diambil lima menit sebelum export.','Focal point-nya ada. Cuma malu mengaku.']},
+ {max:72,lines:['Contrast cukup sehat. Sayang desain tidak otomatis ikut sehat.','Ada hierarki. Akhirnya seseorang mengambil tanggung jawab.','Kontrasnya bekerja. Jangan senang dulu, departemen lain masih diperiksa.','Bagian ini lolos. Kami juga kecewa tidak bisa menghina lebih banyak.','Readable. Revolutionary? Jangan halu.','Contrast-nya benar. Selamat atas keberhasilan melewati standar paling dasar.','Bagian ini bekerja. Mohon jangan jadikan itu materi keynote.','Akhirnya ada yang menjalankan jobdesk.']},
+ {max:101,lines:['Contrast-nya teriak begitu keras sampai hierarchy visual ikut minggir.','Hitam-putihnya seperti sedang berantem soal warisan.','Focal point-nya tidak mengundang perhatian. Dia menyandera perhatian.','Kontras setinggi ini cocok untuk poster konser, bukan untuk semua elemen sekaligus, Ferguso.','Mata tidak diarahkan. Mata ditodong.','Ini hierarchy visual versi debt collector. Semua harus lihat sekarang juga.','Contrast-nya bukan mengarahkan mata, tapi menarik kerah baju user.','Semua elemen pakai toa. Tidak ada yang pakai otak.','Visual priority-mu seperti rebutan mic karaoke.']}
+],
+balance:[
+ {max:18,lines:['Layout terlalu seimbang. Sampai keberaniannya ikut rata tengah.','Simetris, rapi, aman. Personality ditemukan dalam kondisi mengenaskan.','Balance sempurna. Risiko kreatif: nol koma sekian.','Semua tertata baik. Seperti brosur bank sebelum jam makan siang.','Layout-nya disiplin. Sayangnya karisma tidak termasuk SOP.','Grid-nya patuh. Imajinasi tampaknya sedang WFH.','Komposisinya begitu aman sampai asuransi pun bosan menanggungnya.','Balanced sekali. Nyaris seperti kamu takut satu pixel keluar barisan.']},
+ {max:42,lines:['Balance masih aman, walau ada elemen yang mulai pura-pura sibuk.','Distribusi visual cukup masuk akal. Sebuah pencapaian dasar yang mengejutkan.','Tidak timpang, cuma agak seperti layout yang takut salah.','Kiri-kanan masih komunikasi. Belum saling blokir.','Balance-nya oke. Jangan jadikan ini alasan untuk pede berlebihan.','Visual weight-nya lumayan sehat. Sayang keputusan lain belum tentu.','Tidak berat sebelah. Cuma belum punya alasan kuat untuk diingat.','Komposisinya tidak jatuh. Itu saja dulu prestasinya.']},
+ {max:68,lines:['Satu sisi mulai kerja lembur, sisi lain sibuk terlihat cantik.','Visual weight-nya seperti kerja kelompok: dua orang kerja, tiga orang titip nama.','Komposisinya mulai miring secara emosional.','Ada sisi yang jelas-jelas menjadi tulang punggung keluarga ini.','Alignment mungkin masih hidup, tapi sudah tidak mau diwawancarai.','Satu sisi mulai menanggung cicilan layout sendirian.','Visual balance-nya seperti meja berkaki tiga: berdiri, tapi bikin cemas.','Komposisi ini kelihatan sedang menunggu satu elemen datang menyelamatkan keadaan.']},
+ {max:101,lines:['Sebelah layout kerja rodi. Sebelah lainnya cuma numpang nama.','Komposisi ini berat sebelah sampai butuh pengacara perceraian.','Visual weight-nya seperti membawa galon pakai satu tangan.','Alignment ditemukan pingsan di luar artboard.','Ini bukan asymmetry yang berani. Ini furnitur geser sendiri saat gempa.','Satu sisi desain sudah resign secara mental.','Kalau keseimbangan adalah tujuan, kamu menembaknya dari jarak dekat.','Layout ini berat sebelah sampai gravitasi ikut punya opini.','Sisi kosongnya healing, sisi padatnya kerja rodi.','Ini bukan dynamic composition. Ini pembagian warisan yang gagal mediasi.']}
+],
+complexity:[
+ {max:18,lines:['Minimalis atau belum selesai? Tim forensik belum sepakat.','Elemen sedikit sekali sampai artboard terdengar bergema.','Desainnya bersih. Sangat bersih. Mencurigakan bersih.','Ini minimalism atau kamu lupa mengaktifkan tiga layer?','Visual complexity rendah. Ambisinya ikut tersangka.','Less is more. Ini sudah mendekati less is missing.','Minimalism bukan alasan untuk meninggalkan artboard sendirian di rumah.','Ruang kosongnya punya lebih banyak screen time daripada idenya.','Desain ini sangat sunyi sampai konsepnya terdengar batuk.']},
+ {max:40,lines:['Cukup sederhana. Tidak bikin pusing, juga belum tentu bikin ingat.','Visualnya tenang. Mungkin terlalu tenang untuk sesuatu yang ingin dilihat orang.','Masih punya napas. Bagus. Jangan langsung merasa jadi Dieter Rams.','Kompleksitasnya terkendali. Ego desainer mohon ikut dikendalikan.','Rapi, ringan, dan sedikit beraroma template premium gratisan.','Clean, iya. Distinctive? Jangan bikin kami kerja terlalu keras mencari.','Visualnya tenang seperti waiting room klinik gigi.','Sederhana itu elegan. Ini masih antre menuju elegan.']},
+ {max:68,lines:['Cukup ramai untuk bikin mata punya pekerjaan sampingan.','Ada banyak hal terjadi. Tidak semuanya perlu terjadi.','Visual hierarchy sedang berusaha mengatur lalu lintas tanpa peluit.','Desainnya sibuk. Semoga invoice-mu setara dengan penderitaan mata kami.','Banyak detail, sedikit alasan. Tradisi lama dunia desain.','Mata masih bisa pulang sendiri, tapi Google Maps mulai dibutuhkan.','Detailnya mulai berkembang biak tanpa izin.','Hierarchy sedang mencoba jadi satpam di konser gratis.','Ada banyak informasi. Sayangnya beberapa tidak punya alasan untuk hidup.']},
+ {max:101,lines:['Mata masuk ke desain ini dan sampai sekarang belum ditemukan.','Ini bukan visual complexity. Ini open world game tanpa minimap.','Terlalu banyak detail sampai focal point menyerah dan buka warung.','Artboard-mu kelihatannya alergi terhadap ruang kosong.','Setiap elemen berteriak “LIHAT AKU”, hasilnya tidak ada yang kami dengar.','Desain ini punya lebih banyak subplot daripada sinetron 700 episode.','Kalau semua penting, berarti tidak ada yang penting. Selamat datang di neraka hierarchy.','Mata butuh cuti tahunan setelah tiga detik di sini.','Layer panel-mu pasti terlihat seperti silsilah kerajaan.','Desain ini tidak punya focal point. Ia punya kerumunan massa.','Zoom out tidak menyelesaikan masalah. Cuma membuat bencananya terlihat utuh.','Ini bukan detail-oriented. Ini detail-hostage situation.']}
+],
+whitespaceCrime:[
+ {max:25,lines:['Whitespace-nya lega. Akhirnya ada bagian desain yang tahu kapan harus diam.','Ruang kosong cukup sehat. Jangan buru-buru kamu isi cuma karena merasa bersalah.','Ada napas di sini. Keajaiban kecil yang patut dilindungi dari revisi klien.','Whitespace bagus. Sayang elemen yang tersisa masih harus mempertanggungjawabkan diri.','Ruang kosongnya sehat. Jangan dirusak cuma karena kamu menemukan satu icon lagi.','Breathing room aman. Sekarang tinggal cari alasan kenapa elemen lain ada.','Whitespace bekerja lebih keras daripada beberapa objek di artboard.']},
+ {max:50,lines:['Whitespace ada, tapi statusnya pekerja kontrak. Bisa hilang kapan saja.','Masih ada ruang bernapas, walau napasnya pendek-pendek.','Ruang kosongnya cukup. Jangan disentuh lagi pakai gradient random.','Belum sesak. Tapi layout sudah mulai menumpuk koper di pintu keluar.','Ruang kosong masih ada, tapi sudah mulai pasang iklan kos baru.','Masih bisa bernapas, walau layout mulai batuk kecil.','Jangan tambah badge lagi. Serius. Turunkan tanganmu dari toolbar.']},
+ {max:75,lines:['Whitespace-nya mulai kabur dari tanggung jawab.','Artboard ini takut ruang kosong seperti takut invoice tidak dibayar.','Kasih napas, Mas. Ini layout, bukan angkot jam pulang kerja.','Semua elemen duduk berdekatan seperti reuni yang venue-nya salah ukuran.','Whitespace ditemukan, tapi cuma di pinggir dan kelihatan ketakutan.','Ruang kosongnya seperti intern: ada, tapi tidak diberi wewenang.','Layout ini mulai mengira semua area kosong adalah masalah yang harus diisi.','Negative space-mu sedang mengajukan surat resign.']},
+ {max:101,lines:['Whitespace ditemukan meninggal di lokasi kejadian.','Artboard-mu kelihatannya punya trauma masa kecil terhadap ruang kosong.','Setiap centimeter diisi seolah biaya sewa pixel dihitung per meter.','Ini layout atau kos-kosan overcapacity? Semua masuk, tidak ada yang mau keluar.','Ruang kosong sudah mengajukan perlindungan saksi.','Kalau ada satu elemen lagi masuk, desain ini perlu IMB tambahan.','Artboard ini sudah bukan penuh. Ini overbooking.','Whitespace terakhir terlihat meninggalkan gedung sambil membawa kardus.','Semua pixel terpakai. Tidak semua layak mendapat pekerjaan.','Kalau layout bisa sesak napas, ini sudah minta tabung oksigen.']}
+],
+saturation:[
+ {max:20,lines:['Warna-warnanya sudah menyerah sebelum presentasi dimulai.','Saturation serendah ini bikin RGB terasa seperti kerja di kantor pajak.','Paletnya bukan muted. Ini sedang berkabung.','Warna hadir secara administratif. Secara emosional sudah pulang.','Saturation-nya seperti habis dipotong anggaran.','Muted boleh, mati suri jangan.','Palet ini punya energi hari Senin jam 07.00.']},
+ {max:42,lines:['Saturation kalem. Bagus. Jangan langsung merasa jadi art director Skandinavia.','Warnanya tertib dan tidak teriak. Ada yang masih bisa diselamatkan rupanya.','Cukup restrained. Ego-mu boleh menyusul.','Paletnya punya sopan santun. Jarang-jarang.','Saturation-nya tertib. Jangan kamu rusak karena takut dibilang kurang pop.','Warnanya dewasa. Semoga desainernya menyusul.','Cukup restrained tanpa terlihat ketakutan. Keajaiban kecil.']},
+ {max:70,lines:['Saturation mulai pede. Untung belum mabuk perhatian.','Warna cukup hidup. Jangan kasih mereka mic satu-satu.','Energinya pas, selama kamu berhenti sebelum tombol saturation digeser lagi.','Masih vibrant, belum masuk fase festival sound system.','Energinya hidup. Jangan dorong slider itu lagi, tanganmu sudah kami awasi.','Saturation-nya pede tanpa perlu naik meja. Bagus.','Masih colorful, belum jadi kecelakaan neon.']},
+ {max:101,lines:['Saturation-nya seperti habis minum tiga kaleng energy drink.','Warna-warnanya teriak bareng sampai retina minta mediasi.','RGB melihat slider ini lalu pura-pura tidak kenal kamu.','Vibrant bukan berarti semua warna harus menyalakan strobo.','Paletnya bukan pop. Ini ledakan tabung gas visual.','Retina pengguna bukan tempat uji coba kembang api.','Slider saturation-mu sepertinya macet di kanan.','Warnanya begitu keras sampai CMYK pura-pura offline.','Ini bukan vibrant. Ini visual sirene ambulans.','Mata user tidak menandatangani consent untuk eksperimen ini.']}
+]
+};
+const verdictLib={
+ low:[
+  'Sayangnya desainmu tidak cukup buruk. Coba sedikit lebih ceroboh supaya kami punya pekerjaan.',
+  'Kami datang untuk menghina, tapi desain ini cuma membosankan. Itu bahkan lebih menyakitkan.',
+  'Secara hukum aman. Secara kreativitas masih dalam masa percobaan.',
+  'Tidak ada kejahatan besar. Hanya beberapa pelanggaran estetika ringan dan satu kasus kurang berani.',
+  'Desain ini tidak buruk. Ia hanya punya karisma spreadsheet kosong.',
+  'Lolos dari penjara desain. Belum tentu lolos dari ketidakpedulian audiens.','Tidak salah. Tidak berbahaya. Tidak ada alasan kuat untuk melihat dua kali.','Desain ini begitu aman sampai feedback paling jujurnya cuma “oke”.','Kami kehabisan dakwaan. Sayangnya audiens juga bisa kehabisan minat.','Bukan buruk. Cuma tidak meninggalkan bekas selain file export.'
+ ],
+ mid:[
+  'Ada niat baik di sini. Eksekusinya sedang dimintai keterangan.',
+  'Desain ini seperti presentasi jam 4 sore: technically hadir, spiritually sudah pulang.',
+  'Konsepnya mungkin bagus. Sayang konsep tidak bisa memberi kesaksian untuk membela hasil akhirnya.',
+  'Masih bisa diselamatkan. Dengan revisi. Banyak revisi. Dan mungkin ritual tertentu.',
+  'Kami melihat potensi. Kami juga melihat banyak barang bukti.',
+  'Bukan bencana. Lebih seperti alarm kebakaran yang bunyinya sudah mulai terdengar.','Ada ide di sini. Kami yakin. Kami cuma belum menemukan lokasi kejadiannya.','Desain ini masih bisa ditolong, selama revisinya bukan “coba dibikin lebih wow”.','Secara visual belum kriminal berat, tapi motifnya mencurigakan.','Ini fase ketika desainer bilang “tinggal finishing” padahal struktur dasarnya masih berunding.'
+ ],
+ high:[
+  'Secara teknis ini masih desain. Secara moral kami tidak yakin.',
+  'File ini sebaiknya diberi nama FINAL_FINAL_BENERAN_TOBAT.ai.',
+  'Kami tidak bilang jelek. Kami cuma menyarankan artboard diberi kesempatan hidup baru.',
+  'Design brief mungkin tidak meminta kekacauan, tapi kamu memberikannya dengan penuh keyakinan.',
+  'Tidak semua eksperimen harus dipublikasikan. Beberapa cukup menjadi pelajaran hidup.',
+  'Ini bukan “berani beda”. Ini berbeda karena keputusan-keputusan penting ditinggal tanpa pengawasan.',
+  'Kalau desain ini punya pengacara, pengacaranya barusan mundur.',
+  'Kami sudah menghubungi hierarchy, alignment, dan restraint. Tidak ada yang mau mengaku kenal kamu.','Kami mencoba mencari keputusan desain yang bisa dijadikan saksi meringankan. Tidak ada yang bersedia.','Desain ini bukan minta revisi. Ia minta identitas baru dan perlindungan saksi.','Kalau ini dikirim ke klien, pastikan invoice dibayar dulu sebelum mereka sadar.','Art director melihat ini lalu membuka LinkedIn. Bukan untuk cari referensi.','File ini punya energi “yang penting kelihatan desain”. Dan sayangnya, kelihatan.','Kami tidak yakin tombol Undo cukup panjang untuk perjalanan pulang dari sini.'
+ ]
+};
+const typeRoasts={
+ identity:['Logo harus gampang diingat. Yang ini lebih cocok dijadikan barang bukti.','Visual identity bukan tempat seluruh brand guideline dipadatkan jadi satu simbol.','Kalau identitas brand harus dijelaskan lima menit, itu bukan filosofi. Itu pembelaan.','Brand mark ini tidak membangun recognition. Ia membangun pertanyaan.'],
+ marketing:['Iklan harus menghentikan orang. Yang berhenti justru hierarchy-nya.','CTA-nya kelihatan seperti figuran padahal dia yang harus bayar sewa.','Campaign visual ini berteriak keras, tapi lupa menyampaikan kenapa orang harus peduli.','Semua informasi minta jadi headline. Marketing-mu butuh mediator.'],
+ social:['Feed cuma memberi sepersekian detik. Desain ini menghabiskannya untuk kebingungan.','Konten sosmed harus menghentikan scroll, bukan membuat orang mempercepatnya.','Thumbnail-nya bekerja keras. Pesannya masih cuti.','Kalau ini carousel, slide pertama sudah membuat jempol ingin resign.'],
+ editorial:['Hierarchy-nya seperti organisasi tanpa struktur: semua merasa kepala divisi.','Editorial layout harus mengatur ritme baca. Yang ini mengatur tekanan darah.','Grid-nya mungkin ada. Hubungannya dengan konten masih LDR.','Pembaca datang untuk membaca, bukan ikut orientasi medan.'],
+ packaging:['Produkmu mungkin premium. Kemasan ini belum diberi tahu.','Shelf impact ada. Dampaknya pada ketenangan jiwa juga ada.','Packaging ini punya banyak hal untuk dikatakan dan tidak tahu kapan berhenti.','Dari tiga meter harusnya bikin ingin ambil. Ini malah bikin ingin baca komposisi bahan lalu pulang.'],
+ digital:['User datang mau klik tombol, bukan ikut escape room.','Interface bukan teka-teki silang. Kalau semua butuh dicari, UX-mu sedang buron.','Hierarchy UI-nya perlu onboarding sendiri. Ironis.','User flow tidak seharusnya terasa seperti administrasi kantor kecamatan.'],
+ illustration:['Ilustrasinya punya energi. Sayang sebagian energinya dipakai untuk bertengkar dengan komposisi.','Detail boleh liar. Focal point tetap perlu punya alamat.','Visual storytelling-nya ada. Plot twist-nya: mata tidak tahu harus mulai dari mana.','Karakter kuat tidak berarti semua elemen harus bicara bersamaan.'],
+ typography:['Hurufnya ekspresif. Mereka mengekspresikan kepanikan.','Type specimen ini membuktikan font punya karakter. Layout-nya juga, sayangnya.','Kerning mungkin tidak bisa kami ukur penuh, tapi kekacauannya cukup terlihat dari orbit.','Tipografi eksperimental bukan surat izin menghapus hierarchy.'],
+ information:['Datanya mungkin benar. Cara menjelaskannya sedang diperiksa.','Infografik harus memperjelas informasi, bukan mengubahnya jadi scavenger hunt.','Chart-nya punya data. Kejelasannya sedang dalam masa percobaan.','Kalau legenda butuh legenda, kita punya masalah.'],
+ presentation:['Slide ini punya terlalu banyak kata dan terlalu sedikit alasan untuk tetap hidup.','Pitch deck bukan novel. Investor punya jam, bukan musim.','Kalau presenternya harus bilang “sebentar, saya jelaskan slide ini”, slide-nya sudah mengaku bersalah.','Satu slide, tujuh pesan. Fokusnya kerja freelance di tempat lain.'],
+ environmental:['Wayfinding yang bagus bikin orang sampai tujuan. Yang ini bikin orang mengenal lingkungan lebih lama dari rencana.','Signage bukan dekorasi dinding yang kebetulan punya teks.','Environmental graphic harus bekerja dari jarak nyata, bukan cuma cantik di mockup.','Kalau orang harus mendekat dua meter untuk paham, signage-nya sedang cosplay jadi brosur.'],
+ other:['Kategori “Entahlah” ternyata akurat. Bahkan desainnya ikut tidak yakin dirinya apa.','Kami juga tidak tahu ini apa. Tapi masalah visual tidak membutuhkan KTP.','Identitas proyeknya misterius. Kejahatannya cukup terbaca.']
+};
+const confidenceRoasts={
+ bangga:['Oh, kamu bangga? Kepercayaan diri memang gratis. Syukurlah.','Pede sekali. Data forensik menyukai tantangan.','Bangga itu hak semua warga negara, bahkan dalam kondisi seperti ini.'],
+ lumayan:['“Lumayan” adalah kata yang bekerja sangat keras menutupi banyak keputusan.','Lumayan. Standar favorit saat deadline tinggal 20 menit.'],
+ ragu:['Instingmu bekerja. Pertahankan rasa curiga itu.','Keraguanmu valid. Untuk sekali ini, inner critic-mu tidak ngaco.'],
+ klien:['Untuk kepentingan hukum, kami menerima klaim bahwa klien yang menyuruh. Untuk sementara.','Baik. Semua kesalahan akan kami masukkan ke folder “CLIENT REQUEST”.','Klien yang nyuruh? Alibi paling tua dalam sejarah Creative Cloud.']
+};
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function pick(arr,salt=''){const seed=hashStr((state.dataUrl||'').slice(-500)+state.type+state.confidence+salt);return arr[seed%arr.length]}
+function roast(k,v){const bucket=roastLib[k].find(x=>v<x.max)||roastLib[k][roastLib[k].length-1];return pick(bucket.lines,k+Math.round(v))}
+const metricMeta={
+ colorChaos:{name:'COLOR CHAOS',short:'COLOR CHAOS'},
+ contrast:{name:'CONTRAST',short:'CONTRAST'},
+ balance:{name:'BALANCE DEVIATION',short:'BALANCE DEV.'},
+ complexity:{name:'VISUAL COMPLEXITY',short:'VISUAL COMPLEXITY'},
+ whitespaceCrime:{name:'WHITESPACE CRIME',short:'WHITESPACE'},
+ saturation:{name:'SATURATION LEVEL',short:'SATURATION'}
+};
+function contextualRiskValues(m){
+ const base={
+  colorChaos:m.colorChaos,
+  contrast:m.contrastPenalty ?? clamp(Math.round(Math.abs(m.contrast-60)*1.65)),
+  balance:m.balance,
+  complexity:m.complexity,
+  whitespaceCrime:m.whitespaceCrime,
+  saturation:m.satPenalty ?? clamp(Math.round(Math.abs(m.saturation-48)*1.25))
+ };
+ if(state.type==='illustration'){
+   const structureRisk=Math.max(0,(55-m.focalConcentration)*1.25)+Math.max(0,(m.edgeCongestion-52)*1.05)+Math.max(0,(m.densitySpread-72)*.55);
+   base.complexity=clamp(Math.round(m.complexity*.28+structureRisk));
+   base.whitespaceCrime=Math.round(base.whitespaceCrime*.52);
+   base.colorChaos=Math.round(base.colorChaos*.72);
+   base.contrast=Math.round(base.contrast*.65);
+ }
+ if(state.type==='typography'){
+   const monoLettering=m.colorChaos<18&&m.saturation<18&&m.contrast>75;
+   base.contrast=Math.round(base.contrast*(monoLettering?.12:.72));
+   base.complexity=Math.round(base.complexity*.72);
+   base.balance=clamp(Math.round(base.balance*1.18));
+   base.whitespaceCrime=clamp(Math.round(base.whitespaceCrime*1.05));
+ }
+ if(state.type==='identity')base.complexity=clamp(Math.round(base.complexity*1.18));
+ if(state.type==='digital')base.whitespaceCrime=clamp(Math.round(base.whitespaceCrime*1.10));
+ if(state.type==='information')base.contrast=clamp(Math.round(base.contrast*1.08));
+ return base;
+}
+function offenseScores(m){
+ const base=contextualRiskValues(m);
+ return base;
+}
+function derivedCharges(m){
+ const d={};
+ // Hidden signals can become charges when they explain the design better than a raw metric.
+ const focalRisk=Math.max(0,Math.round((50-m.focalConcentration)*1.7));
+ const edgeRisk=Math.max(0,Math.round((m.edgeCongestion-48)*1.7));
+ const densityRisk=Math.max(0,Math.round((m.densitySpread-62)*1.35));
+ const valueRisk=Math.max(0,Math.round((26-m.localContrast)*1.55));
+ if(focalRisk>0)d.focal={name:'FOCAL HIERARCHY',short:'FOCAL HIERARCHY',pressure:Math.min(100,focalRisk)};
+ if(edgeRisk>0)d.edge={name:'EDGE CONGESTION',short:'EDGE CONGESTION',pressure:Math.min(100,edgeRisk)};
+ if(densityRisk>0)d.density={name:'SPATIAL DENSITY',short:'SPATIAL DENSITY',pressure:Math.min(100,densityRisk)};
+ if(valueRisk>0)d.value={name:'LOCAL CONTRAST',short:'LOCAL CONTRAST',pressure:Math.min(100,valueRisk)};
+ return d;
+}
+function primaryCharge(m){return rankedCharges(m).primary}
+function rankedCharges(m){
+ const scores=offenseScores(m), candidates=[];
+ for(const [key,pressure] of Object.entries(scores)) candidates.push({key,name:metricMeta[key].name,short:metricMeta[key].short,pressure});
+ for(const [key,v] of Object.entries(derivedCharges(m))) candidates.push({key,...v});
+ if(state.type==='illustration')candidates.forEach(c=>{if(['focal','edge','density'].includes(c.key))c.pressure=Math.min(100,Math.round(c.pressure*1.25));if(c.key==='complexity'&&m.focalConcentration>52)c.pressure=Math.round(c.pressure*.62)});
+ if(state.type==='typography')candidates.forEach(c=>{if(['focal','edge','balance','whitespaceCrime'].includes(c.key))c.pressure=Math.min(100,Math.round(c.pressure*1.18));});
+ if(state.type==='identity')candidates.forEach(c=>{if(['complexity','balance','focal'].includes(c.key))c.pressure=Math.min(100,Math.round(c.pressure*1.12));});
+ if(state.type==='digital')candidates.forEach(c=>{if(['whitespaceCrime','contrast','edge','focal'].includes(c.key))c.pressure=Math.min(100,Math.round(c.pressure*1.12));});
+ candidates.sort((a,b)=>b.pressure-a.pressure);
+ const primary=candidates[0];
+ const secondary=candidates.find(c=>c.key!==primary.key&&c.pressure>=Math.max(18,primary.pressure*.46))||candidates[1];
+ return {primary,secondary,candidates};
+}
+function mitigatingFactor(m){
+ const risks=offenseScores(m), options=[];
+ const add=(pressure,name,text)=>options.push({pressure,name,text});
+ if(m.focalConcentration>=58)add(Math.max(0,50-m.focalConcentration),'FOCAL CONTROL','Mata masih tahu harus mendarat di mana. Jarang-jarang ada yang waras.');
+ if(m.edgeCongestion<=38)add(m.edgeCongestion,'EDGE DISCIPLINE','Elemen tidak hidup di bibir jurang artboard. Ada tanda-tanda pengasuhan.');
+ if(m.localContrast>=38&&m.localContrast<=72)add(Math.abs(m.localContrast-55),'LOCAL CONTRAST','Detail cukup terbaca tanpa harus menyalakan sirene visual.');
+ if(m.balance<=24)add(m.balance,'VISUAL BALANCE','Distribusi bobotnya relatif terkendali. Kami terpaksa mencatat ini sebagai hal positif.');
+ if(m.whitespaceCrime<=38)add(m.whitespaceCrime,'BREATHING ROOM','Masih ada ruang bernapas. Belum semua pixel dijadikan kontrakan.');
+ if(m.colorChaos<=42&&m.saturation>=20&&m.saturation<=72)add(m.colorChaos,'COLOR RESTRAINT','Paletnya masih tahu kapan harus tutup mulut.');
+ if(state.type==='typography'&&m.colorChaos<18&&m.saturation<18&&m.contrast>75)add(2,'MONOCHROME INTENT','Kontras tinggi terbaca sebagai keputusan, bukan kecelakaan.');
+ if(state.type==='illustration'&&m.complexity>70&&m.focalConcentration>52)add(3,'CONTROLLED DETAIL','Detailnya padat, tapi belum kehilangan komando.');
+ if(!options.length){const k=Object.keys(risks).sort((a,b)=>risks[a]-risks[b])[0];return {name:metricMeta[k].short,text:'Dari semua dakwaan, bagian ini yang paling sedikit bikin kami ingin memanggil pengacara.'}}
+ options.sort((a,b)=>a.pressure-b.pressure);return options[0];
+}
+function designDNA(m){
+ const tags=[];
+ tags.push(m.brightness<38?'DARK':m.brightness>68?'LIGHT':'MID-TONE');
+ tags.push(m.complexity>68?'DENSE':m.complexity<32?'MINIMAL':'LAYERED');
+ tags.push(m.saturation>72?'LOUD':m.saturation<22?'MUTED':'CONTROLLED COLOR');
+ tags.push(m.symmetry>78?'SYMMETRIC':m.symmetry<38?'ASYMMETRIC':'BALANCED-ISH');
+ return tags;
+}
+function designProfile(m){
+ const pc=primaryCharge(m),profiles=[];
+ // Category-aware profiles get first refusal; generic archetypes only fill the gap.
+ if(state.type==='illustration'&&m.complexity>76&&m.focalConcentration>52&&m.edgeCongestion<68)profiles.push(['THE CONTROLLED MENACE™','Ramai, liar, tapi setidaknya masih tahu siapa bosnya.']);
+ if(state.type==='typography'&&m.colorChaos<18&&m.saturation<18&&m.contrast>78)profiles.push(['THE MONOCHROME DRAMA™','Cuma hitam-putih, tapi tetap berhasil bikin suasana tegang.']);
+ if(state.type==='identity'&&m.complexity>64)profiles.push(['THE BRAND OVEREXPLAINER™','Satu identitas, tujuh ide, nol kemampuan memilih.']);
+ if(state.type==='digital'&&m.whitespaceCrime>68)profiles.push(['THE UI LANDLORD™','Setiap pixel disewakan. Tidak ada ruang publik.']);
+ if(state.type==='marketing'&&m.focalConcentration<36)profiles.push(['THE CAMPAIGN SHOUTER™','Semua elemen teriak. CTA-nya tetap tidak kedengaran.']);
+ if(state.type==='social'&&m.focalConcentration<38)profiles.push(['THE SCROLL DONOR™','Memberi user alasan gratis untuk lanjut scroll.']);
+ if(state.type==='editorial'&&m.whitespaceCrime>66)profiles.push(['THE MARGIN EVICTOR™','Margin diusir demi memberi tempat pada satu paragraf lagi.']);
+ if(state.type==='packaging'&&m.colorDominance>70)profiles.push(['THE SHELF DICTATOR™','Satu warna menguasai rak dan menolak koalisi.']);
+ if(state.type==='information'&&m.complexity>62&&m.focalConcentration<42)profiles.push(['THE DATA MAZE™','Datanya ada. Jalan keluarnya belum ditemukan.']);
+ if(state.type==='presentation'&&m.whitespaceCrime>60)profiles.push(['THE SLIDE HOARDER™','Semua isi rapat dipaksa tinggal di satu slide.']);
+ if(state.type==='environmental'&&m.contrast<38)profiles.push(['THE WAYFINDING WHISPER™','Petunjuk arah yang berharap orang punya indra keenam.']);
+ if(state.type==='other'&&m.complexity>58)profiles.push(['THE UNREGISTERED OBJECT™','Kategori tidak jelas. Kekacauan terdaftar dengan baik.']);
+ if(!profiles.length&&m.colorChaos>72&&m.saturation>72)profiles.push(['THE RGB TERRORIST™','Semua warna punya mikrofon. Tidak ada moderator.']);
+ if(!profiles.length&&m.complexity>76&&m.whitespaceCrime>72)profiles.push(['THE PIXEL HOARDER™','Tidak ada ruang kosong yang dibiarkan hidup.']);
+ if(!profiles.length&&m.symmetry>88&&m.complexity<42)profiles.push(['THE CENTER-ALIGN CULTIST™','Semua harus rapi. Termasuk keberanian.']);
+ if(!profiles.length&&m.colorChaos<28&&m.complexity<34&&m.whitespaceCrime<48)profiles.push(['THE CORPORATE COWARD™','Tidak salah. Tidak menarik juga.']);
+ if(!profiles.length&&m.focalConcentration<34&&m.complexity>58)profiles.push(['THE DEMOCRATIC CHAOS™','Semua elemen mendapat hak bicara yang sama. Kesalahan fatal.']);
+ if(!profiles.length&&m.edgeCongestion>70)profiles.push(['THE BORDER CLINGER™','Elemen-elemen hidup terlalu dekat dengan jurang artboard.']);
+ if(!profiles.length){if(pc.pressure<35)profiles.push(['THE SAFE BET™','Sangat aman. Sampai risiko kreatif ikut pulang duluan.']);else profiles.push(['THE USUAL SUSPECT™','Tidak cukup ekstrem untuk terkenal. Cukup mencurigakan untuk diperiksa.']);}
+ return {name:profiles[0][0],desc:profiles[0][1]};
+}
+function contextualMetricRoast(k,m){
+ if(state.type==='illustration'&&k==='complexity'&&m.complexity>72){
+   if(m.focalConcentration>52&&m.edgeCongestion<62)return 'Detailnya brutal, tapi masih terorganisir. Sayang kami datang untuk mencari perkara, bukan memberi medali.';
+   if(m.focalConcentration<36)return 'Detail banyak itu sah. Masalahnya, semuanya minta jadi focal point pada waktu yang sama.';
+ }
+ if(state.type==='illustration'&&k==='whitespaceCrime'&&m.complexity>70&&m.focalConcentration>52)return 'Ruangnya padat, tapi untuk ilustrasi itu belum otomatis dosa. Kami cek apakah kepadatannya masih punya komando.';
+ if(state.type==='typography'){
+   const mono=m.colorChaos<18&&m.saturation<18&&m.contrast>75;
+   if(k==='contrast'&&mono)return 'Contrast 100 pada lettering hitam-putih bukan kriminalitas. Tenang. Kami sedang memeriksa komposisinya.';
+   if(k==='saturation'&&mono)return 'Saturation nol bukan masalah kalau memang monokrom. Untuk sekali ini, slider warna tidak bersalah.';
+   if(k==='complexity'&&m.complexity>70&&m.focalConcentration>50)return 'Bentuk huruf boleh kompleks. Pertanyaannya bukan seberapa ramai, tapi apakah matanya masih tahu harus mendarat di mana.';
+ }
+ return roast(k,m[k]);
+}
+function comboRoast(m){
+ const cases=[];
+ const controlledIllustration=state.type==='illustration'&&m.focalConcentration>52&&m.edgeCongestion<62;
+ const monoTypography=state.type==='typography'&&m.colorChaos<18&&m.saturation<18&&m.contrast>75;
+ if(m.complexity>70&&m.whitespaceCrime>70&&!controlledIllustration)cases.push('Semua area sudah penuh, tapi tidak satu pun tahu kapan harus diam.');
+ if(m.contrast>86&&m.saturation>72)cases.push('Desain ini tidak menarik perhatian. Ia melakukan penggerebekan.');
+ if(m.colorChaos<30&&m.complexity<30)cases.push('Minimalis itu pilihan. Kelihatan belum selesai juga pilihan, sayangnya.');
+ if(m.balance<14&&m.complexity<38)cases.push('Komposisinya begitu tertib sampai kreativitas harus isi buku tamu dulu.');
+ if(m.balance>68&&m.complexity>64)cases.push('Komposisinya miring sambil berisik. Mata user langsung dapat shift malam.');
+ if(m.contrast<28&&m.complexity>60)cases.push('Ramai sekali, tapi focal point-nya cosplay jadi background.');
+ if(m.whitespaceCrime>84)cases.push('Whitespace tidak kurang. Ia sudah keluar grup tanpa pamit.');
+ if(m.saturation>82&&m.colorChaos>58)cases.push('Warna-warnanya tidak punya hierarchy. Mereka punya pengeras suara.');
+ if(m.saturation<18&&m.colorChaos<35&&!monoTypography)cases.push('Paletnya begitu murung sampai moodboard minta terapi.');
+ // Analysis Engine 2.0 hidden-signal roasts.
+ if(m.edgeCongestion>72)cases.push('Elemen-elemenmu nempel ke tepi artboard seperti penumpang KRL jam pulang kerja.');
+ if(m.focalConcentration<32&&m.complexity>52)cases.push('Banyak yang terjadi, tapi tidak ada satu pun yang cukup penting untuk jadi focal point. Demokratis sekali. Salah tempat.');
+ if(m.focalConcentration>78&&m.contrast>78)cases.push('Focal point-nya bukan fokus. Itu tersangka utama yang disorot lampu interogasi.');
+ if(m.symmetry>88&&m.complexity<38)cases.push('Simetrisnya begitu taat sampai satu pixel keluar barisan mungkin langsung kena SP1.');
+ if(m.symmetry<30&&m.balance>55)cases.push('Asymmetry-nya bukan ekspresif. Ini layout habis disenggol meja sebelah.');
+ if(m.darkDominance>70&&m.saturation<30)cases.push('Gelap, kusam, dan serius. Desain ini seperti punya cicilan dan sudah jatuh tempo.');
+ if(m.lightDominance>78&&m.colorChaos<28)cases.push('Putihnya luas sekali. Minimalisme atau kamu lupa lanjut kerja? Berkas masih terbuka.');
+ if(m.localContrast<22&&m.complexity>48)cases.push('Detail banyak, local contrast minim. Mata user disuruh lembur tanpa uang makan.');
+ if(m.colorDominance>72&&m.saturation>60)cases.push('Satu warna menguasai hampir seluruh wilayah. Ini palette atau rezim satu partai?');
+ if(m.densitySpread>78&&m.whitespaceCrime>58)cases.push('Sebagian layout sesak napas, sebagian lagi kos-kosan kosong. Zoning-nya punya masalah sosial.');
+ // Category-specific contextual charges.
+ if(state.type==='identity'&&m.complexity>62)cases.push('Visual identity ini membawa terlalu banyak koper untuk perjalanan yang seharusnya cuma butuh satu tanda pengenal.');
+ if(state.type==='identity'&&m.colorChaos>62)cases.push('Brand palette-nya bukan sistem. Ini reuni warna tanpa panitia.');
+ if(state.type==='marketing'&&m.focalConcentration<38)cases.push('Iklan tanpa focal point itu seperti sales datang lalu lupa produk apa yang dijual.');
+ if(state.type==='social'&&m.contrast<34)cases.push('Di feed, kontras selembut ini bukan subtle. Ini minta dilewati.');
+ if(state.type==='editorial'&&m.whitespaceCrime>72)cases.push('Editorial layout-nya begitu padat sampai margin minta perlindungan saksi.');
+ if(state.type==='packaging'&&m.colorDominance>75)cases.push('Shelf presence-nya kuat. Seperti orang yang datang ke pesta pakai pengeras suara.');
+ if(state.type==='digital'&&m.whitespaceCrime>70)cases.push('UI sesesak ini bikin user merasa setiap klik dikenai biaya parkir.');
+ if(state.type==='digital'&&m.contrast<32)cases.push('Accessibility melihat kontras ini lalu memilih tidak ikut rapat.');
+ if(state.type==='illustration'&&m.focalConcentration<30&&m.complexity>60)cases.push('Ilustrasinya punya banyak cerita. Sayangnya semuanya bicara di mikrofon yang sama.');
+ if(state.type==='illustration'&&m.complexity>80&&m.focalConcentration>55&&m.edgeCongestion<58)cases.push('Detailnya brutal, tapi masih punya komando. Untuk ukuran kerusuhan visual, ini cukup terorganisir.');
+ if(state.type==='illustration'&&m.edgeCongestion>68)cases.push('Ilustrasinya tidak kekurangan ide. Yang kekurangan cuma jarak aman dari tepi frame.');
+ if(state.type==='typography'&&m.complexity>72)cases.push('Hurufnya mungkin display, tapi layout-nya ikut tampil tanpa diundang.');
+ if(state.type==='typography'&&m.colorChaos<18&&m.saturation<18&&m.contrast>78)cases.push('Hitam-putih dengan contrast tinggi itu normal untuk lettering. Jadi santai, kali ini dakwaannya bukan itu. Kami cari dosa lain.');
+ if(state.type==='typography'&&m.focalConcentration<38)cases.push('Lettering-nya punya gaya, tapi pusat gravitasinya belum tanda tangan kontrak.');
+ if(state.type==='typography'&&m.whitespaceCrime>68)cases.push('Hurufnya butuh panggung. Kamu kasih dia kos-kosan petak.');
+ if(state.type==='information'&&m.localContrast<30)cases.push('Informasi ada di sana. Menemukannya sekarang jadi side quest.');
+ if(state.type==='presentation'&&m.whitespaceCrime>68)cases.push('Slide ini tidak presentasi. Ia menumpahkan seluruh notulen rapat sekaligus.');
+ if(state.type==='environmental'&&m.contrast<38)cases.push('Dari jarak nyata, signage ini berubah jadi rumor.');
+ if(!cases.length)return '';
+ return pick(cases,'combo-v2');
+}
+function overallVerdict(m){
+ let group=m.overall>78?'high':m.overall>55?'mid':'low';
+ let base=pick(verdictLib[group],'verdict');
+ const combo=comboRoast(m),seed=hashStr((state.dataUrl||'')+state.type+state.confidence);
+ if(combo) base+=' '+combo;
+ else if(seed%2===0&&typeRoasts[state.type]) base+=' '+pick(typeRoasts[state.type],'type');
+ // Confidence is a deliberate user input: always acknowledge it in the final verdict.
+ base+=' '+pick(confidenceRoasts[state.confidence]||confidenceRoasts.lumayan,'confidence-final');
+ const nm=(state.designer||'').trim();if(nm){const nameJabs=[`${nm}, kami sudah lihat semuanya. Sayangnya mata kami tidak punya tombol undo.`,`${nm}, nama sudah tercatat. Reputasi menyusul setelah revisi.`,`${nm}, ini bukan serangan personal. Datanya kebetulan ikut tidak setuju.`];if(hashStr((state.dataUrl||'')+'name-jab')%3===0)base+=' '+pick(nameJabs,'name-final')}
+ return base
+}
+function shareVerdictText(){
+ // Share card must carry the same verdict as the app. Layout fitting happens on canvas;
+ // never silently shorten the insult before rendering.
+ return String($('#verdict').textContent||'').replace(/[“”]/g,'').trim();
+}
+function renderResults(){let m=state.metrics;$('#loading').style.display='none';$('#results').style.display='block';$('#resultImg').src=state.dataUrl;$('#overall').textContent=m.overall;$('#severity').textContent=m.overall>=89?'☠️ TKP DISEGEL':m.overall>=79?'🚨 KASUS BERAT':m.overall>=56?'⚠️ PERLU PENGACARA':m.overall>=31?'🧐 MULAI MENCURIGAKAN':'😴 TERLALU AMAN UNTUK DIPIDANA';const ranked=rankedCharges(m),pc=ranked.primary,sc=ranked.secondary,mit=mitigatingFactor(m),profile=designProfile(m),dna=designDNA(m);$('#primaryCharge').innerHTML=`TERDAKWA · <strong>${esc((state.designer||'ANONIM').toUpperCase())}</strong><br>CASE TYPE · <strong>${(categories[state.type]||categories.other).label}</strong><br>DAKWAAN UTAMA · <strong>${pc.name}</strong> · PRESSURE ${pc.pressure}/100`;$('#designProfile').innerHTML=`<b>DESIGN PROFILE</b><strong>${profile.name}</strong><span>${profile.desc}</span>`;$('#caseAssessment').innerHTML=`<div><b>SECONDARY CHARGE</b><span>${sc.name} · PRESSURE ${sc.pressure}/100</span></div><div><b>MITIGATING FACTOR</b><span>${mit.name} — ${mit.text}</span></div><div><b>DESIGN DNA</b><span class="dnaTags">${dna.map(t=>`<i>${t}</i>`).join('')}</span></div>`;$('#verdict').textContent='“'+overallVerdict(m)+'”';const names={colorChaos:'COLOR CHAOS',contrast:'CONTRAST',balance:'BALANCE DEVIATION',complexity:'VISUAL COMPLEXITY',whitespaceCrime:'WHITESPACE CRIME',saturation:'SATURATION LEVEL'};const hints={colorChaos:'↑ makin tinggi = palet makin ramai',contrast:'sweet spot kira-kira 45–75',balance:'↑ makin tinggi = makin berat sebelah',complexity:'↑ makin tinggi = makin padat/detail',whitespaceCrime:'↑ makin tinggi = whitespace makin langka',saturation:'terlalu rendah/tinggi sama-sama mencurigakan'};$('#metrics').innerHTML=Object.keys(names).map(k=>`<div class="metric"><div><h3>${names[k]}</h3><div class="num">${m[k]}/100 · ${hints[k]}</div></div><div><div class="bar"><div class="fill" style="width:${m[k]}%"></div></div><p class="roast">“${contextualMetricRoast(k,m)}”</p></div></div>`).join('');
+ const mood=m.darkDominance>55?'DARK DOMINANT':m.lightDominance>65?'LIGHT DOMINANT':'MIXED VALUE';
+ const sym=m.symmetry>76?'HIGHLY SYMMETRIC':m.symmetry<38?'ASYMMETRIC':'MODERATE';
+ const focal=m.focalConcentration>70?'LOCKED':m.focalConcentration<36?'SCATTERED':'DISTRIBUTED';
+ const edge=m.edgeCongestion>65?'CONGESTED':m.edgeCongestion<30?'CLEAN':'ACTIVE';
+ const local=m.localContrast>68?'HARD':m.localContrast<28?'SOFT':'MODERATE';
+ $('#forensicGrid').innerHTML=`<div class="forensicCell"><b>VALUE MOOD</b><span>${m.brightness}</span><small>${mood}</small></div><div class="forensicCell"><b>SYMMETRY</b><span>${m.symmetry}</span><small>${sym}</small></div><div class="forensicCell"><b>FOCAL</b><span>${m.focalConcentration}</span><small>${focal}</small></div><div class="forensicCell"><b>EDGE</b><span>${m.edgeCongestion}</span><small>${edge}</small></div><div class="forensicCell"><b>LOCAL CONTRAST</b><span>${m.localContrast}</span><small>${local}</small></div>`;
+ scrollTo({top:0,behavior:'smooth'})}
+$('#appeal').onclick=()=>$('#modal').style.display='flex';$('#closeModal').onclick=()=>$('#modal').style.display='none';$('#again').onclick=()=>location.reload();
+async function ensureShareFonts(){
+  if(!document.fonts) return;
+  try{
+    await Promise.all([
+      document.fonts.load('120px "Anton"'),
+      document.fonts.load('48px "Archivo Black"'),
+      document.fonts.load('20px "IBM Plex Mono"'),
+      document.fonts.load('18px "Inter"')
+    ]);
+    await document.fonts.ready;
+  }catch(e){}
+}
+function drawDownLeftMark(ctx,cx,cy,size,ink){
+  ctx.save();
+  ctx.strokeStyle=ink;ctx.lineWidth=Math.max(10,size*.16);ctx.lineCap='square';ctx.lineJoin='miter';
+  const a=size*.28,b=size*.27;
+  ctx.beginPath();ctx.moveTo(cx+a,cy-a);ctx.lineTo(cx-b,cy+b);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx-b,cy+b);ctx.lineTo(cx-b,cy-b*.10);ctx.moveTo(cx-b,cy+b);ctx.lineTo(cx+b*.10,cy+b);ctx.stroke();
+  ctx.restore();
+}
+function shareFitText(ctx,text,maxW,start,min,family,weight='400'){
+  let size=start;
+  do{ctx.font=`${weight} ${size}px ${family}`;if(ctx.measureText(text).width<=maxW)break;size-=2}while(size>min);
+  return size;
+}
+function canvasWrapLines(ctx,text,maxW){
+  const words=String(text).trim().split(/\s+/);const lines=[];let line='';
+  for(const word of words){
+    const test=line?line+' '+word:word;
+    if(line&&ctx.measureText(test).width>maxW){lines.push(line);line=word}else line=test;
+  }
+  if(line)lines.push(line);return lines;
+}
+function fitWrappedText(ctx,text,maxW,maxH,start,min,family,weight='400',maxLines=4){
+  for(let size=start;size>=min;size-=1){
+    ctx.font=`${weight} ${size}px ${family}`;
+    const lines=canvasWrapLines(ctx,text,maxW);
+    const lineH=Math.round(size*1.08);
+    if(lines.length<=maxLines && lines.length*lineH<=maxH)return {size,lineH,lines};
+  }
+  ctx.font=`${weight} ${min}px ${family}`;
+  const lines=canvasWrapLines(ctx,text,maxW);
+  return {size:min,lineH:Math.round(min*1.05),lines};
+}
+function drawMetricNumber(ctx,val,x,y,maxX,display,mono,ink){
+  ctx.fillStyle=ink;ctx.font=`400 52px ${display}`;ctx.fillText(String(val),x,y);
+  const w=ctx.measureText(String(val)).width;
+  ctx.font=`700 15px ${mono}`;ctx.fillText('/100',Math.min(x+w+7,maxX-45),y-3);
+}
+async function exportShareCard(mode='feed'){
+ await ensureShareFonts();
+ const c=$('#shareCanvas'),x=c.getContext('2d');
+ c.width=1080;c.height=1350;
+ const W=1080,H=1350,ink='#0b0b0b',bg='#f3f0e9',hot='#ff4b23',soft='#dcd7ce',paper='#faf8f3',pad=38;
+ const display='"Anton", Impact, sans-serif',headline='"Archivo Black", Arial Black, sans-serif',mono='"IBM Plex Mono", monospace',sans='Inter, Arial, sans-serif';
+ x.clearRect(0,0,W,H);x.fillStyle=bg;x.fillRect(0,0,W,H);
+ const im=new Image();
+ im.onload=()=>{
+   const line=(x1,y1,x2,y2,w=3,color=ink)=>{x.strokeStyle=color;x.lineWidth=w;x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke()};
+   const box=(bx,by,bw,bh,fill=null,stroke=ink,lw=3)=>{if(fill){x.fillStyle=fill;x.fillRect(bx,by,bw,bh)}if(stroke){x.strokeStyle=stroke;x.lineWidth=lw;x.strokeRect(bx,by,bw,bh)}};
+   const severityShort=state.metrics.overall>=89?'TKP DISEGEL':state.metrics.overall>=79?'KASUS BERAT':state.metrics.overall>=56?'PERLU PENGACARA':state.metrics.overall>=31?'MULAI MENCURIGAKAN':'TERLALU AMAN UNTUK DIPUJI';
+   const topNote=state.metrics.overall>=89?'BARANG BUKTI BERAT.\nJANGAN SENTUH TANPA LAWYER.':state.metrics.overall>=79?'DESAIN BERBAHAYA.\nBUKA DENGAN PENGACARA.':state.metrics.overall>=56?'MASIH BISA DIREVISI.\nSECARA TEORI.':state.metrics.overall>=31?'KELIHATAN AMAN.\nKAMI TETAP CURIGA.':'AMAN SECARA HUKUM.\nHAMBAR SECARA KREATIF.';
+
+   // ===== HEADER — editorial brutalist, but not a clone =====
+   x.fillStyle=ink;
+   x.font=`400 118px ${display}`;
+   x.fillText('ROAST',48,142);
+   x.fillText('MY DESIGN',48,262);
+   line(690,48,690,276,5);
+   x.font=`700 27px ${mono}`;x.fillText('VISUAL CRIME',724,100);x.fillText(`REPORT / ${reportId()}`,724,135);
+   x.font=`600 11px ${mono}`;x.fillStyle='#6d6962';x.fillText(`CASE / ${(categories[state.type]||categories.other).label}`,724,158);x.fillText(`TERDAKWA / ${esc((state.designer||'ANONIM').toUpperCase())}`,724,176);
+   line(724,194,920,194,5);
+   x.fillStyle=ink;x.font=`600 17px ${mono}`;topNote.split('\n').forEach((t,i)=>x.fillText(t,724,232+i*26));
+   box(966,48,78,78,hot,null,0);drawDownLeftMark(x,1005,87,54,ink);
+   for(let i=0;i<4;i++){x.save();x.translate(930+i*31,187);x.rotate(-.78);x.fillStyle=ink;x.fillRect(0,0,13,55);x.restore()}
+
+   // ===== SCORE BLOCK =====
+   const sx=38,sy=292,sw=530,sh=312;
+   box(sx,sy,sw,sh,hot,null,0);
+   x.fillStyle=ink;x.font=`700 22px ${mono}`;x.fillText('DESIGN CRIME SCORE',sx+26,sy+40);
+   const score=String(state.metrics.overall);
+   x.font=`400 188px ${display}`;x.fillText(score,sx+24,sy+231);
+   const scoreW=x.measureText(score).width;
+   x.font=`400 60px ${display}`;x.fillText('/100',Math.min(sx+24+scoreW+24,sx+sw-158),sy+214);
+   line(sx+28,sy+252,sx+sw-28,sy+252,3);
+   x.font=`700 18px ${mono}`;x.fillText('↑  makin tinggi = makin bermasalah',sx+30,sy+286);
+
+   // ===== EVIDENCE =====
+   const ex=580,ey=292,ew=464,eh=512;
+   box(ex,ey,ew,eh,paper,ink,4);
+   drawContain(x,im,ex+10,ey+10,ew-20,eh-20,paper);
+   x.fillStyle=ink;x.fillRect(ex+20,ey+18,166,42);x.fillStyle='#fff';x.font=`700 18px ${mono}`;x.fillText('BARANG BUKTI',ex+34,ey+46);
+   // crop/registration marks instead of decorative random strokes
+   x.strokeStyle=hot;x.lineWidth=8;
+   [[ex+92,ey+122,1],[ex+404,ey+298,-1]].forEach(([ax,ay,dir])=>{x.beginPath();x.moveTo(ax,ay);x.lineTo(ax+dir*28,ay+28);x.stroke();x.beginPath();x.moveTo(ax+dir*12,ay-18);x.lineTo(ax+dir*18,ay+10);x.stroke()});
+
+   // ===== SEVERITY =====
+   const sevY=616,sevH=188;box(sx,sevY,sw,sevH,null,ink,3);
+   x.fillStyle=ink;
+   let sevSize=shareFitText(x,severityShort,sw-44,71,39,display,'400');
+   x.font=`400 ${sevSize}px ${display}`;
+   wrapCanvas(x,severityShort,sx+22,sevY+70,sw-44,Math.round(sevSize*.94),2);
+   const ranked=rankedCharges(state.metrics),pc=ranked.primary,sc=ranked.secondary;
+   line(sx+22,sevY+132,sx+sw-22,sevY+132,2);
+   const profile=designProfile(state.metrics);
+   x.fillStyle='#6d6962';x.font=`700 10px ${mono}`;x.fillText('PRIMARY CHARGE',sx+22,sevY+153);
+   x.fillStyle=ink;x.font=`700 12px ${mono}`;x.fillText(`${pc.short} / ${pc.pressure}`,sx+146,sevY+153);
+   x.fillStyle='#6d6962';x.font=`700 10px ${mono}`;x.fillText('SECONDARY',sx+22,sevY+174);
+   x.fillStyle=ink;x.font=`700 11px ${mono}`;x.fillText(`${sc.short} / ${sc.pressure}`,sx+105,sevY+174);
+   x.fillStyle='#6d6962';x.font=`700 9px ${mono}`;x.textAlign='right';x.fillText(profile.name.replace('™',''),sx+sw-22,sevY+174);x.textAlign='left';
+
+   // ===== VERDICT =====
+   const vy=826;
+   // Label width follows the actual font metrics so it can never clip.
+   x.font=`700 20px ${mono}`;
+   const verdictLabel='PUTUSAN',labelPad=23,labelW=Math.ceil(x.measureText(verdictLabel).width)+labelPad*2;
+   x.fillStyle=hot;x.fillRect(38,vy-19,labelW,43);x.fillStyle=ink;x.fillText(verdictLabel,38+labelPad,vy+10);
+   line(38+labelW+16,vy+3,1044,vy+3,3);
+   const verdict=shareVerdictText();
+   // Fit the complete verdict inside its editorial zone. No ellipsis, no amputated insult.
+   const verdictY=vy+58, verdictMaxW=1006, verdictMaxH=140;
+   // Verdict is deliberately calmer than the display blocks: the insult should read, not shout over the layout.
+   const fitted=fitWrappedText(x,verdict,verdictMaxW,verdictMaxH,30,16,sans,'600',6);
+   x.fillStyle=ink;x.font=`600 ${fitted.size}px ${sans}`;
+   let verdictCursor=verdictY;
+   for(const ln of fitted.lines){x.fillText(ln,38,verdictCursor);verdictCursor+=fitted.lineH}
+   const verdictBottom=verdictCursor;
+
+   // ===== METRICS — all six charges, compact 3 × 2 =====
+   const metricTop=1036,gapX=10,gapY=8,cols=3,mw=(1006-gapX*2)/3,mh=80;
+   const metricKeys=['colorChaos','contrast','balance','complexity','whitespaceCrime','saturation'];
+   const metricNames={colorChaos:'COLOR CHAOS',contrast:'CONTRAST',balance:'BALANCE DEV.',complexity:'VISUAL COMPLEXITY',whitespaceCrime:'WHITESPACE',saturation:'SATURATION'};
+   metricKeys.forEach((k,i)=>{
+     const col=i%cols,row=Math.floor(i/cols),bx=38+col*(mw+gapX),by=metricTop+row*(mh+gapY),val=state.metrics[k];
+     box(bx,by,mw,mh,null,ink,2);
+     x.fillStyle=ink;x.font=`700 11px ${mono}`;x.fillText(metricNames[k],bx+15,by+20);
+     x.font=`400 33px ${display}`;x.fillText(String(val),bx+15,by+53);
+     const vw=x.measureText(String(val)).width;x.font=`700 10px ${mono}`;x.fillText('/100',bx+15+vw+6,by+49);
+     x.fillStyle=soft;x.fillRect(bx+15,by+63,mw-30,7);x.fillStyle=hot;x.fillRect(bx+15,by+63,(mw-30)*(val/100),7);
+     x.fillStyle='#77736b';x.font=`600 8px ${mono}`;x.fillText(`CHG-${String(i+1).padStart(2,'0')}`,bx+mw-53,by+20);
+   });
+
+   // ===== FOOTER =====
+   const footY=1226;
+   x.fillStyle=hot;x.fillRect(38,footY,660,76);
+   x.fillStyle=ink;x.font=`400 34px ${display}`;x.fillText('DIADILI. TIDAK DIHIBUR.',60,footY+50);
+   line(724,footY+7,724,footY+69,3);
+   x.font=`600 13px ${mono}`;x.fillText('Diproses 100% lokal di browser',752,footY+24);x.fillText('no upload • no mercy',752,footY+45);
+   x.fillStyle='#706c64';x.font=`600 10px ${mono}`;x.fillText('ROAST MY DESIGN — PROTOTYPE 1.5.1',752,footY+64);
+   // signature rule
+   line(1010,footY+64,1044,footY+64,2);
+
+   c.toBlob(async b=>{if(!b)return;if(mode==='story'){await exportStoryFromFeed(c)}else{await shareOrDownload(b,`roast-my-design-${reportId()}-${state.metrics.overall}.png`,shareCaption())}},'image/png');
+ };
+ im.src=state.dataUrl;
+};
+
+function reportId(){return String((hashStr((state.dataUrl||'').slice(-2000)+state.type+(state.designer||''))%999)+1).padStart(3,'0')}
+function severityText(score){return score>=89?'TKP DISEGEL':score>=79?'KASUS BERAT':score>=56?'PERLU PENGACARA':score>=31?'MULAI MENCURIGAKAN':'TERLALU AMAN UNTUK DIPUJI'}
+function shareCaption(){
+ const ranked=rankedCharges(state.metrics),profile=designProfile(state.metrics),name=(state.designer||'ANONIM').trim()||'ANONIM';
+ const line=`${name} dijatuhi DESIGN CRIME SCORE ${state.metrics.overall}/100 — ${severityText(state.metrics.overall)}.`;
+ const detail=`Design Profile: ${profile.name} · Primary charge: ${ranked.primary.name}.`;
+ const verdict=shareVerdictText().replace(/\s+/g,' ').trim();
+ return `ROAST MY DESIGN 🔥\n${line}\n${detail}\n“${verdict}”\n\n#RoastMyDesign #DesignCrime`;
+}
+let toastTimer;
+function showToast(msg){const t=$('#toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200)}
+async function copyCaption(){const text=shareCaption();try{await navigator.clipboard.writeText(text);showToast('Caption disalin. Harga diri tidak ikut tersalin.')}catch(e){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('Caption disalin. Silakan sebarkan barang bukti.')}}
+function downloadBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+async function shareOrDownload(blob,filename,caption){
+ // Predictable export: these buttons always download a PNG.
+ // Native OS share sheets are intentionally not invoked here; COPY CAPTION remains separate.
+ downloadBlob(blob,filename);
+ showToast(filename.includes('story-')?'Story 9:16 diunduh. Siap bikin orang lain ikut sakit hati.':'Share card 4:5 diunduh. Barang bukti aman di perangkatmu.');
+}
+async function exportStoryFromFeed(feedCanvas){
+ const c=$('#storyCanvas'),x=c.getContext('2d');c.width=1080;c.height=1920;
+ const ink='#0b0b0b',bg='#f3f0e9',hot='#ff4b23',mono='"IBM Plex Mono", monospace',display='"Anton", Impact, sans-serif';
+ x.fillStyle=bg;x.fillRect(0,0,c.width,c.height);
+ // Top story masthead
+ x.fillStyle=ink;x.font=`400 88px ${display}`;x.fillText('ROAST MY DESIGN',56,126);
+ x.font=`700 20px ${mono}`;x.fillText(`VISUAL CRIME STORY / ${reportId()}`,58,172);
+ x.fillStyle=hot;x.fillRect(850,58,170,114);x.fillStyle=ink;x.font=`400 68px ${display}`;x.textAlign='center';x.fillText(String(state.metrics.overall),935,143);x.textAlign='left';
+ x.font=`700 15px ${mono}`;x.fillText('/100',979,142);
+ // Feed report as the evidence dossier, intentionally framed.
+ const margin=58,cardW=964,cardH=Math.round(cardW*1.25),cardY=226;
+ x.fillStyle=ink;x.fillRect(margin-5,cardY-5,cardW+10,cardH+10);x.drawImage(feedCanvas,margin,cardY,cardW,cardH);
+ // Story footer: profile and CTA are legible even when UI overlays crop edges.
+ const profile=designProfile(state.metrics),ranked=rankedCharges(state.metrics);
+ x.fillStyle=hot;x.fillRect(58,cardY+cardH+42,964,180);
+ x.fillStyle=ink;x.font=`700 17px ${mono}`;x.fillText('DESIGN PROFILE',84,cardY+cardH+80);
+ x.font=`400 48px ${display}`;const pName=profile.name.replace('™','');let fs=48;while(x.measureText(pName).width>900&&fs>28){fs-=2;x.font=`400 ${fs}px ${display}`}x.fillText(pName,84,cardY+cardH+132);
+ x.font=`700 14px ${mono}`;x.fillText(`PRIMARY CHARGE / ${ranked.primary.short} / ${ranked.primary.pressure}`,84,cardY+cardH+168);
+ x.fillStyle=ink;x.font=`700 16px ${mono}`;x.fillText('DIADILI. TIDAK DIHIBUR.  •  #ROASTMYDESIGN',58,1866);
+ await new Promise(resolve=>c.toBlob(async blob=>{if(blob)await shareOrDownload(blob,`roast-my-design-story-${reportId()}-${state.metrics.overall}.png`,shareCaption());resolve()},'image/png'));
+}
+$('#share').onclick=()=>exportShareCard('feed');
+$('#storyShare').onclick=()=>exportShareCard('story');
+$('#copyCaption').onclick=copyCaption;
+
+function drawCover(ctx,img,x,y,w,h){const s=Math.max(w/img.width,h/img.height),sw=w/s,sh=h/s,sx=(img.width-sw)/2,sy=(img.height-sh)/2;ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);ctx.restore()}
+function drawContain(ctx,img,x,y,w,h,bg='#fff'){ctx.fillStyle=bg;ctx.fillRect(x,y,w,h);const s=Math.min(w/img.width,h/img.height),dw=img.width*s,dh=img.height*s,dx=x+(w-dw)/2,dy=y+(h-dh)/2;ctx.drawImage(img,dx,dy,dw,dh)}
+function wrapCanvas(ctx,text,x,y,maxW,lineH,maxLines=99){const words=text.split(/\s+/);let line='',count=0;for(let i=0;i<words.length;i++){const t=line?line+' '+words[i]:words[i];if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line,x,y);y+=lineH;count++;line=words[i];if(count>=maxLines-1){let rest=[line,...words.slice(i+1)].join(' ');while(ctx.measureText(rest+'…').width>maxW&&rest.length>1)rest=rest.slice(0,-1);ctx.fillText(rest+'…',x,y);return y+lineH}}else line=t}if(line){ctx.fillText(line,x,y);y+=lineH}return y}
+function wrap2(ctx,text,x,y,maxW,lineH,maxLines=99){const words=text.split(/\s+/);let line='',lines=0;for(let i=0;i<words.length;i++){const test=line?line+' '+words[i]:words[i];if(ctx.measureText(test).width>maxW&&line){ctx.fillText(line,x,y);y+=lineH;lines++;line=words[i];if(lines>=maxLines-1){let rest=[line,...words.slice(i+1)].join(' ');while(ctx.measureText(rest+'…').width>maxW&&rest.length>1)rest=rest.slice(0,-1);ctx.fillText(rest+'…',x,y);return y+lineH}}else line=test}if(line){ctx.fillText(line,x,y);y+=lineH}return y}
+function wrap(ctx,text,x,y,maxW,lineH){let words=text.split(' '),line='';for(const w of words){let t=line+w+' ';if(ctx.measureText(t).width>maxW){ctx.fillText(line,x,y);line=w+' ';y+=lineH}else line=t}ctx.fillText(line,x,y)}
+</script>
+</body></html>
