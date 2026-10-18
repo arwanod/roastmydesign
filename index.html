@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Roast My Design — Prototype v1.5.2</title>
+<title>Roast My Design — Prototype v1.7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600;700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -58,11 +58,17 @@ button,.chip,.cta,.secondary{color:var(--ink);-webkit-text-fill-color:var(--ink)
 .cta,.badge{color:var(--ink);-webkit-text-fill-color:var(--ink)}
 @media(max-width:780px){.actions .cta,.actions .secondary{font-size:12px;letter-spacing:-.01em}.confidenceReaction{font-size:11px}}
 
+
+/* v1.7 — internal debug / QA mode */
+.debugPanel{display:none;margin:22px 0;border:2px solid var(--line);background:#111;color:#f7f4ed;padding:16px;box-shadow:6px 6px 0 var(--hot)}
+.debugPanel.show{display:block}.debugPanel h3{margin:0 0 10px;font-family:var(--headline);font-size:18px}.debugPanel p,.debugPanel a{font:600 11px/1.5 var(--mono)}
+.debugPanel a{color:#fff;text-decoration:underline}.debugGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.debugCard{border:1px solid #777;padding:10px;background:#181818;min-width:0}.debugCard b{display:block;color:var(--hot);font:700 10px var(--mono);margin-bottom:6px;letter-spacing:.06em}.debugCard pre{margin:0;white-space:pre-wrap;word-break:break-word;font:500 10px/1.45 var(--mono);color:#f7f4ed}.debugPicks{margin-top:10px}.debugPicks table{width:100%;border-collapse:collapse;font:500 10px/1.4 var(--mono)}.debugPicks th,.debugPicks td{border:1px solid #555;padding:6px;text-align:left;vertical-align:top}.debugPicks th{color:var(--hot)}
+@media(max-width:780px){.debugGrid{grid-template-columns:1fr}.debugPicks{overflow:auto}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header class="top"><div class="brand">ROAST MY DESIGN 🔥</div><div class="badge">PROTOTYPE 1.5.2</div></header>
+<header class="top"><div class="brand">ROAST MY DESIGN 🔥</div><div class="badge">PROTOTYPE 1.7</div></header>
 <section id="main" class="hero">
 <div><div class="kicker">Pengadilan desain berbasis browser</div><h1>Upload.<br><span>Diadili.</span><br>Menyesal.</h1><p class="lead">Masukkan desainmu. Kami ukur color, contrast, balance, visual complexity, whitespace dan saturation-nya—lalu kami hina hasilnya tanpa perlu mengirim file ke server.</p><p class="privacy">🔒 Gambar diproses lokal di browser. Tidak disimpan. Tidak ada akun. Tidak ada AI API.</p></div>
 <div class="card">
@@ -84,14 +90,17 @@ button,.chip,.cta,.secondary{color:var(--ink);-webkit-text-fill-color:var(--ink)
 <div class="label">Seberapa pede?</div><div class="chips" data-group="confidence"><button class="chip" data-v="bangga">Bangga dong</button><button class="chip active" data-v="lumayan">Lumayan lah</button><button class="chip" data-v="ragu">Agak ragu</button><button class="chip" data-v="klien">Klien yang nyuruh</button></div><div class="confidenceReaction" id="confidenceReaction" aria-live="polite"></div><button class="cta" id="judge">🔥 HAKIMI SAYA</button></div>
 </div></section>
 <section id="loading" class="loadingBox"><div class="loadingTitle">Menganalisis barang bukti…</div><div class="steps" id="steps"></div></section>
-<section id="results" class="results"><div class="kicker">Laporan forensik visual</div><div class="resultGrid"><div class="evidence"><img id="resultImg" alt="Barang bukti"></div><div class="scorebox"><div class="scorelabel">DESIGN CRIME SCORE</div><div class="score"><span id="overall">00</span><small>/100</small></div><div class="severity" id="severity">KASUS BERAT</div><div class="primaryCharge" id="primaryCharge"></div><div class="designProfile" id="designProfile"></div><div class="caseAssessment" id="caseAssessment"></div><div class="scoreHelp"><strong>↑ SEMAKIN TINGGI = SEMAKIN BERMASALAH.</strong><br>Ini crime score, bukan nilai kualitas. 100 bukan A+. Itu surat panggilan.</div><p class="verdict" id="verdict"></p></div></div><div class="ratingGuide"><h3>CARA BACA SKOR</h3><p>Overall score bersifat linear: makin besar, makin berat dakwaannya. Metric di bawah menunjukkan intensitas karakter visual; khusus <b>CONTRAST</b> dan <b>SATURATION LEVEL</b>, terlalu rendah maupun terlalu tinggi sama-sama bisa kena roast.</p><div class="ratingScale"><span>0–30<br>AMAN / MEMBOSANKAN</span><span>31–55<br>MULAI MENCURIGAKAN</span><span>56–78<br>PERLU PENGACARA</span><span>79–88<br>KASUS BERAT</span><span>89–100<br>TKP DISEGEL</span></div></div><details class="forensics" id="forensics"><summary class="forensicsHead"><strong>DATA FORENSIK ENGINE</strong><span>buka kalau mau mengintip cara hakim bekerja</span></summary><div class="forensicGrid" id="forensicGrid"></div></details><div class="metrics" id="metrics"></div><div class="actions"><button class="cta" style="width:auto;margin:0" id="share">DOWNLOAD SHARE CARD</button><div class="exportTools"><button class="secondary" id="storyShare">DOWNLOAD STORY 9:16</button><button class="secondary" id="copyCaption">COPY CAPTION</button></div><button class="secondary" id="again">ROAST LAGI</button><button class="appeal" id="appeal">Saya tidak terima hasilnya</button></div></section>
+<section id="results" class="results"><div class="kicker">Laporan forensik visual</div><div class="resultGrid"><div class="evidence"><img id="resultImg" alt="Barang bukti"></div><div class="scorebox"><div class="scorelabel">DESIGN CRIME SCORE</div><div class="score"><span id="overall">00</span><small>/100</small></div><div class="severity" id="severity">KASUS BERAT</div><div class="primaryCharge" id="primaryCharge"></div><div class="designProfile" id="designProfile"></div><div class="caseAssessment" id="caseAssessment"></div><div class="scoreHelp"><strong>↑ SEMAKIN TINGGI = SEMAKIN BERMASALAH.</strong><br>Ini crime score, bukan nilai kualitas. 100 bukan A+. Itu surat panggilan.</div><p class="verdict" id="verdict"></p></div></div><div class="ratingGuide"><h3>CARA BACA SKOR</h3><p>Overall score bersifat linear: makin besar, makin berat dakwaannya. Metric di bawah menunjukkan intensitas karakter visual; khusus <b>CONTRAST</b> dan <b>SATURATION LEVEL</b>, terlalu rendah maupun terlalu tinggi sama-sama bisa kena roast.</p><div class="ratingScale"><span>0–30<br>AMAN / MEMBOSANKAN</span><span>31–55<br>MULAI MENCURIGAKAN</span><span>56–78<br>PERLU PENGACARA</span><span>79–88<br>KASUS BERAT</span><span>89–100<br>TKP DISEGEL</span></div></div><details class="forensics" id="forensics"><summary class="forensicsHead"><strong>DATA FORENSIK ENGINE</strong><span>buka kalau mau mengintip cara hakim bekerja</span></summary><div class="forensicGrid" id="forensicGrid"></div></details><section class="debugPanel" id="debugPanel"><h3>DEBUG / QA MODE</h3><p>Mode internal. Buka URL dengan <b>?debug=1</b>. <a href="./editor.html">BUKA ROAST LIBRARY EDITOR →</a></p><div class="debugGrid" id="debugGrid"></div><div class="debugPicks" id="debugPicks"></div></section><div class="metrics" id="metrics"></div><div class="actions"><button class="cta" style="width:auto;margin:0" id="share">DOWNLOAD SHARE CARD</button><div class="exportTools"><button class="secondary" id="storyShare">DOWNLOAD STORY 9:16</button><button class="secondary" id="copyCaption">COPY CAPTION</button></div><button class="secondary" id="again">ROAST LAGI</button><button class="appeal" id="appeal">Saya tidak terima hasilnya</button></div></section>
 <footer>Roast My Design — eksperimen receh untuk desainer yang terlalu berani mengunggah karyanya.</footer>
 </div>
 <div class="modal" id="modal"><div class="modalIn"><div class="kicker">Banding</div><h2>Keberatan ditolak.</h2><p>Desain tidak otomatis membaik hanya karena desainernya tersinggung. Kami sudah cek. Ego juga bukan metric desain.</p><button class="cta" id="closeModal">YA UDAH 😭</button></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div><canvas id="work" hidden></canvas><canvas id="shareCanvas" width="1080" height="1350" hidden></canvas><canvas id="storyCanvas" width="1080" height="1920" hidden></canvas>
+<script src="./roast-library.js"></script>
 <script>
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 let state={type:'identity',confidence:'lumayan',designer:'',dataUrl:null,metrics:null};
+const DEBUG_MODE=new URLSearchParams(location.search).get('debug')==='1';
+let debugPickLog=[];
 const clamp=(v,min=0,max=100)=>Math.max(min,Math.min(max,v));
 const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const drop=$('#drop'),file=$('#file'),preview=$('#preview');
@@ -130,13 +139,22 @@ const categories={
  environmental:{label:'ENVIRONMENTAL / SPATIAL',examples:'Signage • Wayfinding • Exhibition • Event Graphic • Retail Graphic • Interior Branding'},
  other:{label:'LAINNYA / ENTAHLAH',examples:'Kalau kamu sendiri bingung ini kategori apa, kami tetap bisa menemukan masalahnya.'}
 };
+// ============================================================
+// COPY LAYER
+// Semua kalimat roast editable ada di ./roast-library.js
+// Judgment engine di file HTML ini tidak perlu disentuh untuk menambah hinaan.
+// ============================================================
+const COPY=window.ROAST_LIBRARY||{};
+if(!window.ROAST_LIBRARY)console.error('roast-library.js tidak ditemukan. Pastikan file berada satu folder dengan HTML.');
+const confidenceImmediate=COPY.confidenceImmediate||{};
+const roastLib=COPY.metrics||{};
+const verdictLib=COPY.verdicts||{low:['Berkas roasting belum dimuat.'],mid:['Berkas roasting belum dimuat.'],high:['Berkas roasting belum dimuat.']};
+const typeRoasts=COPY.categories||{};
+const confidenceRoasts=COPY.confidenceFinal||{};
+const nameJabsLibrary=COPY.nameJabs||[];
+
 function updateCategoryInfo(){const c=categories[state.type]||categories.other;const el=$('#categoryInfo');if(el)el.innerHTML=`<b>${c.label}</b><span>${c.examples}</span>`}
-const confidenceImmediate={
- bangga:['Oh, bangga? Bagus. Bukti tambahan sudah kami catat.','Pede sekali. Kami suka terdakwa yang mempermudah penyidikan.','Kepercayaan diri diterima. Kompetensi masih diperiksa.','Bangga boleh. Nanti data yang memutuskan apakah itu keberanian atau delusi.'],
- lumayan:['“Lumayan” — bunker favorit desainer menjelang deadline.','Lumayan itu bukan pujian. Itu cara sopan untuk berhenti melihat terlalu lama.','Jawaban aman. Biasanya desainnya juga bersembunyi di zona aman.','“Lumayan lah.” Kalimat terakhir sebelum file FINAL_v7_FIX_BENERAN.ai dibuat.'],
- ragu:['Nah. Insting bertahan hidupmu ternyata masih berfungsi.','Keraguan dicatat. Akhirnya ada satu keputusan yang terasa sehat.','Bagus. Inner critic-mu belum sepenuhnya mati.','Agak ragu? Santai. Sebentar lagi kami bantu jadi sangat ragu.'],
- klien:['Alibi dicatat. Belum tentu dipercaya.','Klien yang nyuruh. Tentu. Creative Cloud mendengar alasan ini tiap hari.','Baik. Nama klien kami tulis di berkas. Namamu tetap belum dicoret.','Perintah klien bukan surat bebas dari kejahatan visual.']
-};
+
 function showConfidenceReaction(v){const el=$('#confidenceReaction');if(!el)return;el.textContent=pick(confidenceImmediate[v]||[], 'immediate-'+v);el.classList.add('show')}
 $$('.chips').forEach(g=>g.onclick=e=>{if(!e.target.classList.contains('chip'))return;g.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));e.target.classList.add('active');state[g.dataset.group]=e.target.dataset.v;if(g.dataset.group==='confidence')showConfidenceReaction(state.confidence);if(g.dataset.group==='type')updateCategoryInfo()});updateCategoryInfo();$('#designerName').addEventListener('input',e=>state.designer=e.target.value.trim().slice(0,28));
 $('#judge').onclick=async()=>{if(!state.dataUrl)return;$('#main').style.display='none';$('#loading').style.display='block';const lines=['✓ Menghitung kerusuhan warna','✓ Memeriksa apakah contrast masih hidup','✓ Mencari pihak yang kerja rodi di layout','✓ Mengukur visual complexity','✓ Mencari whitespace yang kabur','✓ Mengukur tekanan saturation','✓ Membandingkan symmetry kiri-kanan','✓ Mencari focal point yang kabur','✓ Memeriksa edge congestion','✓ Membaca mood terang/gelap','✓ Menyiapkan dakwaan'];$('#steps').innerHTML='';for(const l of lines){await wait(250);$('#steps').innerHTML+=`<div class="on">${l}</div>`}state.metrics=analyze(preview);await wait(350);renderResults()};
@@ -208,94 +226,40 @@ function analyze(img){
  const adj={identity:1,marketing:0,social:1,editorial:0,packaging:1,digital:1,illustration:0,typography:1,information:1,presentation:1,environmental:1,other:3}[state.type]||0;overall=clamp(overall+adj+hiddenPenalty);
  return {...partial,overall}
 }
-const roastLib={
-colorChaos:[
- {max:22,lines:['Paletnya terlalu sopan. Kayak desainer magang yang takut buka color picker.','Warna sedikit sekali. Printer kantor bahkan tidak merasa tertantang.','Ini color palette atau bukti kamu sudah menyerah sebelum mulai?','Monokrom boleh. Tapi ini kelihatannya lebih seperti kehabisan keputusan.','Warnanya aman sekali sampai risiko kreatif minta pindah divisi.','Palet ini begitu takut salah sampai akhirnya tidak berani punya pendapat.','Color decision-nya seperti rapat komite: semua setuju, tidak ada hasil.','Kalau warna ini punya kepribadian, statusnya masih draft.']},
- {max:45,lines:['Paletnya masih waras. Sayang personality-nya ikut cuti.','Warna-warnanya akur, mungkin karena semuanya sepakat untuk tidak menonjol.','Tidak jelek. Cuma punya energi template presentasi internal.','Color palette ini punya denyut nadi, tapi lemah.','Aman, bersih, dan hampir tidak meninggalkan kesan apa pun. Prestasi juga.','Warna-warnanya sopan sekali. Terlalu sopan. Sampai brand recall pun sungkan masuk.','Paletnya rapi, tapi auranya seperti template “minimal modern” hasil pencarian pertama.','Tidak berisik, tidak salah, tidak menarik. Triple kill.']},
- {max:70,lines:['Warnanya mulai ribut. Belum tawuran, tapi satpam sudah dipanggil.','Beberapa warna kelihatannya baru kenal lima menit lalu lalu dipaksa satu frame.','Paletnya punya chemistry. Sayangnya chemistry praktikum gagal.','Ada arah warna. Arahnya ke mana, itu perkara lain.','Warnanya cukup ramai untuk bikin brand guideline pura-pura tidak kenal.','Color harmony-nya seperti band yang baru ketemu di parkiran sebelum manggung.','Ada warna utama, warna pendukung, dan beberapa warna yang tampaknya nyasar.','Palette ini bukan eklektik. Ini grup WA tanpa admin.']},
- {max:101,lines:['Semua warna diundang. Tidak satu pun disuruh pulang.','RGB melihat ini lalu mengajukan cuti panjang.','Color palette-mu seperti grup keluarga: terlalu banyak suara dan tidak ada moderator.','Saturasinya sudah bukan tinggi. Ini keadaan darurat nasional.','Kalau tujuanmu membuat mata pengguna menyerah, selamat. Objective tercapai.','Warna-warna ini tidak harmonis. Mereka cuma kebetulan terjebak dalam file yang sama.','Ini bukan color system. Ini kerusuhan visual dengan izin edar.','Color picker-mu sepertinya punya tombol “pilih semua”.','Pantone tidak bertanggung jawab atas kejadian ini.','Setiap warna ingin jadi protagonis. Hasilnya sinetron ensemble tanpa sutradara.','Kalau pelangi lihat ini, dia akan minta namanya tidak dicatut.']}
-],
-contrast:[
- {max:22,lines:['Contrast-nya selembut janji revisi terakhir. Tidak ada yang benar-benar terlihat.','Heading dan background sedang LDR walau tinggal serumah.','Mata perlu surat tugas khusus untuk menemukan focal point.','Kontrasnya hilang. Terakhir terlihat sebelum kamu menurunkan opacity semuanya.','Ini desain atau tes mata terselubung?','Hierarki visualnya seperti rapat tanpa pimpinan: semua bicara, tidak ada yang didengar.','Contrast segini membuat accessibility checker ikut menghela napas.','Teksnya ada. Terbaca? Itu urusan iman.','Kalau user harus menyipitkan mata, itu bukan engagement.']},
- {max:45,lines:['Contrast ada, tapi cuma hadir secara administratif.','Lumayan terbaca. Tidak berarti layak dikenang.','Focal point muncul malu-malu seperti tidak yakin dibayar lembur.','Kontrasnya setengah hati. Sama seperti keputusan font kedua itu.','Masih bisa dibaca, kalau pengguna punya waktu dan niat baik.','Kontrasnya hadir, tapi aura “nanti aja dibenerin” masih kental.','Readable, tapi seperti keputusan yang diambil lima menit sebelum export.','Focal point-nya ada. Cuma malu mengaku.']},
- {max:72,lines:['Contrast cukup sehat. Sayang desain tidak otomatis ikut sehat.','Ada hierarki. Akhirnya seseorang mengambil tanggung jawab.','Kontrasnya bekerja. Jangan senang dulu, departemen lain masih diperiksa.','Bagian ini lolos. Kami juga kecewa tidak bisa menghina lebih banyak.','Readable. Revolutionary? Jangan halu.','Contrast-nya benar. Selamat atas keberhasilan melewati standar paling dasar.','Bagian ini bekerja. Mohon jangan jadikan itu materi keynote.','Akhirnya ada yang menjalankan jobdesk.']},
- {max:101,lines:['Contrast-nya teriak begitu keras sampai hierarchy visual ikut minggir.','Hitam-putihnya seperti sedang berantem soal warisan.','Focal point-nya tidak mengundang perhatian. Dia menyandera perhatian.','Kontras setinggi ini cocok untuk poster konser, bukan untuk semua elemen sekaligus, Ferguso.','Mata tidak diarahkan. Mata ditodong.','Ini hierarchy visual versi debt collector. Semua harus lihat sekarang juga.','Contrast-nya bukan mengarahkan mata, tapi menarik kerah baju user.','Semua elemen pakai toa. Tidak ada yang pakai otak.','Visual priority-mu seperti rebutan mic karaoke.']}
-],
-balance:[
- {max:18,lines:['Layout terlalu seimbang. Sampai keberaniannya ikut rata tengah.','Simetris, rapi, aman. Personality ditemukan dalam kondisi mengenaskan.','Balance sempurna. Risiko kreatif: nol koma sekian.','Semua tertata baik. Seperti brosur bank sebelum jam makan siang.','Layout-nya disiplin. Sayangnya karisma tidak termasuk SOP.','Grid-nya patuh. Imajinasi tampaknya sedang WFH.','Komposisinya begitu aman sampai asuransi pun bosan menanggungnya.','Balanced sekali. Nyaris seperti kamu takut satu pixel keluar barisan.']},
- {max:42,lines:['Balance masih aman, walau ada elemen yang mulai pura-pura sibuk.','Distribusi visual cukup masuk akal. Sebuah pencapaian dasar yang mengejutkan.','Tidak timpang, cuma agak seperti layout yang takut salah.','Kiri-kanan masih komunikasi. Belum saling blokir.','Balance-nya oke. Jangan jadikan ini alasan untuk pede berlebihan.','Visual weight-nya lumayan sehat. Sayang keputusan lain belum tentu.','Tidak berat sebelah. Cuma belum punya alasan kuat untuk diingat.','Komposisinya tidak jatuh. Itu saja dulu prestasinya.']},
- {max:68,lines:['Satu sisi mulai kerja lembur, sisi lain sibuk terlihat cantik.','Visual weight-nya seperti kerja kelompok: dua orang kerja, tiga orang titip nama.','Komposisinya mulai miring secara emosional.','Ada sisi yang jelas-jelas menjadi tulang punggung keluarga ini.','Alignment mungkin masih hidup, tapi sudah tidak mau diwawancarai.','Satu sisi mulai menanggung cicilan layout sendirian.','Visual balance-nya seperti meja berkaki tiga: berdiri, tapi bikin cemas.','Komposisi ini kelihatan sedang menunggu satu elemen datang menyelamatkan keadaan.']},
- {max:101,lines:['Sebelah layout kerja rodi. Sebelah lainnya cuma numpang nama.','Komposisi ini berat sebelah sampai butuh pengacara perceraian.','Visual weight-nya seperti membawa galon pakai satu tangan.','Alignment ditemukan pingsan di luar artboard.','Ini bukan asymmetry yang berani. Ini furnitur geser sendiri saat gempa.','Satu sisi desain sudah resign secara mental.','Kalau keseimbangan adalah tujuan, kamu menembaknya dari jarak dekat.','Layout ini berat sebelah sampai gravitasi ikut punya opini.','Sisi kosongnya healing, sisi padatnya kerja rodi.','Ini bukan dynamic composition. Ini pembagian warisan yang gagal mediasi.']}
-],
-complexity:[
- {max:18,lines:['Minimalis atau belum selesai? Tim forensik belum sepakat.','Elemen sedikit sekali sampai artboard terdengar bergema.','Desainnya bersih. Sangat bersih. Mencurigakan bersih.','Ini minimalism atau kamu lupa mengaktifkan tiga layer?','Visual complexity rendah. Ambisinya ikut tersangka.','Less is more. Ini sudah mendekati less is missing.','Minimalism bukan alasan untuk meninggalkan artboard sendirian di rumah.','Ruang kosongnya punya lebih banyak screen time daripada idenya.','Desain ini sangat sunyi sampai konsepnya terdengar batuk.']},
- {max:40,lines:['Cukup sederhana. Tidak bikin pusing, juga belum tentu bikin ingat.','Visualnya tenang. Mungkin terlalu tenang untuk sesuatu yang ingin dilihat orang.','Masih punya napas. Bagus. Jangan langsung merasa jadi Dieter Rams.','Kompleksitasnya terkendali. Ego desainer mohon ikut dikendalikan.','Rapi, ringan, dan sedikit beraroma template premium gratisan.','Clean, iya. Distinctive? Jangan bikin kami kerja terlalu keras mencari.','Visualnya tenang seperti waiting room klinik gigi.','Sederhana itu elegan. Ini masih antre menuju elegan.']},
- {max:68,lines:['Cukup ramai untuk bikin mata punya pekerjaan sampingan.','Ada banyak hal terjadi. Tidak semuanya perlu terjadi.','Visual hierarchy sedang berusaha mengatur lalu lintas tanpa peluit.','Desainnya sibuk. Semoga invoice-mu setara dengan penderitaan mata kami.','Banyak detail, sedikit alasan. Tradisi lama dunia desain.','Mata masih bisa pulang sendiri, tapi Google Maps mulai dibutuhkan.','Detailnya mulai berkembang biak tanpa izin.','Hierarchy sedang mencoba jadi satpam di konser gratis.','Ada banyak informasi. Sayangnya beberapa tidak punya alasan untuk hidup.']},
- {max:101,lines:['Mata masuk ke desain ini dan sampai sekarang belum ditemukan.','Ini bukan visual complexity. Ini open world game tanpa minimap.','Terlalu banyak detail sampai focal point menyerah dan buka warung.','Artboard-mu kelihatannya alergi terhadap ruang kosong.','Setiap elemen berteriak “LIHAT AKU”, hasilnya tidak ada yang kami dengar.','Desain ini punya lebih banyak subplot daripada sinetron 700 episode.','Kalau semua penting, berarti tidak ada yang penting. Selamat datang di neraka hierarchy.','Mata butuh cuti tahunan setelah tiga detik di sini.','Layer panel-mu pasti terlihat seperti silsilah kerajaan.','Desain ini tidak punya focal point. Ia punya kerumunan massa.','Zoom out tidak menyelesaikan masalah. Cuma membuat bencananya terlihat utuh.','Ini bukan detail-oriented. Ini detail-hostage situation.']}
-],
-whitespaceCrime:[
- {max:25,lines:['Whitespace-nya lega. Akhirnya ada bagian desain yang tahu kapan harus diam.','Ruang kosong cukup sehat. Jangan buru-buru kamu isi cuma karena merasa bersalah.','Ada napas di sini. Keajaiban kecil yang patut dilindungi dari revisi klien.','Whitespace bagus. Sayang elemen yang tersisa masih harus mempertanggungjawabkan diri.','Ruang kosongnya sehat. Jangan dirusak cuma karena kamu menemukan satu icon lagi.','Breathing room aman. Sekarang tinggal cari alasan kenapa elemen lain ada.','Whitespace bekerja lebih keras daripada beberapa objek di artboard.']},
- {max:50,lines:['Whitespace ada, tapi statusnya pekerja kontrak. Bisa hilang kapan saja.','Masih ada ruang bernapas, walau napasnya pendek-pendek.','Ruang kosongnya cukup. Jangan disentuh lagi pakai gradient random.','Belum sesak. Tapi layout sudah mulai menumpuk koper di pintu keluar.','Ruang kosong masih ada, tapi sudah mulai pasang iklan kos baru.','Masih bisa bernapas, walau layout mulai batuk kecil.','Jangan tambah badge lagi. Serius. Turunkan tanganmu dari toolbar.']},
- {max:75,lines:['Whitespace-nya mulai kabur dari tanggung jawab.','Artboard ini takut ruang kosong seperti takut invoice tidak dibayar.','Kasih napas, Mas. Ini layout, bukan angkot jam pulang kerja.','Semua elemen duduk berdekatan seperti reuni yang venue-nya salah ukuran.','Whitespace ditemukan, tapi cuma di pinggir dan kelihatan ketakutan.','Ruang kosongnya seperti intern: ada, tapi tidak diberi wewenang.','Layout ini mulai mengira semua area kosong adalah masalah yang harus diisi.','Negative space-mu sedang mengajukan surat resign.']},
- {max:101,lines:['Whitespace ditemukan meninggal di lokasi kejadian.','Artboard-mu kelihatannya punya trauma masa kecil terhadap ruang kosong.','Setiap centimeter diisi seolah biaya sewa pixel dihitung per meter.','Ini layout atau kos-kosan overcapacity? Semua masuk, tidak ada yang mau keluar.','Ruang kosong sudah mengajukan perlindungan saksi.','Kalau ada satu elemen lagi masuk, desain ini perlu IMB tambahan.','Artboard ini sudah bukan penuh. Ini overbooking.','Whitespace terakhir terlihat meninggalkan gedung sambil membawa kardus.','Semua pixel terpakai. Tidak semua layak mendapat pekerjaan.','Kalau layout bisa sesak napas, ini sudah minta tabung oksigen.']}
-],
-saturation:[
- {max:20,lines:['Warna-warnanya sudah menyerah sebelum presentasi dimulai.','Saturation serendah ini bikin RGB terasa seperti kerja di kantor pajak.','Paletnya bukan muted. Ini sedang berkabung.','Warna hadir secara administratif. Secara emosional sudah pulang.','Saturation-nya seperti habis dipotong anggaran.','Muted boleh, mati suri jangan.','Palet ini punya energi hari Senin jam 07.00.']},
- {max:42,lines:['Saturation kalem. Bagus. Jangan langsung merasa jadi art director Skandinavia.','Warnanya tertib dan tidak teriak. Ada yang masih bisa diselamatkan rupanya.','Cukup restrained. Ego-mu boleh menyusul.','Paletnya punya sopan santun. Jarang-jarang.','Saturation-nya tertib. Jangan kamu rusak karena takut dibilang kurang pop.','Warnanya dewasa. Semoga desainernya menyusul.','Cukup restrained tanpa terlihat ketakutan. Keajaiban kecil.']},
- {max:70,lines:['Saturation mulai pede. Untung belum mabuk perhatian.','Warna cukup hidup. Jangan kasih mereka mic satu-satu.','Energinya pas, selama kamu berhenti sebelum tombol saturation digeser lagi.','Masih vibrant, belum masuk fase festival sound system.','Energinya hidup. Jangan dorong slider itu lagi, tanganmu sudah kami awasi.','Saturation-nya pede tanpa perlu naik meja. Bagus.','Masih colorful, belum jadi kecelakaan neon.']},
- {max:101,lines:['Saturation-nya seperti habis minum tiga kaleng energy drink.','Warna-warnanya teriak bareng sampai retina minta mediasi.','RGB melihat slider ini lalu pura-pura tidak kenal kamu.','Vibrant bukan berarti semua warna harus menyalakan strobo.','Paletnya bukan pop. Ini ledakan tabung gas visual.','Retina pengguna bukan tempat uji coba kembang api.','Slider saturation-mu sepertinya macet di kanan.','Warnanya begitu keras sampai CMYK pura-pura offline.','Ini bukan vibrant. Ini visual sirene ambulans.','Mata user tidak menandatangani consent untuk eksperimen ini.']}
-]
-};
-const verdictLib={
- low:[
-  'Sayangnya desainmu tidak cukup buruk. Coba sedikit lebih ceroboh supaya kami punya pekerjaan.',
-  'Kami datang untuk menghina, tapi desain ini cuma membosankan. Itu bahkan lebih menyakitkan.',
-  'Secara hukum aman. Secara kreativitas masih dalam masa percobaan.',
-  'Tidak ada kejahatan besar. Hanya beberapa pelanggaran estetika ringan dan satu kasus kurang berani.',
-  'Desain ini tidak buruk. Ia hanya punya karisma spreadsheet kosong.',
-  'Lolos dari penjara desain. Belum tentu lolos dari ketidakpedulian audiens.','Tidak salah. Tidak berbahaya. Tidak ada alasan kuat untuk melihat dua kali.','Desain ini begitu aman sampai feedback paling jujurnya cuma “oke”.','Kami kehabisan dakwaan. Sayangnya audiens juga bisa kehabisan minat.','Bukan buruk. Cuma tidak meninggalkan bekas selain file export.'
- ],
- mid:[
-  'Ada niat baik di sini. Eksekusinya sedang dimintai keterangan.',
-  'Desain ini seperti presentasi jam 4 sore: technically hadir, spiritually sudah pulang.',
-  'Konsepnya mungkin bagus. Sayang konsep tidak bisa memberi kesaksian untuk membela hasil akhirnya.',
-  'Masih bisa diselamatkan. Dengan revisi. Banyak revisi. Dan mungkin ritual tertentu.',
-  'Kami melihat potensi. Kami juga melihat banyak barang bukti.',
-  'Bukan bencana. Lebih seperti alarm kebakaran yang bunyinya sudah mulai terdengar.','Ada ide di sini. Kami yakin. Kami cuma belum menemukan lokasi kejadiannya.','Desain ini masih bisa ditolong, selama revisinya bukan “coba dibikin lebih wow”.','Secara visual belum kriminal berat, tapi motifnya mencurigakan.','Ini fase ketika desainer bilang “tinggal finishing” padahal struktur dasarnya masih berunding.'
- ],
- high:[
-  'Secara teknis ini masih desain. Secara moral kami tidak yakin.',
-  'File ini sebaiknya diberi nama FINAL_FINAL_BENERAN_TOBAT.ai.',
-  'Kami tidak bilang jelek. Kami cuma menyarankan artboard diberi kesempatan hidup baru.',
-  'Design brief mungkin tidak meminta kekacauan, tapi kamu memberikannya dengan penuh keyakinan.',
-  'Tidak semua eksperimen harus dipublikasikan. Beberapa cukup menjadi pelajaran hidup.',
-  'Ini bukan “berani beda”. Ini berbeda karena keputusan-keputusan penting ditinggal tanpa pengawasan.',
-  'Kalau desain ini punya pengacara, pengacaranya barusan mundur.',
-  'Kami sudah menghubungi hierarchy, alignment, dan restraint. Tidak ada yang mau mengaku kenal kamu.','Kami mencoba mencari keputusan desain yang bisa dijadikan saksi meringankan. Tidak ada yang bersedia.','Desain ini bukan minta revisi. Ia minta identitas baru dan perlindungan saksi.','Kalau ini dikirim ke klien, pastikan invoice dibayar dulu sebelum mereka sadar.','Art director melihat ini lalu membuka LinkedIn. Bukan untuk cari referensi.','File ini punya energi “yang penting kelihatan desain”. Dan sayangnya, kelihatan.','Kami tidak yakin tombol Undo cukup panjang untuk perjalanan pulang dari sini.'
- ]
-};
-const typeRoasts={
- identity:['Logo harus gampang diingat. Yang ini lebih cocok dijadikan barang bukti.','Visual identity bukan tempat seluruh brand guideline dipadatkan jadi satu simbol.','Kalau identitas brand harus dijelaskan lima menit, itu bukan filosofi. Itu pembelaan.','Brand mark ini tidak membangun recognition. Ia membangun pertanyaan.'],
- marketing:['Iklan harus menghentikan orang. Yang berhenti justru hierarchy-nya.','CTA-nya kelihatan seperti figuran padahal dia yang harus bayar sewa.','Campaign visual ini berteriak keras, tapi lupa menyampaikan kenapa orang harus peduli.','Semua informasi minta jadi headline. Marketing-mu butuh mediator.'],
- social:['Feed cuma memberi sepersekian detik. Desain ini menghabiskannya untuk kebingungan.','Konten sosmed harus menghentikan scroll, bukan membuat orang mempercepatnya.','Thumbnail-nya bekerja keras. Pesannya masih cuti.','Kalau ini carousel, slide pertama sudah membuat jempol ingin resign.'],
- editorial:['Hierarchy-nya seperti organisasi tanpa struktur: semua merasa kepala divisi.','Editorial layout harus mengatur ritme baca. Yang ini mengatur tekanan darah.','Grid-nya mungkin ada. Hubungannya dengan konten masih LDR.','Pembaca datang untuk membaca, bukan ikut orientasi medan.'],
- packaging:['Produkmu mungkin premium. Kemasan ini belum diberi tahu.','Shelf impact ada. Dampaknya pada ketenangan jiwa juga ada.','Packaging ini punya banyak hal untuk dikatakan dan tidak tahu kapan berhenti.','Dari tiga meter harusnya bikin ingin ambil. Ini malah bikin ingin baca komposisi bahan lalu pulang.'],
- digital:['User datang mau klik tombol, bukan ikut escape room.','Interface bukan teka-teki silang. Kalau semua butuh dicari, UX-mu sedang buron.','Hierarchy UI-nya perlu onboarding sendiri. Ironis.','User flow tidak seharusnya terasa seperti administrasi kantor kecamatan.'],
- illustration:['Ilustrasinya punya energi. Sayang sebagian energinya dipakai untuk bertengkar dengan komposisi.','Detail boleh liar. Focal point tetap perlu punya alamat.','Visual storytelling-nya ada. Plot twist-nya: mata tidak tahu harus mulai dari mana.','Karakter kuat tidak berarti semua elemen harus bicara bersamaan.'],
- typography:['Hurufnya ekspresif. Mereka mengekspresikan kepanikan.','Type specimen ini membuktikan font punya karakter. Layout-nya juga, sayangnya.','Kerning mungkin tidak bisa kami ukur penuh, tapi kekacauannya cukup terlihat dari orbit.','Tipografi eksperimental bukan surat izin menghapus hierarchy.'],
- information:['Datanya mungkin benar. Cara menjelaskannya sedang diperiksa.','Infografik harus memperjelas informasi, bukan mengubahnya jadi scavenger hunt.','Chart-nya punya data. Kejelasannya sedang dalam masa percobaan.','Kalau legenda butuh legenda, kita punya masalah.'],
- presentation:['Slide ini punya terlalu banyak kata dan terlalu sedikit alasan untuk tetap hidup.','Pitch deck bukan novel. Investor punya jam, bukan musim.','Kalau presenternya harus bilang “sebentar, saya jelaskan slide ini”, slide-nya sudah mengaku bersalah.','Satu slide, tujuh pesan. Fokusnya kerja freelance di tempat lain.'],
- environmental:['Wayfinding yang bagus bikin orang sampai tujuan. Yang ini bikin orang mengenal lingkungan lebih lama dari rencana.','Signage bukan dekorasi dinding yang kebetulan punya teks.','Environmental graphic harus bekerja dari jarak nyata, bukan cuma cantik di mockup.','Kalau orang harus mendekat dua meter untuk paham, signage-nya sedang cosplay jadi brosur.'],
- other:['Kategori “Entahlah” ternyata akurat. Bahkan desainnya ikut tidak yakin dirinya apa.','Kami juga tidak tahu ini apa. Tapi masalah visual tidak membutuhkan KTP.','Identitas proyeknya misterius. Kejahatannya cukup terbaca.']
-};
-const confidenceRoasts={
- bangga:['Oh, kamu bangga? Kepercayaan diri memang gratis. Syukurlah.','Pede sekali. Data forensik menyukai tantangan.','Bangga itu hak semua warga negara, bahkan dalam kondisi seperti ini.'],
- lumayan:['“Lumayan” adalah kata yang bekerja sangat keras menutupi banyak keputusan.','Lumayan. Standar favorit saat deadline tinggal 20 menit.'],
- ragu:['Instingmu bekerja. Pertahankan rasa curiga itu.','Keraguanmu valid. Untuk sekali ini, inner critic-mu tidak ngaco.'],
- klien:['Untuk kepentingan hukum, kami menerima klaim bahwa klien yang menyuruh. Untuk sementara.','Baik. Semua kesalahan akan kami masukkan ke folder “CLIENT REQUEST”.','Klien yang nyuruh? Alibi paling tua dalam sejarah Creative Cloud.']
-};
+
+
+
+
 function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
-function pick(arr,salt=''){const seed=hashStr((state.dataUrl||'').slice(-500)+state.type+state.confidence+salt);return arr[seed%arr.length]}
+let usedRoastTags=new Set();
+function resetRoastMemory(){usedRoastTags=new Set();debugPickLog=[]}
+function roastEntryText(entry,replacements={}){
+  let text=typeof entry==='string'?entry:(entry&&entry.text)||'';
+  for(const [k,v] of Object.entries(replacements))text=text.replaceAll(`{${k}}`,v);
+  return text;
+}
+function desiredIntensity(){
+  const score=state.metrics?.overall;
+  if(score==null)return 5;
+  return score<31?3:score<56?4:5;
+}
+function pick(arr,salt='',opts={}){
+  if(!Array.isArray(arr)||!arr.length)return '';
+  let pool=arr.filter(Boolean);
+  const cap=opts.ignoreIntensity?5:desiredIntensity();
+  const intensityOK=pool.filter(x=>typeof x==='string'||!x.intensity||x.intensity<=cap);
+  if(intensityOK.length)pool=intensityOK;
+  if(!opts.allowRepeatTags){
+    const fresh=pool.filter(x=>typeof x==='string'||!(x.tags||[]).some(t=>usedRoastTags.has(t)));
+    if(fresh.length)pool=fresh;
+  }
+  const seed=hashStr((state.dataUrl||'').slice(-500)+state.type+state.confidence+salt);
+  const entry=pool[seed%pool.length];
+  if(entry&&typeof entry==='object'&&Array.isArray(entry.tags))entry.tags.forEach(t=>usedRoastTags.add(t));
+  const text=roastEntryText(entry,opts.replacements||{});
+  if(DEBUG_MODE){debugPickLog.push({salt,text,intensity:(entry&&typeof entry==='object'&&entry.intensity)||null,tags:(entry&&typeof entry==='object'&&entry.tags)||[],poolSize:pool.length,seed});}
+  return text;
+}
 function roast(k,v){const bucket=roastLib[k].find(x=>v<x.max)||roastLib[k][roastLib[k].length-1];return pick(bucket.lines,k+Math.round(v))}
 const metricMeta={
  colorChaos:{name:'COLOR CHAOS',short:'COLOR CHAOS'},
@@ -478,7 +442,7 @@ function overallVerdict(m){
  else if(seed%2===0&&typeRoasts[state.type]) base+=' '+pick(typeRoasts[state.type],'type');
  // Confidence is a deliberate user input: always acknowledge it in the final verdict.
  base+=' '+pick(confidenceRoasts[state.confidence]||confidenceRoasts.lumayan,'confidence-final');
- const nm=(state.designer||'').trim();if(nm){const nameJabs=[`${nm}, kami sudah lihat semuanya. Sayangnya mata kami tidak punya tombol undo.`,`${nm}, nama sudah tercatat. Reputasi menyusul setelah revisi.`,`${nm}, ini bukan serangan personal. Datanya kebetulan ikut tidak setuju.`];if(hashStr((state.dataUrl||'')+'name-jab')%3===0)base+=' '+pick(nameJabs,'name-final')}
+ const nm=(state.designer||'').trim();if(nm&&nameJabsLibrary.length&&hashStr((state.dataUrl||'')+'name-jab')%3===0)base+=' '+pick(nameJabsLibrary,'name-final',{replacements:{name:nm}})
  return base
 }
 function shareVerdictText(){
@@ -486,13 +450,24 @@ function shareVerdictText(){
  // never silently shorten the insult before rendering.
  return String($('#verdict').textContent||'').replace(/[“”]/g,'').trim();
 }
-function renderResults(){let m=state.metrics;$('#loading').style.display='none';$('#results').style.display='block';$('#resultImg').src=state.dataUrl;$('#overall').textContent=m.overall;$('#severity').textContent=m.overall>=89?'☠️ TKP DISEGEL':m.overall>=79?'🚨 KASUS BERAT':m.overall>=56?'⚠️ PERLU PENGACARA':m.overall>=31?'🧐 MULAI MENCURIGAKAN':'😴 TERLALU AMAN UNTUK DIPIDANA';const ranked=rankedCharges(m),pc=ranked.primary,sc=ranked.secondary,mit=mitigatingFactor(m),profile=designProfile(m),dna=designDNA(m);$('#primaryCharge').innerHTML=`TERDAKWA · <strong>${esc((state.designer||'ANONIM').toUpperCase())}</strong><br>CASE TYPE · <strong>${(categories[state.type]||categories.other).label}</strong><br>DAKWAAN UTAMA · <strong>${pc.name}</strong> · PRESSURE ${pc.pressure}/100`;$('#designProfile').innerHTML=`<b>DESIGN PROFILE</b><strong>${profile.name}</strong><span>${profile.desc}</span>`;$('#caseAssessment').innerHTML=`<div><b>SECONDARY CHARGE</b><span>${sc.name} · PRESSURE ${sc.pressure}/100</span></div><div><b>MITIGATING FACTOR</b><span>${mit.name} — ${mit.text}</span></div><div><b>DESIGN DNA</b><span class="dnaTags">${dna.map(t=>`<i>${t}</i>`).join('')}</span></div>`;$('#verdict').textContent='“'+overallVerdict(m)+'”';const names={colorChaos:'COLOR CHAOS',contrast:'CONTRAST',balance:'BALANCE DEVIATION',complexity:'VISUAL COMPLEXITY',whitespaceCrime:'WHITESPACE CRIME',saturation:'SATURATION LEVEL'};const hints={colorChaos:'↑ makin tinggi = palet makin ramai',contrast:'sweet spot kira-kira 45–75',balance:'↑ makin tinggi = makin berat sebelah',complexity:'↑ makin tinggi = makin padat/detail',whitespaceCrime:'↑ makin tinggi = whitespace makin langka',saturation:'terlalu rendah/tinggi sama-sama mencurigakan'};$('#metrics').innerHTML=Object.keys(names).map(k=>`<div class="metric"><div><h3>${names[k]}</h3><div class="num">${m[k]}/100 · ${hints[k]}</div></div><div><div class="bar"><div class="fill" style="width:${m[k]}%"></div></div><p class="roast">“${contextualMetricRoast(k,m)}”</p></div></div>`).join('');
+function renderDebugPanel(m){
+ if(!DEBUG_MODE)return;
+ const panel=$('#debugPanel');if(!panel)return;panel.classList.add('show');
+ const risk=contextualRiskValues(m),ranked=rankedCharges(m),mit=mitigatingFactor(m),profile=designProfile(m),dna=designDNA(m);
+ const compactMetrics={overall:m.overall,colorChaos:m.colorChaos,contrast:m.contrast,balance:m.balance,complexity:m.complexity,whitespaceCrime:m.whitespaceCrime,saturation:m.saturation,brightness:m.brightness,symmetry:m.symmetry,focalConcentration:m.focalConcentration,edgeCongestion:m.edgeCongestion,localContrast:m.localContrast,colorDominance:m.colorDominance,densitySpread:m.densitySpread};
+ const escPre=o=>esc(JSON.stringify(o,null,2));
+ $('#debugGrid').innerHTML=`<div class="debugCard"><b>STATE</b><pre>${escPre({type:state.type,confidence:state.confidence,designer:state.designer||'ANONIM',reportId:reportId()})}</pre></div><div class="debugCard"><b>RAW METRICS</b><pre>${escPre(compactMetrics)}</pre></div><div class="debugCard"><b>CONTEXTUAL RISK</b><pre>${escPre(risk)}</pre></div><div class="debugCard"><b>CHARGE RANKING</b><pre>${escPre(ranked.candidates.slice(0,8))}</pre></div><div class="debugCard"><b>PROFILE + DNA</b><pre>${escPre({profile,mitigating:mit,dna})}</pre></div><div class="debugCard"><b>USED TAGS</b><pre>${escPre([...usedRoastTags])}</pre></div>`;
+ const rows=debugPickLog.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.salt||'-')}</td><td>${esc(r.text)}</td><td>${r.intensity??'-'}</td><td>${esc((r.tags||[]).join(', '))}</td><td>${r.poolSize}</td></tr>`).join('');
+ $('#debugPicks').innerHTML=`<table><thead><tr><th>#</th><th>SALT / RULE</th><th>TEKS TERPILIH</th><th>INT.</th><th>TAGS</th><th>POOL</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderResults(){resetRoastMemory();let m=state.metrics;$('#loading').style.display='none';$('#results').style.display='block';$('#resultImg').src=state.dataUrl;$('#overall').textContent=m.overall;$('#severity').textContent=m.overall>=89?'☠️ TKP DISEGEL':m.overall>=79?'🚨 KASUS BERAT':m.overall>=56?'⚠️ PERLU PENGACARA':m.overall>=31?'🧐 MULAI MENCURIGAKAN':'😴 TERLALU AMAN UNTUK DIPIDANA';const ranked=rankedCharges(m),pc=ranked.primary,sc=ranked.secondary,mit=mitigatingFactor(m),profile=designProfile(m),dna=designDNA(m);$('#primaryCharge').innerHTML=`TERDAKWA · <strong>${esc((state.designer||'ANONIM').toUpperCase())}</strong><br>CASE TYPE · <strong>${(categories[state.type]||categories.other).label}</strong><br>DAKWAAN UTAMA · <strong>${pc.name}</strong> · PRESSURE ${pc.pressure}/100`;$('#designProfile').innerHTML=`<b>DESIGN PROFILE</b><strong>${profile.name}</strong><span>${profile.desc}</span>`;$('#caseAssessment').innerHTML=`<div><b>SECONDARY CHARGE</b><span>${sc.name} · PRESSURE ${sc.pressure}/100</span></div><div><b>MITIGATING FACTOR</b><span>${mit.name} — ${mit.text}</span></div><div><b>DESIGN DNA</b><span class="dnaTags">${dna.map(t=>`<i>${t}</i>`).join('')}</span></div>`;$('#verdict').textContent='“'+overallVerdict(m)+'”';const names={colorChaos:'COLOR CHAOS',contrast:'CONTRAST',balance:'BALANCE DEVIATION',complexity:'VISUAL COMPLEXITY',whitespaceCrime:'WHITESPACE CRIME',saturation:'SATURATION LEVEL'};const hints={colorChaos:'↑ makin tinggi = palet makin ramai',contrast:'sweet spot kira-kira 45–75',balance:'↑ makin tinggi = makin berat sebelah',complexity:'↑ makin tinggi = makin padat/detail',whitespaceCrime:'↑ makin tinggi = whitespace makin langka',saturation:'terlalu rendah/tinggi sama-sama mencurigakan'};$('#metrics').innerHTML=Object.keys(names).map(k=>`<div class="metric"><div><h3>${names[k]}</h3><div class="num">${m[k]}/100 · ${hints[k]}</div></div><div><div class="bar"><div class="fill" style="width:${m[k]}%"></div></div><p class="roast">“${contextualMetricRoast(k,m)}”</p></div></div>`).join('');
  const mood=m.darkDominance>55?'DARK DOMINANT':m.lightDominance>65?'LIGHT DOMINANT':'MIXED VALUE';
  const sym=m.symmetry>76?'HIGHLY SYMMETRIC':m.symmetry<38?'ASYMMETRIC':'MODERATE';
  const focal=m.focalConcentration>70?'LOCKED':m.focalConcentration<36?'SCATTERED':'DISTRIBUTED';
  const edge=m.edgeCongestion>65?'CONGESTED':m.edgeCongestion<30?'CLEAN':'ACTIVE';
  const local=m.localContrast>68?'HARD':m.localContrast<28?'SOFT':'MODERATE';
  $('#forensicGrid').innerHTML=`<div class="forensicCell"><b>VALUE MOOD</b><span>${m.brightness}</span><small>${mood}</small></div><div class="forensicCell"><b>SYMMETRY</b><span>${m.symmetry}</span><small>${sym}</small></div><div class="forensicCell"><b>FOCAL</b><span>${m.focalConcentration}</span><small>${focal}</small></div><div class="forensicCell"><b>EDGE</b><span>${m.edgeCongestion}</span><small>${edge}</small></div><div class="forensicCell"><b>LOCAL CONTRAST</b><span>${m.localContrast}</span><small>${local}</small></div>`;
+ renderDebugPanel(m);
  scrollTo({top:0,behavior:'smooth'})}
 $('#appeal').onclick=()=>$('#modal').style.display='flex';$('#closeModal').onclick=()=>$('#modal').style.display='none';$('#again').onclick=()=>location.reload();
 async function ensureShareFonts(){
@@ -642,7 +617,7 @@ async function exportShareCard(mode='feed'){
    x.fillStyle=ink;x.font=`400 34px ${display}`;x.fillText('DIADILI. TIDAK DIHIBUR.',60,footY+50);
    line(724,footY+7,724,footY+69,3);
    x.font=`600 13px ${mono}`;x.fillText('Diproses 100% lokal di browser',752,footY+24);x.fillText('no upload • no mercy',752,footY+45);
-   x.fillStyle='#706c64';x.font=`600 10px ${mono}`;x.fillText('ROAST MY DESIGN — PROTOTYPE 1.5.2',752,footY+64);
+   x.fillStyle='#706c64';x.font=`600 10px ${mono}`;x.fillText('ROAST MY DESIGN — PROTOTYPE 1.7',752,footY+64);
    // signature rule
    line(1010,footY+64,1044,footY+64,2);
 
