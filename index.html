@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Roast My Design — Prototype v1.5.1</title>
+<title>Roast My Design — Prototype v1.5.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600;700&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f2efe8;--ink:#0c0c0c;--muted:#716d65;--line:#111;--hot:#ff4b23;--panel:#faf8f3;--display:'Anton','Arial Narrow',sans-serif;--headline:'Archivo Black','Arial Black',sans-serif;--mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;--sans:'Inter',ui-sans-serif,system-ui,sans-serif}
 *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans)}
-button,input,select{font:inherit} .wrap{max-width:1120px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--line);padding-bottom:14px}.brand{font-family:var(--display);font-size:24px;letter-spacing:.015em;text-transform:uppercase}.badge{font:700 12px var(--mono);border:1px solid;padding:5px 8px}
+button,input,select{font:inherit} button{color:var(--ink);-webkit-text-fill-color:currentColor;-webkit-appearance:none;appearance:none;border-radius:0} button:disabled{opacity:.55} .chip.active{color:#fff;-webkit-text-fill-color:#fff} .wrap{max-width:1120px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--line);padding-bottom:14px}.brand{font-family:var(--display);font-size:24px;letter-spacing:.015em;text-transform:uppercase}.badge{font:700 12px var(--mono);border:1px solid;padding:5px 8px}
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;padding:54px 0 34px}.kicker{font:700 12px var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--hot)}h1{font-family:var(--display);font-weight:400;font-size:clamp(58px,9.4vw,122px);line-height:.82;letter-spacing:-.02em;margin:10px 0 26px;max-width:850px;text-transform:uppercase}h1 span{color:var(--hot)}.lead{font-size:20px;line-height:1.45;max-width:590px}.privacy{color:var(--muted);font-size:13px;margin-top:14px}
 .card{background:var(--panel);border:2px solid var(--line);box-shadow:8px 8px 0 var(--line);padding:22px}.textInput{width:100%;border:1.5px solid var(--line);background:#fff;padding:12px 13px;font:600 14px var(--mono);outline:none}.textInput:focus{box-shadow:0 0 0 3px var(--hot)}.fieldHint{font:600 10px/1.4 var(--mono);color:var(--muted);margin-top:6px}.categoryGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.categoryGrid .chip{text-align:left;min-height:48px}.categoryInfo{margin-top:10px;padding:12px;border:1.5px solid var(--line);background:#ebe7de}.categoryInfo b{display:block;font:700 12px var(--mono);margin-bottom:5px}.categoryInfo span{font:600 11px/1.45 var(--mono);color:var(--muted)}.drop{min-height:300px;border:2px dashed #777;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;cursor:pointer;position:relative;overflow:hidden}.drop.drag{background:#fff}.drop img{max-width:100%;max-height:360px;display:none}.drop.has-image{border-style:solid;background:#fff}.drop:focus{outline:3px solid var(--hot);outline-offset:3px}.drop .hint strong{display:block;font-family:var(--headline);font-size:21px;letter-spacing:-.025em;margin-bottom:7px}.controls{display:none;margin-top:18px}.label{font-family:var(--headline);font-size:14px;letter-spacing:-.01em;margin:18px 0 8px}.chips{display:flex;gap:8px;flex-wrap:wrap}.confidenceReaction{display:none;margin-top:10px;border-left:4px solid var(--hot);padding:9px 11px;background:#ebe7de;font:700 12px/1.45 var(--mono);color:var(--ink)}.confidenceReaction.show{display:block}.chip{background:transparent;border:1.5px solid var(--line);padding:10px 13px;cursor:pointer}.chip.active{background:var(--ink);color:white}.cta{width:100%;margin-top:22px;background:var(--hot);border:2px solid var(--line);padding:15px 18px;font-family:var(--headline);font-weight:400;letter-spacing:-.02em;cursor:pointer;box-shadow:4px 4px 0 var(--line)}.cta:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
 #loading,#results{display:none}.loadingBox{border-top:2px solid;padding:42px 0}.loadingTitle{font-family:var(--headline);font-size:42px;letter-spacing:-.035em}.steps{font:700 14px var(--mono);line-height:2;color:var(--muted)}.steps .on{color:var(--ink)}
 .results{border-top:2px solid;padding-top:36px}.resultGrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px}.evidence img{width:100%;display:block;border:2px solid}.scorebox{border:2px solid;padding:25px;background:var(--panel)}.scorelabel{font:700 12px var(--mono);letter-spacing:.15em}.score{display:flex;align-items:flex-end;gap:10px;font-family:var(--display);font-size:116px;line-height:.82;font-weight:400;letter-spacing:-.02em;margin:16px 0 20px}.score small{font-family:var(--headline);font-size:22px;line-height:1;letter-spacing:-.025em;font-weight:400;margin-bottom:8px;white-space:nowrap}.severity{display:inline-block;background:var(--hot);padding:7px 10px;border:1.5px solid;font-family:var(--headline);font-weight:400;letter-spacing:-.02em}.primaryCharge{margin-top:12px;padding-top:11px;border-top:1px solid #aaa;font:700 11px var(--mono);letter-spacing:.04em;color:var(--muted)}.primaryCharge strong{color:var(--ink)}.designProfile{margin-top:10px;padding:10px 12px;border:1.5px solid var(--line);background:#ebe7de}.designProfile b{display:block;font:700 10px var(--mono);color:var(--muted);letter-spacing:.08em;margin-bottom:3px}.designProfile strong{display:block;font-family:var(--headline);font-size:19px;letter-spacing:-.025em}.designProfile span{display:block;font:600 10px/1.35 var(--mono);color:var(--muted);margin-top:3px}.caseAssessment{margin-top:10px;border-top:1px solid #aaa;padding-top:10px;display:grid;gap:6px}.caseAssessment div{display:grid;grid-template-columns:118px 1fr;gap:8px;font:700 10px/1.35 var(--mono)}.caseAssessment b{color:var(--muted);letter-spacing:.05em}.caseAssessment span{color:var(--ink)}.dnaTags{display:flex!important;flex-wrap:wrap;gap:5px!important}.dnaTags i{font-style:normal;border:1px solid #aaa;padding:3px 5px;background:var(--panel)}.scoreHelp{margin:14px 0 0;font:700 12px var(--mono);line-height:1.5;color:var(--muted)}.scoreHelp strong{color:var(--ink)}.verdict{font-family:var(--sans);font-size:25px;font-weight:600;letter-spacing:-.025em;line-height:1.18;margin:22px 0 0;max-width:42ch}
-.forensics{margin-top:14px;border:1.5px solid var(--line);background:#ebe7de;padding:14px 16px}.forensics summary{cursor:pointer;list-style:none}.forensics summary::-webkit-details-marker{display:none}.forensics[open] .forensicGrid{margin-top:10px}.forensicsHead{display:flex;justify-content:space-between;gap:14px;align-items:baseline;margin-bottom:10px}.forensicsHead strong{font:700 12px var(--mono);letter-spacing:.08em}.forensicsHead span{font:600 10px var(--mono);color:var(--muted)}.forensicGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.forensicCell{border:1px solid #aaa;background:var(--panel);padding:9px}.forensicCell b{display:block;font:700 10px var(--mono);color:var(--muted);margin-bottom:4px}.forensicCell span{font:700 15px var(--mono)}.forensicCell small{display:block;font:600 9px var(--mono);color:var(--muted);margin-top:3px;line-height:1.25}.ratingGuide{margin-top:26px;border:2px solid var(--line);background:var(--panel);padding:18px}.ratingGuide h3{margin:0 0 8px;font-size:14px;letter-spacing:.08em}.ratingGuide p{margin:0 0 13px;color:var(--muted);font-size:13px;line-height:1.45}.ratingScale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.ratingScale span{border:1px solid var(--line);padding:8px;font:700 11px var(--mono);line-height:1.25}.metrics{margin-top:26px;border-top:2px solid}.metric{display:grid;grid-template-columns:170px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid #aaa}.metric h3{margin:0;font-family:var(--headline);font-size:18px;letter-spacing:-.02em}.bar{height:12px;border:1.5px solid;margin:5px 0 10px}.fill{height:100%;background:var(--ink)}.roast{font-size:18px;line-height:1.4;margin:0}.num{font:700 12px var(--mono);color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0 60px}.secondary{border:2px solid;background:transparent;padding:13px 17px;font-family:var(--headline);font-weight:400;cursor:pointer}.appeal{border:0;background:transparent;text-decoration:underline;cursor:pointer;color:var(--muted)}
+.forensics{margin-top:14px;border:1.5px solid var(--line);background:#ebe7de;padding:14px 16px}.forensics summary{cursor:pointer;list-style:none}.forensics summary::-webkit-details-marker{display:none}.forensics[open] .forensicGrid{margin-top:10px}.forensicsHead{display:flex;justify-content:space-between;gap:14px;align-items:baseline;margin-bottom:10px}.forensicsHead strong{font:700 12px var(--mono);letter-spacing:.08em}.forensicsHead span{font:600 10px var(--mono);color:var(--muted)}.forensicGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.forensicCell{border:1px solid #aaa;background:var(--panel);padding:9px}.forensicCell b{display:block;font:700 10px var(--mono);color:var(--muted);margin-bottom:4px}.forensicCell span{font:700 15px var(--mono)}.forensicCell small{display:block;font:600 9px var(--mono);color:var(--muted);margin-top:3px;line-height:1.25}.ratingGuide{margin-top:26px;border:2px solid var(--line);background:var(--panel);padding:18px}.ratingGuide h3{margin:0 0 8px;font-size:14px;letter-spacing:.08em}.ratingGuide p{margin:0 0 13px;color:var(--muted);font-size:13px;line-height:1.45}.ratingScale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.ratingScale span{border:1px solid var(--line);padding:8px;font:700 11px var(--mono);line-height:1.25}.metrics{margin-top:26px;border-top:2px solid}.metric{display:grid;grid-template-columns:170px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid #aaa}.metric h3{margin:0;font-family:var(--headline);font-size:18px;letter-spacing:-.02em}.bar{height:12px;border:1.5px solid;margin:5px 0 10px}.fill{height:100%;background:var(--ink)}.roast{font-size:18px;line-height:1.4;margin:0}.num{font:700 12px var(--mono);color:var(--muted)}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0 60px}.secondary{border:2px solid;background:transparent;padding:13px 17px;font-family:var(--headline);font-weight:400;cursor:pointer;color:var(--ink);-webkit-text-fill-color:var(--ink)}.appeal{border:0;background:transparent;text-decoration:underline;cursor:pointer;color:var(--muted);-webkit-text-fill-color:var(--muted)}
 footer{border-top:1px solid;padding:18px 0;color:var(--muted);font-size:12px}.modal{position:fixed;inset:0;background:#111c;display:none;align-items:center;justify-content:center;padding:20px}.modalIn{background:var(--bg);border:2px solid;max-width:520px;padding:28px;box-shadow:8px 8px 0 var(--hot)}.modalIn h2{font-family:var(--headline);font-size:42px;line-height:.95;margin:0 0 16px;letter-spacing:-.04em}
 @media(max-width:780px){.hero,.resultGrid{grid-template-columns:1fr}.categoryGrid{grid-template-columns:1fr}.ratingScale{grid-template-columns:1fr 1fr}.forensicGrid{grid-template-columns:1fr 1fr}.hero{padding-top:35px}.metric{grid-template-columns:1fr}.score{font-size:90px}.wrap{padding:18px}}
 
@@ -52,11 +52,17 @@ footer{border-top:1px solid;padding:18px 0;color:var(--muted);font-size:12px}.mo
 }
 @media(max-width:430px){.categoryGrid{grid-template-columns:1fr}.ratingScale{grid-template-columns:1fr}.score{font-size:74px}.forensicGrid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.actions .cta,.actions .appeal{grid-column:1}.hero h1{font-size:60px}}
 
+/* v1.5.2 — mobile control normalization + adaptive sharing */
+button,.chip,.cta,.secondary{color:var(--ink);-webkit-text-fill-color:var(--ink)}
+.chip.active{color:#fff;-webkit-text-fill-color:#fff}
+.cta,.badge{color:var(--ink);-webkit-text-fill-color:var(--ink)}
+@media(max-width:780px){.actions .cta,.actions .secondary{font-size:12px;letter-spacing:-.01em}.confidenceReaction{font-size:11px}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-<header class="top"><div class="brand">ROAST MY DESIGN 🔥</div><div class="badge">PROTOTYPE 1.5.1</div></header>
+<header class="top"><div class="brand">ROAST MY DESIGN 🔥</div><div class="badge">PROTOTYPE 1.5.2</div></header>
 <section id="main" class="hero">
 <div><div class="kicker">Pengadilan desain berbasis browser</div><h1>Upload.<br><span>Diadili.</span><br>Menyesal.</h1><p class="lead">Masukkan desainmu. Kami ukur color, contrast, balance, visual complexity, whitespace dan saturation-nya—lalu kami hina hasilnya tanpa perlu mengirim file ke server.</p><p class="privacy">🔒 Gambar diproses lokal di browser. Tidak disimpan. Tidak ada akun. Tidak ada AI API.</p></div>
 <div class="card">
@@ -78,7 +84,7 @@ footer{border-top:1px solid;padding:18px 0;color:var(--muted);font-size:12px}.mo
 <div class="label">Seberapa pede?</div><div class="chips" data-group="confidence"><button class="chip" data-v="bangga">Bangga dong</button><button class="chip active" data-v="lumayan">Lumayan lah</button><button class="chip" data-v="ragu">Agak ragu</button><button class="chip" data-v="klien">Klien yang nyuruh</button></div><div class="confidenceReaction" id="confidenceReaction" aria-live="polite"></div><button class="cta" id="judge">🔥 HAKIMI SAYA</button></div>
 </div></section>
 <section id="loading" class="loadingBox"><div class="loadingTitle">Menganalisis barang bukti…</div><div class="steps" id="steps"></div></section>
-<section id="results" class="results"><div class="kicker">Laporan forensik visual</div><div class="resultGrid"><div class="evidence"><img id="resultImg" alt="Barang bukti"></div><div class="scorebox"><div class="scorelabel">DESIGN CRIME SCORE</div><div class="score"><span id="overall">00</span><small>/100</small></div><div class="severity" id="severity">KASUS BERAT</div><div class="primaryCharge" id="primaryCharge"></div><div class="designProfile" id="designProfile"></div><div class="caseAssessment" id="caseAssessment"></div><div class="scoreHelp"><strong>↑ SEMAKIN TINGGI = SEMAKIN BERMASALAH.</strong><br>Ini crime score, bukan nilai kualitas. 100 bukan A+. Itu surat panggilan.</div><p class="verdict" id="verdict"></p></div></div><div class="ratingGuide"><h3>CARA BACA SKOR</h3><p>Overall score bersifat linear: makin besar, makin berat dakwaannya. Metric di bawah menunjukkan intensitas karakter visual; khusus <b>CONTRAST</b> dan <b>SATURATION LEVEL</b>, terlalu rendah maupun terlalu tinggi sama-sama bisa kena roast.</p><div class="ratingScale"><span>0–30<br>AMAN / MEMBOSANKAN</span><span>31–55<br>MULAI MENCURIGAKAN</span><span>56–78<br>PERLU PENGACARA</span><span>79–88<br>KASUS BERAT</span><span>89–100<br>TKP DISEGEL</span></div></div><details class="forensics" id="forensics"><summary class="forensicsHead"><strong>DATA FORENSIK ENGINE</strong><span>buka kalau mau mengintip cara hakim bekerja</span></summary><div class="forensicGrid" id="forensicGrid"></div></details><div class="metrics" id="metrics"></div><div class="actions"><button class="cta" style="width:auto;margin:0" id="share">BAGIKAN DOSA SAYA</button><div class="exportTools"><button class="secondary" id="storyShare">STORY 9:16</button><button class="secondary" id="copyCaption">COPY CAPTION</button></div><button class="secondary" id="again">ROAST LAGI</button><button class="appeal" id="appeal">Saya tidak terima hasilnya</button></div></section>
+<section id="results" class="results"><div class="kicker">Laporan forensik visual</div><div class="resultGrid"><div class="evidence"><img id="resultImg" alt="Barang bukti"></div><div class="scorebox"><div class="scorelabel">DESIGN CRIME SCORE</div><div class="score"><span id="overall">00</span><small>/100</small></div><div class="severity" id="severity">KASUS BERAT</div><div class="primaryCharge" id="primaryCharge"></div><div class="designProfile" id="designProfile"></div><div class="caseAssessment" id="caseAssessment"></div><div class="scoreHelp"><strong>↑ SEMAKIN TINGGI = SEMAKIN BERMASALAH.</strong><br>Ini crime score, bukan nilai kualitas. 100 bukan A+. Itu surat panggilan.</div><p class="verdict" id="verdict"></p></div></div><div class="ratingGuide"><h3>CARA BACA SKOR</h3><p>Overall score bersifat linear: makin besar, makin berat dakwaannya. Metric di bawah menunjukkan intensitas karakter visual; khusus <b>CONTRAST</b> dan <b>SATURATION LEVEL</b>, terlalu rendah maupun terlalu tinggi sama-sama bisa kena roast.</p><div class="ratingScale"><span>0–30<br>AMAN / MEMBOSANKAN</span><span>31–55<br>MULAI MENCURIGAKAN</span><span>56–78<br>PERLU PENGACARA</span><span>79–88<br>KASUS BERAT</span><span>89–100<br>TKP DISEGEL</span></div></div><details class="forensics" id="forensics"><summary class="forensicsHead"><strong>DATA FORENSIK ENGINE</strong><span>buka kalau mau mengintip cara hakim bekerja</span></summary><div class="forensicGrid" id="forensicGrid"></div></details><div class="metrics" id="metrics"></div><div class="actions"><button class="cta" style="width:auto;margin:0" id="share">DOWNLOAD SHARE CARD</button><div class="exportTools"><button class="secondary" id="storyShare">DOWNLOAD STORY 9:16</button><button class="secondary" id="copyCaption">COPY CAPTION</button></div><button class="secondary" id="again">ROAST LAGI</button><button class="appeal" id="appeal">Saya tidak terima hasilnya</button></div></section>
 <footer>Roast My Design — eksperimen receh untuk desainer yang terlalu berani mengunggah karyanya.</footer>
 </div>
 <div class="modal" id="modal"><div class="modalIn"><div class="kicker">Banding</div><h2>Keberatan ditolak.</h2><p>Desain tidak otomatis membaik hanya karena desainernya tersinggung. Kami sudah cek. Ego juga bukan metric desain.</p><button class="cta" id="closeModal">YA UDAH 😭</button></div></div>
@@ -594,14 +600,14 @@ async function exportShareCard(mode='feed'){
    const ranked=rankedCharges(state.metrics),pc=ranked.primary,sc=ranked.secondary;
    line(sx+22,sevY+132,sx+sw-22,sevY+132,2);
    const profile=designProfile(state.metrics);
-   x.fillStyle='#6d6962';x.font=`700 10px ${mono}`;x.fillText('PRIMARY CHARGE',sx+22,sevY+153);
-   x.fillStyle=ink;x.font=`700 12px ${mono}`;x.fillText(`${pc.short} / ${pc.pressure}`,sx+146,sevY+153);
-   x.fillStyle='#6d6962';x.font=`700 10px ${mono}`;x.fillText('SECONDARY',sx+22,sevY+174);
-   x.fillStyle=ink;x.font=`700 11px ${mono}`;x.fillText(`${sc.short} / ${sc.pressure}`,sx+105,sevY+174);
-   x.fillStyle='#6d6962';x.font=`700 9px ${mono}`;x.textAlign='right';x.fillText(profile.name.replace('™',''),sx+sw-22,sevY+174);x.textAlign='left';
+   x.fillStyle='#6d6962';x.font=`700 12px ${mono}`;x.fillText('PRIMARY',sx+22,sevY+156);
+   x.fillStyle=ink;x.font=`700 14px ${mono}`;x.fillText(`${pc.short} / ${pc.pressure}`,sx+112,sevY+156);
+   x.fillStyle='#6d6962';x.font=`700 12px ${mono}`;x.fillText('SECONDARY',sx+22,sevY+180);
+   x.fillStyle=ink;x.font=`700 14px ${mono}`;x.fillText(`${sc.short} / ${sc.pressure}`,sx+132,sevY+180);
 
    // ===== VERDICT =====
-   const vy=826;
+   // Give the verdict proper breathing room after the score/evidence row.
+   const vy=852;
    // Label width follows the actual font metrics so it can never clip.
    x.font=`700 20px ${mono}`;
    const verdictLabel='PUTUSAN',labelPad=23,labelW=Math.ceil(x.measureText(verdictLabel).width)+labelPad*2;
@@ -609,26 +615,25 @@ async function exportShareCard(mode='feed'){
    line(38+labelW+16,vy+3,1044,vy+3,3);
    const verdict=shareVerdictText();
    // Fit the complete verdict inside its editorial zone. No ellipsis, no amputated insult.
-   const verdictY=vy+58, verdictMaxW=1006, verdictMaxH=140;
+   const verdictY=vy+60, verdictMaxW=1006, verdictMaxH=176;
    // Verdict is deliberately calmer than the display blocks: the insult should read, not shout over the layout.
-   const fitted=fitWrappedText(x,verdict,verdictMaxW,verdictMaxH,30,16,sans,'600',6);
+   const fitted=fitWrappedText(x,verdict,verdictMaxW,verdictMaxH,33,18,sans,'600',6);
    x.fillStyle=ink;x.font=`600 ${fitted.size}px ${sans}`;
    let verdictCursor=verdictY;
    for(const ln of fitted.lines){x.fillText(ln,38,verdictCursor);verdictCursor+=fitted.lineH}
    const verdictBottom=verdictCursor;
 
-   // ===== METRICS — all six charges, compact 3 × 2 =====
-   const metricTop=1036,gapX=10,gapY=8,cols=3,mw=(1006-gapX*2)/3,mh=80;
+   // ===== METRICS — one compact row; the verdict stays visually dominant =====
+   const metricTop=1110,gapX=7,cols=6,mw=(1006-gapX*5)/6,mh=88;
    const metricKeys=['colorChaos','contrast','balance','complexity','whitespaceCrime','saturation'];
-   const metricNames={colorChaos:'COLOR CHAOS',contrast:'CONTRAST',balance:'BALANCE DEV.',complexity:'VISUAL COMPLEXITY',whitespaceCrime:'WHITESPACE',saturation:'SATURATION'};
+   const metricNames={colorChaos:'COLOR',contrast:'CONTRAST',balance:'BALANCE',complexity:'COMPLEX.',whitespaceCrime:'SPACE',saturation:'SATURATION'};
    metricKeys.forEach((k,i)=>{
-     const col=i%cols,row=Math.floor(i/cols),bx=38+col*(mw+gapX),by=metricTop+row*(mh+gapY),val=state.metrics[k];
+     const bx=38+i*(mw+gapX),by=metricTop,val=state.metrics[k];
      box(bx,by,mw,mh,null,ink,2);
-     x.fillStyle=ink;x.font=`700 11px ${mono}`;x.fillText(metricNames[k],bx+15,by+20);
-     x.font=`400 33px ${display}`;x.fillText(String(val),bx+15,by+53);
-     const vw=x.measureText(String(val)).width;x.font=`700 10px ${mono}`;x.fillText('/100',bx+15+vw+6,by+49);
-     x.fillStyle=soft;x.fillRect(bx+15,by+63,mw-30,7);x.fillStyle=hot;x.fillRect(bx+15,by+63,(mw-30)*(val/100),7);
-     x.fillStyle='#77736b';x.font=`600 8px ${mono}`;x.fillText(`CHG-${String(i+1).padStart(2,'0')}`,bx+mw-53,by+20);
+     x.fillStyle=ink;x.font=`700 12px ${mono}`;x.fillText(metricNames[k],bx+12,by+19);
+     x.font=`400 31px ${display}`;x.fillText(String(val),bx+12,by+55);
+     const vw=x.measureText(String(val)).width;x.font=`700 9px ${mono}`;x.fillText('/100',bx+12+vw+5,by+51);
+     x.fillStyle=soft;x.fillRect(bx+12,by+68,mw-24,7);x.fillStyle=hot;x.fillRect(bx+12,by+68,(mw-24)*(val/100),7);
    });
 
    // ===== FOOTER =====
@@ -637,7 +642,7 @@ async function exportShareCard(mode='feed'){
    x.fillStyle=ink;x.font=`400 34px ${display}`;x.fillText('DIADILI. TIDAK DIHIBUR.',60,footY+50);
    line(724,footY+7,724,footY+69,3);
    x.font=`600 13px ${mono}`;x.fillText('Diproses 100% lokal di browser',752,footY+24);x.fillText('no upload • no mercy',752,footY+45);
-   x.fillStyle='#706c64';x.font=`600 10px ${mono}`;x.fillText('ROAST MY DESIGN — PROTOTYPE 1.5.1',752,footY+64);
+   x.fillStyle='#706c64';x.font=`600 10px ${mono}`;x.fillText('ROAST MY DESIGN — PROTOTYPE 1.5.2',752,footY+64);
    // signature rule
    line(1010,footY+64,1044,footY+64,2);
 
@@ -659,11 +664,34 @@ let toastTimer;
 function showToast(msg){const t=$('#toast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200)}
 async function copyCaption(){const text=shareCaption();try{await navigator.clipboard.writeText(text);showToast('Caption disalin. Harga diri tidak ikut tersalin.')}catch(e){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('Caption disalin. Silakan sebarkan barang bukti.')}}
 function downloadBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function prefersNativeShare(){
+ // Capability first, device heuristics second. This avoids brittle UA sniffing.
+ return !!(navigator.share && navigator.canShare && window.File) &&
+   (navigator.maxTouchPoints>0 || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches));
+}
+function canNativeShareFile(file){
+ try{return prefersNativeShare() && navigator.canShare({files:[file]})}catch(e){return false}
+}
 async function shareOrDownload(blob,filename,caption){
- // Predictable export: these buttons always download a PNG.
- // Native OS share sheets are intentionally not invoked here; COPY CAPTION remains separate.
+ const file=new File([blob],filename,{type:'image/png'});
+ if(canNativeShareFile(file)){
+   try{
+     await navigator.share({files:[file],title:'Roast My Design',text:caption});
+     showToast('Barang bukti dibagikan. Harga diri tidak termasuk.');
+     return;
+   }catch(e){
+     // User cancellation is not an error and should not trigger a surprise download.
+     if(e && e.name==='AbortError')return;
+   }
+ }
  downloadBlob(blob,filename);
  showToast(filename.includes('story-')?'Story 9:16 diunduh. Siap bikin orang lain ikut sakit hati.':'Share card 4:5 diunduh. Barang bukti aman di perangkatmu.');
+}
+function syncShareUI(){
+ const native=prefersNativeShare();
+ const share=$('#share'),story=$('#storyShare');
+ if(share)share.textContent=native?'BAGIKAN DOSA SAYA':'DOWNLOAD SHARE CARD';
+ if(story)story.textContent=native?'BAGIKAN STORY 9:16':'DOWNLOAD STORY 9:16';
 }
 async function exportStoryFromFeed(feedCanvas){
  const c=$('#storyCanvas'),x=c.getContext('2d');c.width=1080;c.height=1920;
@@ -689,6 +717,8 @@ async function exportStoryFromFeed(feedCanvas){
 $('#share').onclick=()=>exportShareCard('feed');
 $('#storyShare').onclick=()=>exportShareCard('story');
 $('#copyCaption').onclick=copyCaption;
+syncShareUI();
+window.addEventListener('resize',syncShareUI,{passive:true});
 
 function drawCover(ctx,img,x,y,w,h){const s=Math.max(w/img.width,h/img.height),sw=w/s,sh=h/s,sx=(img.width-sw)/2,sy=(img.height-sh)/2;ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.drawImage(img,sx,sy,sw,sh,x,y,w,h);ctx.restore()}
 function drawContain(ctx,img,x,y,w,h,bg='#fff'){ctx.fillStyle=bg;ctx.fillRect(x,y,w,h);const s=Math.min(w/img.width,h/img.height),dw=img.width*s,dh=img.height*s,dx=x+(w-dw)/2,dy=y+(h-dh)/2;ctx.drawImage(img,dx,dy,dw,dh)}
