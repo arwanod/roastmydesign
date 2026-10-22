@@ -11,26 +11,6 @@ Hanya ini (dan README kalau mau):
 - `editor.html` — editor visual untuk Roast Library (internal, sudah `noindex`)
 - `fonts.css` dan folder `fonts/` — font yang dihosting sendiri (5 file `.woff2` + 3 file lisensi OFL; lisensi harus ikut dipublikasikan)
 
-Folder `samples/`, file `*.bak`, dan `.claude/` hanya untuk lokal. `.gitignore` sudah mengecualikannya.
-`samples/` berisi karya desainer lain (jangan dipublikasikan); `samples/synthetic/` buatan sendiri dan aman.
-
-## Deploy (Netlify)
-
-1. Jalankan `powershell -ExecutionPolicy Bypass -File .uild-deploy.ps1`. Skrip ini membuat folder `deploy/` yang hanya berisi file yang boleh dipublikasikan (tanpa `samples/`, `*.bak`, atau konfigurasi lokal).
-2. Buka https://app.netlify.com/drop dan seret folder `deploy/` ke sana. Untuk memperbarui situs yang sudah ada: buka site-nya di Netlify → **Deploys** → seret folder `deploy/` lagi.
-3. Atau lewat CLI: `netlify deploy --dir=deploy --prod` (setelah `netlify login`).
-4. File `_headers` otomatis dipakai Netlify: HTML dan `roast-library.js` selalu divalidasi ulang, font di-cache lama, dan ada header keamanan dasar.
-5. Setiap kali `roast-library.js` berubah, naikkan `?v=` di `index.html` dan `editor.html`, jalankan ulang `build-deploy.ps1`, lalu deploy ulang.
-
-## Deploy (GitHub Pages)
-
-1. Taruh `index.html`, `editor.html`, `roast-library.js`, `fonts.css`, folder `fonts/`, dan `README-ROASTS.md` di repository (root).
-2. Di GitHub: **Settings → Pages → Build and deployment → Deploy from a branch** → pilih branch dan folder `/ (root)`.
-3. Setelah beberapa menit, app tersedia di `https://<username>.github.io/<nama-repo>/`.
-4. Cek di ponsel: unggah gambar, hakimi, lalu coba **Download share card** dan **Download story**.
-
-Semua path memakai `./` (relatif), jadi bisa dipasang di subfolder tanpa perubahan.
-
 ## Cara menambah roasting
 
 1. Buka `editor.html` dari site yang sama dengan `roast-library.js`.
