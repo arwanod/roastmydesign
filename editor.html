@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roast Library Editor — Roast My Design</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f4f1ea">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="./fonts/anton-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./fonts.css">
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--soft:#ebe6da;--ink:#111;--muted:#5d584e;--line:#111;--hair:#d2cbbb;--hot:#ff4b23;--hot-text:#c8330f;--sun:#ffd23f;--good:#cfe3c0;--bad:#9f1b00;--ok:#1d6e37;--display:'Anton','Arial Narrow',sans-serif;--sans:'Inter',ui-sans-serif,system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:var(--ink);border-radius:0}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+.wrap{max-width:1240px;margin:auto;padding:20px 20px 48px}
+
+/* header + intro */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:2px solid var(--line);padding:6px 0 14px}
+.brand{font:400 26px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.intro{padding:28px 0 18px;max-width:780px}
+.intro h1{font:400 clamp(44px,8vw,80px)/.9 var(--display);margin:0 0 14px;text-transform:uppercase}
+.intro p{margin:0 0 12px;font-size:17px;max-width:46em}
+details.how{border:2px solid var(--line);background:var(--paper);max-width:640px}
+details.how summary{cursor:pointer;padding:12px 14px;font:800 15px var(--sans);list-style:none;display:flex;justify-content:space-between}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary:after{content:"+";font:600 18px var(--mono)}
+details.how[open] summary:after{content:"–"}
+details.how ol{margin:0;padding:0 18px 14px 36px;color:var(--muted);font-size:15px}
+details.how li{margin:6px 0}
+
+/* toolbar */
+.toolbar{position:sticky;top:0;z-index:20;display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--bg);border-top:2px solid var(--line);border-bottom:2px solid var(--line);padding:10px 0;margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border:2px solid var(--line);background:var(--paper);padding:8px 14px;font:700 13px/1.2 var(--mono);letter-spacing:.02em;text-decoration:none;color:var(--ink)}
+.btn.hot{background:var(--hot)}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.ghost{border-color:var(--hair)}
+.status{margin-left:auto;font:600 13px/1.4 var(--mono);color:var(--muted);text-align:right}
+.status .ok{color:var(--ok)}.status .dirty{color:var(--bad)}
+
+/* banner */
+#banner{margin-bottom:14px}
+.banner{border:2px solid var(--line);padding:12px 14px;background:var(--paper);display:flex;gap:10px 14px;flex-wrap:wrap;align-items:center;font-size:15px}
+.banner.warn{background:#fff6d6}.banner.error{background:#fff1ec}.banner.good{background:#eaf4e2}
+.banner p{margin:0;flex:1 1 320px}
+.banner .btn{min-height:40px;font-size:12px}
+
+/* layout */
+.app{display:grid;grid-template-columns:330px minmax(0,1fr);gap:20px;align-items:start}
+.sidebar,.main{border:2px solid var(--line);background:var(--paper)}
+.sidebar{padding:16px;position:sticky;top:76px}
+.main{padding:18px}
+.label{font:700 12px/1.3 var(--mono);letter-spacing:.06em;color:var(--muted);margin:0 0 6px;text-transform:uppercase}
+.select,.search,.field,textarea{width:100%;border:2px solid var(--line);background:#fff;padding:10px 12px;font:500 16px/1.4 var(--sans);outline:none}
+.select:focus,.search:focus,.field:focus,textarea:focus{box-shadow:0 0 0 3px var(--hot)}
+.group{margin-bottom:14px}
+.help{font-size:14px;line-height:1.45;color:var(--muted);margin-top:6px}
+.stats{border-top:1px solid var(--hair);margin-top:16px;padding-top:12px;font:600 13px/1.6 var(--mono)}
+.stats strong{font:400 28px/1 var(--display);display:block;margin:2px 0 8px}
+
+.mainHead{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;border-bottom:2px solid var(--line);padding-bottom:14px}
+.mainHead h2{font:400 34px/1.05 var(--display);margin:0;text-transform:uppercase}
+.poolHint{margin:8px 0 0;font-size:15px;color:var(--muted);max-width:46em}
+.roastList{display:grid;gap:9px;margin-top:14px}
+.item{border:2px solid var(--line);background:#fff;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:10px 14px;align-items:start}
+.item.editing{background:#fff6d6}
+.itemText{font-size:16px;line-height:1.45}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pill{border:1.5px solid var(--hair);padding:3px 7px;font:600 12px/1.3 var(--mono);color:var(--muted);background:var(--bg)}
+.pill.warn{border-color:var(--bad);color:var(--bad)}
+.itemActions{display:flex;gap:6px}
+.mini{min-height:40px;border:2px solid var(--line);background:transparent;padding:6px 12px;font:700 12px var(--mono)}
+.mini.danger{color:var(--bad);border-color:var(--bad)}
+.empty{border:2px dashed #8a8579;padding:30px;text-align:center;color:var(--muted);font:600 14px var(--mono)}
+
+/* editor */
+.editor{margin-top:22px;border-top:2px solid var(--line);padding-top:18px}
+.editor h3{font:400 28px/1 var(--display);margin:0 0 6px;text-transform:uppercase}
+.editorHint{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.editor textarea{min-height:130px;resize:vertical}
+.counterRow{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font:600 12px/1.4 var(--mono);color:var(--muted)}
+.counterRow .over{color:var(--bad);font-weight:700}
+.issues{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:4px}
+.issues li{font-size:14px;line-height:1.4;padding-left:22px;position:relative}
+.issues li:before{content:"!";position:absolute;left:0;top:1px;width:16px;height:16px;border:2px solid;font:700 11px/12px var(--mono);text-align:center}
+.issues li.error{color:var(--bad)}.issues li.warn{color:#8a5a00}.issues li.ok{color:var(--ok)}.issues li.ok:before{content:"✓"}
+.fields2{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:12px;margin-top:14px}
+.tagChips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tagChip{min-height:32px;border:1.5px solid var(--hair);background:var(--bg);padding:3px 9px;font:600 12px var(--mono)}
+.preview{margin-top:14px;border-left:5px solid var(--hot);background:var(--soft);padding:12px 14px}
+.preview .label{margin-bottom:4px}
+.preview q{font:600 20px/1.35 var(--sans);quotes:none;display:block}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.footer{border-top:1px solid var(--hair);margin-top:30px;padding:16px 0;font-size:14px;color:var(--muted)}
+
+dialog{border:2px solid var(--line);background:var(--bg);padding:24px;max-width:460px;box-shadow:8px 8px 0 var(--hot)}
+dialog::backdrop{background:#111c}
+dialog h2{font:400 34px/1 var(--display);margin:0 0 10px;text-transform:uppercase}
+dialog p{margin:0 0 18px;font-size:16px}
+dialog .actions{margin-top:0}
+
+@media(max-width:860px){
+ .wrap{padding:14px 16px 40px}
+ .app{grid-template-columns:1fr}
+ .sidebar{position:static}
+ .item{grid-template-columns:1fr}
+ .fields2{grid-template-columns:1fr}
+ .status{width:100%;margin-left:0;text-align:left}
+ .toolbar{position:static}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand">ROAST LIBRARY EDITOR 🔥</div><a class="btn dark" href="./index.html?debug=1">Buka app + debug</a></header>
+<section class="intro"><h1>Tambah hinaan.<br>Tanpa buka kode.</h1>
+<p>Pilih bagian, tulis kalimat, lalu export <b>roast-library.js</b> untuk menggantikan file di repo. Perubahan disimpan otomatis sebagai draft di browser ini.</p>
+<details class="how"><summary>Cara pakai (30 detik)</summary><ol>
+<li>Pilih <b>Bagian</b> dan sub-bagian di kiri. Keterangan di atas kolom tulis menjelaskan <em>kapan</em> kalimat itu dipakai.</li>
+<li>Tulis kalimat. Mau banyak sekaligus? Tempel satu kalimat per baris, semuanya ditambahkan dalam sekali simpan.</li>
+<li>Perhatikan pesan di bawah kolom tulis: duplikat, kepanjangan, atau lupa tanda baca.</li>
+<li>Klik <b>Export roast-library.js</b>, ganti file di repo, lalu naikkan angka <code>?v=</code> di index.html dan editor.html.</li>
+</ol></details></section>
+
+<div class="toolbar" role="toolbar" aria-label="Aksi library">
+<button class="btn hot" id="exportJs">Export roast-library.js</button>
+<button class="btn" id="exportJson">Backup JSON</button>
+<button class="btn" id="importJsonBtn">Import JSON</button><input type="file" id="importJson" accept="application/json,.json" hidden>
+<button class="btn" id="copyJs">Copy JS</button>
+<button class="btn ghost" id="resetDraft">Reset ke file asli</button>
+<span class="status" id="saveStatus" role="status" aria-live="polite">Belum ada perubahan.</span>
+</div>
+<div id="banner" role="status" aria-live="polite"></div>
+
+<div class="app">
+<aside class="sidebar" aria-label="Pilih bagian">
+  <div class="group"><label class="label" for="section">Bagian</label><select class="select" id="section"></select></div>
+  <div class="group" id="subGroupWrap"><label class="label" for="subgroup">Sub-bagian</label><select class="select" id="subgroup"></select></div>
+  <div class="group" id="rangeWrap"><label class="label" for="range">Range nilai metric</label><select class="select" id="range"></select></div>
+  <div class="group"><label class="label" for="search">Cari di daftar ini</label><input class="search" id="search" placeholder="misal: klien, whitespace, warna…"></div>
+  <div class="stats" id="stats"></div>
+  <p class="help">Belum tahu kalimat harus masuk mana? Taruh di <b>INBOX</b>. Engine tidak memakainya sampai kamu memindahkannya.</p>
+</aside>
+<main class="main">
+  <div class="mainHead"><div><h2 id="listTitle">Roasts</h2><p class="poolHint" id="poolHint"></p></div><button class="btn hot" id="newRoast">+ Roast baru</button></div>
+  <div class="roastList" id="roastList"></div>
+  <section class="editor" id="editorBox" aria-labelledby="editorTitle">
+    <h3 id="editorTitle">Tambah roast</h3>
+    <p class="editorHint" id="editorHint">Ctrl/⌘ + Enter untuk menyimpan.</p>
+    <label class="label" for="text">Kalimat hinaan</label>
+    <textarea id="text" placeholder="Tulis hinaan yang membuat desainer mempertanyakan pilihan hidupnya…" aria-describedby="issues"></textarea>
+    <div class="counterRow"><span id="lineInfo"></span><span id="counter"></span></div>
+    <ul class="issues" id="issues" aria-live="polite"></ul>
+    <div class="fields2">
+      <div><label class="label" for="intensity">Intensitas</label><select id="intensity" class="select"></select><p class="help" id="intensityHelp"></p></div>
+      <div><label class="label" for="tags">Tag tema <span style="text-transform:none;letter-spacing:0">(opsional)</span></label><input id="tags" class="field" placeholder="contoh: hukum, deadline" autocomplete="off"><p class="help">Dua kalimat bertag sama tidak dipakai dalam satu laporan, jadi roast tidak terasa berulang. Pilih 1–2 tag.</p><div class="tagChips" id="tagChips"></div></div>
+    </div>
+    <div class="preview" id="previewBox"><div class="label">Begini tampilannya</div><q id="previewText">…</q></div>
+    <div class="actions"><button class="btn hot" id="saveRoast">Simpan</button><button class="btn" id="cancelEdit">Batal</button><button class="btn" id="duplicateRoast" disabled>Duplikat</button></div>
+  </section>
+</main>
+</div>
+<div class="footer">Roast My Design — alat internal. Yang diedit di sini cuma mulutnya, bukan otaknya.</div>
+</div>
+
+<dialog id="confirmDlg" aria-labelledby="confirmTitle"><h2 id="confirmTitle">Yakin?</h2><p id="confirmText"></p><div class="actions"><button class="btn hot" id="confirmOk">Ya</button><button class="btn" id="confirmNo">Batal</button></div></dialog>
+
+<script src="./roast-library.js?v=1.8.3"></script>
+<script>
+const SOURCE=window.ROAST_LIBRARY||{};
+const STORAGE_KEY='rmd_roast_library_draft_v17';
+const $=q=>document.querySelector(q);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const entryText=x=>typeof x==='string'?x:(x&&x.text)||'';
+const entryMeta=x=>typeof x==='object'&&x?x:{};
+const normText=s=>String(s).toLowerCase().replace(/\s+/g,' ').trim();
+
+// A cheap fingerprint of the loaded roast-library.js: lets us notice when the file in the repo changed after a draft was saved.
+function sigOf(o){const s=JSON.stringify(o);let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return s.length+':'+h}
+const SOURCE_SIG=sigOf(SOURCE);
+
+/* ---------- draft storage ---------- */
+function readStored(){try{const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):null}catch(e){return null}}
+function loadDraft(){
+ const raw=readStored();if(!raw)return null;
+ if(raw.v===2&&raw.data)return {data:raw.data,sig:raw.sig};
+ return {data:raw,sig:null}; // legacy draft saved by an older editor
+}
+function saveDraft(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({v:2,sig:draftSig,data}));return true}catch(e){return false}}
+
+/* ---------- state ---------- */
+const stored=loadDraft();
+let draftSig=SOURCE_SIG;
+let data=mergeMissing(stored?stored.data:clone(SOURCE));
+let editingIndex=null,lastDeleted=null,bannerTimer=null;
+// A draft saved by an older editor may lack newer sections or keys; fill them from the loaded library so nothing breaks.
+function mergeMissing(d){
+ for(const k of Object.keys(SOURCE)){
+  if(d[k]===undefined){d[k]=clone(SOURCE[k]);continue}
+  const s=SOURCE[k];
+  if(k!=='metrics'&&s&&typeof s==='object'&&!Array.isArray(s)&&d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k]))for(const sk of Object.keys(s))if(d[k][sk]===undefined)d[k][sk]=clone(s[sk]);
+ }
+ return d;
+}
+
+/* ---------- section metadata ---------- */
+const sections={
+ confidenceImmediate:{label:'Pede — reaksi langsung',sub:true},
+ metrics:{label:'Roast per metric',sub:true,range:true},
+ verdicts:{label:'Putusan — pembuka',sub:true},
+ categories:{label:'Kategori desain',sub:true},
+ confidenceFinal:{label:'Pede — jab akhir',sub:true},
+ nameJabs:{label:'Menyebut nama desainer',sub:false},
+ combos:{label:'Kombinasi metric',sub:true},
+ contextual:{label:'Roast kontekstual',sub:true},
+ profiles:{label:'Design profile — deskripsi',sub:true},
+ mitigations:{label:'Mitigating factor',sub:true},
+ blank:{label:'Gambar kosong',sub:false},
+ inbox:{label:'Inbox',sub:false}
+};
+const metricLabels={colorChaos:'Color chaos',contrast:'Contrast',balance:'Balance',complexity:'Visual complexity',whitespaceCrime:'Whitespace',saturation:'Saturation'};
+const categoryLabels={identity:'Visual Identity',marketing:'Marketing & Ads',social:'Social Media',editorial:'Editorial & Publication',packaging:'Packaging',digital:'UI / Digital Product',illustration:'Illustration',typography:'Typography',information:'Information Design',presentation:'Presentation',environmental:'Environmental / Spatial',other:'Lainnya / Entahlah'};
+const confidenceLabels={bangga:'Bangga dong',lumayan:'Lumayan lah',ragu:'Agak ragu',klien:'Klien yang nyuruh'};
+const INTENSITY=[
+ ['','Otomatis (semua skor)'],
+ ['1','1 · nyeletuk'],['2','2 · pedas'],['3','3 · brutal'],
+ ['4','4 · kejam (≥31)'],['5','5 · putus teman (≥56)']
+];
+function intensityHelpText(v){
+ if(!v)return 'Tanpa intensitas: kalimat boleh muncul di semua skor.';
+ if(Number(v)<=3)return 'Intensitas 1–3 boleh muncul di semua skor.';
+ if(v==='4')return 'Intensitas 4 hanya muncul untuk skor 31 ke atas. Desain yang aman tidak akan dapat kalimat ini.';
+ return 'Intensitas 5 hanya muncul untuk skor 56 ke atas. Simpan yang paling kejam di sini.';
+}
+// Keys ending in _low / _high / _lowbusy are score-band variants (see the header of roast-library.js).
+function bandLabel(sec,k,labels){
+ const m=k.match(/^(.*)_(lowbusy|low|high)$/),base=m?m[1]:k,l=labels[base]||base;
+ if(m)return l+({low:' — skor ≤40',high:' — skor ≥79',lowbusy:' — skor ≤40 + desain ramai'})[m[2]];
+ if(sec==='confidenceFinal')return l+' — skor 41–78';
+ if(sec==='categories')return l+' — skor 41–100';
+ return l;
+}
+
+/* ---------- pool info: when a sentence is used, how long it may be ---------- */
+function poolInfo(){
+ const sec=$('#section').value,sub=$('#subgroup').value;
+ const info={hint:'',max:130,needsName:false};
+ switch(sec){
+  case 'confidenceImmediate':info.hint='Muncul seketika setelah pengguna menekan pilihan kepedean ini, sebelum ada analisis. Jangan menyebut skor atau isi desain.';info.max=110;break;
+  case 'metrics':{const lines=data.metrics[sub]||[],i=Number($('#range').value||0),b=lines[i],lo=i===0?0:lines[i-1].max;
+   info.hint=`Dipakai saat nilai mentah ${metricLabels[sub]||sub} berada di ${lo}–${b?b.max-1:'?'}. Satu kalimat dipilih per laporan.`+(sub==='contrast'?' Desain hitam-putih memakai kalimat khusus di bagian “Roast kontekstual”.':'');info.max=150;break}
+  case 'verdicts':info.max=115;info.hint={
+    low:'Pembuka putusan untuk skor ≤55 pada desain yang tidak terlalu ramai. Biasanya roast soal hambar atau kurang berani.',
+    low_busy:'Pembuka putusan untuk skor ≤55 tapi desainnya sangat ramai (complexity ≥60). Roast kekacauan yang terkendali; jangan menyebut “hambar” atau “kurang berani”.',
+    mid:'Pembuka putusan untuk skor 56–78: ada masalah nyata, tapi belum parah.',
+    high:'Pembuka putusan untuk skor ≥79. Di sinilah boleh paling kejam.'}[sub]||'Pembuka putusan.';break;
+  case 'categories':info.max=125;info.hint=sub.endsWith('_low')?'Dipakai untuk skor ≤40. Desainnya aman, jadi ejek kehambaran, jangan menuduh kejahatan yang tidak terjadi.':'Dipakai untuk skor 41–100. Boleh pedas soal masalah khas kategori ini.';break;
+  case 'confidenceFinal':info.max=105;info.hint='Jab kedua di ujung putusan, menanggapi jawaban kepedean. '+({'low':'Skor ≤40: desainnya aman.','high':'Skor ≥79: desainnya berantakan.','lowbusy':'Skor ≤40 tapi desainnya ramai.'}[(sub.match(/_(lowbusy|low|high)$/)||[])[1]]||'Skor 41–78.');break;
+  case 'nameJabs':info.max=100;info.needsName=true;info.hint='Wajib memuat {name}, yang diganti nama pengguna. Muncul di sekitar 1 dari 3 laporan yang diisi nama.';break;
+  case 'combos':info.max=130;info.hint=`Dipakai hanya saat kondisi “${sub}” terpenuhi di index.html (gt_70 = lebih dari 70, lt_30 = kurang dari 30). Satu kalimat per kondisi dipilih per laporan.`;break;
+  case 'contextual':info.max=150;info.hint=`Menggantikan roast metrik biasa pada kasus khusus: ${sub.replace(/_/g,' ')}.`;break;
+  case 'profiles':info.max=115;info.hint='Deskripsi di bawah nama profil (nama profilnya ada di index.html). Satu kalimat dipilih berdasarkan gambar.';break;
+  case 'mitigations':info.max=115;info.hint='Ditulis seperti pujian yang terpaksa. Muncul sebagai “faktor yang meringankan”.';break;
+  case 'blank':info.max=110;info.hint='Dipakai untuk gambar nyaris polos: jadi pembuka putusan sekaligus roast keenam metrik. Tulis kalimat yang berlaku umum.';break;
+  case 'inbox':info.max=200;info.hint='Tidak dipakai engine. Tempat parkir sementara untuk ide yang belum tahu masuk mana.';break;
+ }
+ return info;
+}
+
+/* ---------- data access ---------- */
+function getArray(){
+ const sec=$('#section').value;
+ if(sec==='metrics'){const k=$('#subgroup').value,i=Number($('#range').value||0);return data.metrics[k][i].lines}
+ if(sections[sec].sub)return data[sec][$('#subgroup').value];
+ return data[sec];
+}
+// every sentence in the library with its location (used for duplicate detection and diffing)
+function allEntries(d=data){
+ const out=[];
+ const add=(arr,path)=>arr.forEach((x,i)=>out.push({text:entryText(x),path,arr,i}));
+ for(const [g,v] of Object.entries(d)){
+  if(g==='metrics'){for(const [m,b] of Object.entries(v))b.forEach((r,ri)=>add(r.lines,`metrics/${m}/${ri}`))}
+  else if(Array.isArray(v))add(v,g);
+  else if(v&&typeof v==='object')for(const [k,a] of Object.entries(v))add(a,`${g}/${k}`);
+ }
+ return out;
+}
+function totalCount(){return allEntries().length}
+function diffSummary(){
+ const src=new Map(),cur=new Map();
+ for(const e of allEntries(SOURCE))src.set(normText(e.text),(src.get(normText(e.text))||0)+1);
+ for(const e of allEntries())cur.set(normText(e.text),(cur.get(normText(e.text))||0)+1);
+ let added=0,removed=0;
+ for(const [t,n] of cur)added+=Math.max(0,n-(src.get(t)||0));
+ for(const [t,n] of src)removed+=Math.max(0,n-(cur.get(t)||0));
+ return {added,removed};
+}
+function toEntry(text,intensity,tags){
+ const clean=tags.split(',').map(s=>s.trim().replace(/^#/,'').toLowerCase()).filter(Boolean);
+ if(!intensity&&!clean.length)return text.trim();
+ const out={text:text.trim()};if(intensity)out.intensity=Number(intensity);if(clean.length)out.tags=[...new Set(clean)];return out;
+}
+
+/* ---------- validation ---------- */
+function validateLine(text,info,ignore){
+ const issues=[],t=text.trim();
+ if(!t)return [{lvl:'error',msg:'Kalimatnya kosong. Mau menghina pakai telepati?'}];
+ if(t.length>info.max+30)issues.push({lvl:'warn',msg:`Terlalu panjang (${t.length} karakter, saran maksimal ${info.max}). Putusan dibatasi 320 karakter, jadi kalimat panjang membuat kalimat lain tergeser.`});
+ else if(t.length>info.max)issues.push({lvl:'warn',msg:`Agak panjang (${t.length}/${info.max}). Boleh, tapi lebih ringkas biasanya lebih menyakitkan.`});
+ if(!/[.!?…”"')]$/.test(t))issues.push({lvl:'warn',msg:'Tidak diakhiri tanda baca. Kalimat akan digabung dengan kalimat lain, jadi sebaiknya diakhiri titik, tanda tanya, atau seru.'});
+ const hasName=/\{name\}/.test(t),stray=t.replace(/\{name\}/g,'').match(/[{}]/);
+ if(info.needsName&&!hasName)issues.push({lvl:'error',msg:'Bagian ini wajib memuat {name}, misalnya “{name}, kami sudah lihat semuanya.”'});
+ if(!info.needsName&&hasName)issues.push({lvl:'error',msg:'{name} hanya boleh dipakai di bagian “Menyebut nama desainer”.'});
+ if(stray)issues.push({lvl:'error',msg:'Ada tanda kurung kurawal yang tidak dikenal. Satu-satunya placeholder yang valid adalah {name}.'});
+ const dup=allEntries().find(e=>normText(e.text)===normText(t)&&!(ignore&&e.arr===ignore.arr&&e.i===ignore.i));
+ if(dup)issues.push({lvl:'error',msg:`Kalimat yang sama sudah ada di ${dup.path.replace(/\//g,' › ')}.`});
+ return issues;
+}
+function currentLines(){
+ const raw=$('#text').value;
+ if(editingIndex!=null)return [raw.replace(/\s*\n+\s*/g,' ').trim()];
+ return raw.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+}
+function renderIssues(){
+ const info=poolInfo(),lines=currentLines(),arr=getArray()||[];
+ const ignore=editingIndex!=null?{arr,i:editingIndex}:null;
+ const seen=new Set();let errors=0;const list=[];
+ lines.forEach((ln,n)=>{
+  const pre=lines.length>1?`Baris ${n+1}: `:'';
+  const iss=validateLine(ln,info,ignore);
+  const k=normText(ln);if(lines.length>1&&seen.has(k))iss.push({lvl:'error',msg:'Kalimat ini muncul dua kali dalam tempelanmu.'});seen.add(k);
+  iss.forEach(i=>{if(i.lvl==='error')errors++;list.push({...i,msg:pre+i.msg})});
+ });
+ if(!lines.length)list.push({lvl:'warn',msg:'Belum ada kalimat.'});
+ else if(!errors&&!list.length)list.push({lvl:'ok',msg:lines.length>1?`${lines.length} kalimat siap disimpan sekaligus.`:'Siap disimpan.'});
+ $('#issues').innerHTML=list.map(i=>`<li class="${i.lvl}">${esc(i.msg)}</li>`).join('');
+ const longest=Math.max(0,...lines.map(l=>l.length));
+ $('#counter').innerHTML=`<span class="${longest>info.max?'over':''}">${longest}/${info.max} karakter</span>`;
+ $('#lineInfo').textContent=editingIndex==null&&lines.length>1?`${lines.length} kalimat (satu per baris)`:'';
+ $('#saveRoast').disabled=!lines.length||errors>0;
+ $('#saveRoast').textContent=editingIndex==null&&lines.length>1?`Simpan ${lines.length} kalimat`:'Simpan';
+ const first=lines[0]||'';
+ $('#previewText').textContent='“'+(first.replace(/\{name\}/g,'Dani')||'…')+'”';
+}
+
+/* ---------- rendering ---------- */
+function init(){
+ $('#section').innerHTML=Object.entries(sections).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+ $('#intensity').innerHTML=INTENSITY.map(([v,l])=>`<option value="${v}">${l}</option>`).join('');
+ $('#section').value='categories';refreshSubgroups();bind();render();showDraftBanner();
+}
+function refreshSubgroups(){
+ const sec=$('#section').value,meta=sections[sec],sel=$('#subgroup');$('#subGroupWrap').style.display=meta.sub?'block':'none';
+ if(!meta.sub){refreshRanges();return}
+ let keys=[];
+ if(sec==='metrics')keys=Object.keys(data.metrics||{}).map(k=>[k,metricLabels[k]||k]);
+ else if(sec==='categories')keys=Object.keys(data.categories||{}).map(k=>[k,bandLabel(sec,k,categoryLabels)]);
+ else if(sec==='confidenceImmediate'||sec==='confidenceFinal')keys=Object.keys(data[sec]||{}).map(k=>[k,bandLabel(sec,k,confidenceLabels)]);
+ else if(sec==='verdicts')keys=[['low','Skor ≤55'],['low_busy','Skor ≤55 + desain ramai'],['mid','Skor 56–78'],['high','Skor ≥79']].filter(([k])=>data.verdicts&&data.verdicts[k]);
+ else keys=Object.keys(data[sec]||{}).map(k=>[k,k.replace(/_/g,' ')]);
+ sel.innerHTML=keys.map(([k,l])=>`<option value="${esc(k)}">${esc(l)}</option>`).join('');refreshRanges();
+}
+function refreshRanges(){
+ const sec=$('#section').value,meta=sections[sec];$('#rangeWrap').style.display=meta.range?'block':'none';if(!meta.range)return;
+ const metric=$('#subgroup').value,ranges=(data.metrics&&data.metrics[metric])||[];
+ $('#range').innerHTML=ranges.map((r,i)=>`<option value="${i}">${i===0?'0':ranges[i-1].max} – ${r.max-1}</option>`).join('');
+}
+function contextName(){const sec=$('#section').value;let s=sections[sec].label;if(sections[sec].sub)s+=' / '+($('#subgroup').selectedOptions[0]?.textContent||'');if(sections[sec].range)s+=' / '+($('#range').selectedOptions[0]?.textContent||'');return s}
+function render(){
+ $('#listTitle').textContent=contextName();$('#poolHint').textContent=poolInfo().hint;renderList();renderStats();startEdit(null,true);renderTagChips();
+}
+function renderList(){
+ const arr=getArray()||[],q=$('#search').value.trim().toLowerCase(),info=poolInfo();
+ const visible=arr.map((x,i)=>({x,i})).filter(o=>!q||entryText(o.x).toLowerCase().includes(q)||(entryMeta(o.x).tags||[]).join(' ').toLowerCase().includes(q));
+ $('#roastList').innerHTML=visible.length?visible.map(({x,i})=>{
+  const m=entryMeta(x),tags=m.tags||[],t=entryText(x);
+  const lvl=m.intensity?`<span class="pill">INT ${m.intensity} · ${esc((INTENSITY[m.intensity]||[,''])[1].split('·')[1]||'').trim().split(' (')[0]}</span>`:'';
+  return `<article class="item${editingIndex===i?' editing':''}"><div><div class="itemText">“${esc(t)}”</div><div class="meta">${lvl}${tags.map(g=>`<span class="pill">#${esc(g)}</span>`).join('')}${t.length>info.max?`<span class="pill warn">${t.length} karakter</span>`:''}</div></div><div class="itemActions"><button class="mini" data-edit="${i}" aria-label="Edit kalimat ${i+1}">Edit</button><button class="mini danger" data-delete="${i}" aria-label="Hapus kalimat ${i+1}">Hapus</button></div></article>`;
+ }).join(''):`<div class="empty">${q?'Tidak ada yang cocok dengan pencarianmu.':'Belum ada roast di sini. Kesempatan bagus untuk berbuat jahat.'}</div>`;
+ document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>startEdit(Number(b.dataset.edit)));
+ document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteItem(Number(b.dataset.delete)));
+}
+function renderStats(){
+ const arr=getArray()||[],d=diffSummary();
+ $('#stats').innerHTML=`Total library<strong>${totalCount()}</strong>Di bagian ini<strong>${arr.length}</strong>Dibanding file asli: <span style="color:var(--ok)">+${d.added}</span> / <span style="color:var(--bad)">−${d.removed}</span>`;
+ setStatus();
+}
+function setStatus(msg){
+ const d=diffSummary(),el=$('#saveStatus');
+ if(msg){el.textContent=msg;return}
+ el.innerHTML=(d.added||d.removed)?`<span class="dirty">Draft belum diekspor: +${d.added} / −${d.removed}</span>`:'<span class="ok">Sama dengan file asli.</span>';
+}
+function renderTagChips(){
+ const count={};for(const e of allEntries())for(const t of (entryMeta(e.arr[e.i]).tags||[]))count[t]=(count[t]||0)+1;
+ const top=Object.entries(count).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([t])=>t);
+ $('#tagChips').innerHTML=top.map(t=>`<button type="button" class="tagChip" data-tag="${esc(t)}">#${esc(t)}</button>`).join('');
+ document.querySelectorAll('[data-tag]').forEach(b=>b.onclick=()=>{
+  const cur=$('#tags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!cur.includes(b.dataset.tag))cur.push(b.dataset.tag);$('#tags').value=cur.join(', ');
+ });
+}
+
+/* ---------- editing ---------- */
+function startEdit(index,clearOnly=false){
+ editingIndex=index;const arr=getArray()||[],x=index==null?null:arr[index],m=entryMeta(x);
+ $('#editorTitle').textContent=index==null?'Tambah roast':'Edit roast #'+(index+1);
+ $('#editorHint').textContent=index==null?'Satu kalimat per baris untuk menambah banyak sekaligus. Ctrl/⌘ + Enter untuk menyimpan.':'Mengedit satu kalimat. Ctrl/⌘ + Enter untuk menyimpan.';
+ $('#text').value=x?entryText(x):'';$('#intensity').value=m.intensity?String(m.intensity):'';$('#tags').value=(m.tags||[]).join(', ');
+ $('#duplicateRoast').disabled=index==null;$('#intensityHelp').textContent=intensityHelpText($('#intensity').value);
+ renderIssues();
+ if(!clearOnly){renderList();if(index!=null){$('#editorBox').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});$('#text').focus()}}
+}
+function saveEdit(){
+ const lines=currentLines();if(!lines.length)return;
+ const info=poolInfo(),arr=getArray(),ignore=editingIndex!=null?{arr,i:editingIndex}:null;
+ if(lines.some(l=>validateLine(l,info,ignore).some(i=>i.lvl==='error')))return renderIssues();
+ const intensity=$('#intensity').value,tags=$('#tags').value;
+ if(editingIndex==null){lines.forEach(l=>arr.push(toEntry(l,intensity,tags)))}else arr[editingIndex]=toEntry(lines[0],intensity,tags);
+ const n=lines.length,wasEdit=editingIndex!=null;
+ persist();renderList();renderStats();renderTagChips();startEdit(null,true);
+ setStatus(wasEdit?'Roast diperbarui.':n>1?`${n} roast disimpan. Korban berikutnya belum tahu.`:'Roast disimpan. Korban berikutnya belum tahu.');
+ setTimeout(setStatus,2800);
+ $('#text').focus();
+}
+function duplicateEdit(){
+ if(editingIndex==null)return;const arr=getArray(),copy=clone(arr[editingIndex]);
+ // an exact copy would be flagged as a duplicate, so it is opened as a new draft for the writer to rework
+ startEdit(null,true);$('#text').value=entryText(copy);$('#intensity').value=entryMeta(copy).intensity?String(entryMeta(copy).intensity):'';$('#tags').value=(entryMeta(copy).tags||[]).join(', ');
+ $('#editorHint').textContent='Salinan siap diubah. Ubah kalimatnya dulu supaya tidak dianggap duplikat.';renderIssues();$('#text').focus();$('#text').select();
+}
+function deleteItem(i){
+ const arr=getArray(),[removed]=arr.splice(i,1);lastDeleted={arr,i,removed};
+ persist();renderList();renderStats();startEdit(null,true);
+ banner(`<p>Satu kalimat dihapus: “${esc(entryText(removed)).slice(0,90)}${entryText(removed).length>90?'…':''}”</p><button class="btn" id="undoDel">Urungkan</button>`,'warn',8000);
+ $('#undoDel').onclick=()=>{if(lastDeleted){lastDeleted.arr.splice(lastDeleted.i,0,lastDeleted.removed);lastDeleted=null;persist();renderList();renderStats();banner('<p>Dihapus? Tidak jadi. Kalimat dikembalikan.</p>','good',3000)}};
+}
+
+/* ---------- persistence + banners ---------- */
+function persist(){
+ if(!saveDraft())setStatus('Draft TIDAK tersimpan (storage browser tidak tersedia). Export JS sebelum menutup halaman.');
+}
+function banner(html,kind='',ms=0){
+ clearTimeout(bannerTimer);const el=$('#banner');
+ el.innerHTML=html?`<div class="banner ${kind}">${html}</div>`:'';
+ if(ms)bannerTimer=setTimeout(()=>{el.innerHTML=''},ms);
+}
+function showDraftBanner(){
+ if(!stored)return;
+ const differs=JSON.stringify(mergeMissing(clone(stored.data)))!==JSON.stringify(SOURCE);
+ if(!differs){return}
+ if(stored.sig===SOURCE_SIG){banner('<p>Draft dari sesi sebelumnya dimuat. Kamu bisa lanjut dari sana.</p>','good',6000);return}
+ banner('<p><b>roast-library.js berubah</b> sejak draft ini dibuat (atau draft berasal dari versi editor lama). Mana yang dipakai?</p><button class="btn hot" id="useFile">Pakai file baru (buang draft)</button><button class="btn" id="keepDraft">Tetap pakai draft</button>','warn');
+ $('#useFile').onclick=()=>{data=clone(SOURCE);draftSig=SOURCE_SIG;try{localStorage.removeItem(STORAGE_KEY)}catch(e){}refreshSubgroups();render();banner('<p>Draft dibuang. Sekarang memakai file terbaru.</p>','good',4000)};
+ $('#keepDraft').onclick=()=>{draftSig=SOURCE_SIG;persist();banner('<p>Draft dipertahankan. Kalimat baru dari file terbaru yang belum ada di draft sudah digabungkan.</p>','good',5000)};
+}
+function confirmDialog(title,text,okLabel='Ya'){
+ const dlg=$('#confirmDlg');
+ if(!dlg.showModal)return Promise.resolve(window.confirm(text));
+ $('#confirmTitle').textContent=title;$('#confirmText').textContent=text;$('#confirmOk').textContent=okLabel;
+ return new Promise(res=>{
+  const done=v=>{dlg.close();res(v)};
+  $('#confirmOk').onclick=()=>done(true);$('#confirmNo').onclick=()=>done(false);dlg.oncancel=()=>res(false);
+  dlg.showModal();$('#confirmNo').focus();
+ });
+}
+
+/* ---------- export ---------- */
+const FILE_HEADER=`/*
+  ROAST MY DESIGN — ROAST LIBRARY v1.8
+  =====================================
+  FILE INI MEMANG DIBUAT UNTUK DIUTAK-ATIK. 😈
+
+  CARA PALING MUDAH: pakai editor.html, lalu EXPORT file ini. Atau edit manual:
+  1. Cari bagian yang sesuai, tambahkan kalimat di dalam array (dipisah koma).
+  2. Save -> push ke GitHub. Tidak perlu menyentuh algoritma utama.
+
+  FORMAT KALIMAT:
+    "Kalimat hinaan baru."
+    {text:"Kalimat hinaan baru.", intensity:5, tags:["hukum"]}
+
+  intensity (opsional): 1 ringan ... 5 kejam. Kalimat dengan intensity tinggi hanya
+    dipakai untuk skor tinggi: skor <31 maksimal 3, skor <56 maksimal 4, selebihnya 5.
+  tags (opsional): tema kalimat. Dua kalimat bertema sama tidak dipakai di satu laporan.
+
+  KUNCI KHUSUS (jangan diganti namanya):
+    categories.<kategori>        -> dipakai untuk skor 41-100
+    categories.<kategori>_low    -> dipakai untuk skor <= 40 (desain aman)
+    confidenceFinal.<pede>       -> skor 41-78; <pede>_low untuk skor <= 40; <pede>_high untuk skor >= 79
+    verdicts.low_busy / confidenceFinal.<pede>_lowbusy -> skor <= 55 (verdict) / <= 40 (pede) tapi desainnya ramai (complexity >= 60)
+    combos / contextual / profiles / mitigations -> namanya = nama kondisi di index.html
+*/
+
+`;
+function serializeJs(){
+ const q=JSON.stringify;
+ const ent=x=>typeof x==='string'?q(x):'{text:'+q(x.text)+(x.intensity?',intensity:'+x.intensity:'')+(x.tags?',tags:'+JSON.stringify(x.tags):'')+'}';
+ const arr=(a,ind)=>'[\n'+a.map(x=>ind+'  '+ent(x)).join(',\n')+'\n'+ind+']';
+ const group=(name,ind='  ')=>ind+name+': {\n'+Object.entries(data[name]).map(([k,v])=>ind+'  '+q(k)+': '+arr(v,ind+'  ')).join(',\n')+'\n'+ind+'}';
+ const sec=title=>'  // =========================================================\n  // '+title.split('\n').join('\n  // ')+'\n  // =========================================================\n';
+ const metrics='  metrics: {\n'+Object.entries(data.metrics).map(([k,b])=>'    '+k+': [\n'+b.map(r=>'      {max:'+r.max+',lines:'+arr(r.lines,'      ')+'}').join(',\n')+'\n    ]').join(',\n')+'\n  }';
+ const parts=[
+  sec('A. REAKSI LANGSUNG: "SEBERAPA PEDE?" (muncul sebelum analisis, tanpa skor)')+group('confidenceImmediate'),
+  sec('B. ROAST PER METRIC\nmax = batas nilai metric. Tiap bucket dipilih berdasarkan nilai metric-nya.')+metrics,
+  sec('C. PUTUSAN — PEMBUKA (low: skor <=55, mid: 56-78, high: >=79)')+group('verdicts'),
+  sec('D. KATEGORI DESAIN (nama_low = untuk skor <= 40)')+group('categories'),
+  sec('E. ROAST BERDASARKAN KEPEDEAN (suffix _low / _high = band skor)')+group('confidenceFinal'),
+  sec('F. ROAST YANG MENYEBUT NAMA DESAINER\n{name} otomatis diganti dengan nama user.')+'  nameJabs: '+arr(data.nameJabs,'  '),
+  sec('F2. KOMBINASI METRIC — dipilih engine kalau kondisi di index.html terpenuhi.')+group('combos'),
+  sec('F3. ROAST KONTEKSTUAL — kasus khusus (ilustrasi, tipografi, hitam-putih, palet netral).')+group('contextual'),
+  sec('F4. DESKRIPSI DESIGN PROFILE — nama profil ada di index.html, deskripsinya di sini.')+group('profiles'),
+  sec('F5. MITIGATING FACTOR — kalimat faktor yang meringankan.')+group('mitigations'),
+  sec('F6. GAMBAR KOSONG — dipakai kalau gambar nyaris polos (verdict + semua baris metrik).')+'  blank: '+arr(data.blank,'  '),
+  sec('G. INBOX PRIBADI\nTempel kalimat baru di sini kalau belum tahu kategorinya. Tidak dipakai engine.')+'  inbox: '+arr(data.inbox||[],'  ')
+ ];
+ return FILE_HEADER+'window.ROAST_LIBRARY = {\n'+parts.join(',\n\n')+'\n};\n';
+}
+function nextVersion(){
+ const src=document.querySelector('script[src*="roast-library.js"]').getAttribute('src'),m=src.match(/v=(\d+)\.(\d+)\.(\d+)/);
+ return m?{cur:`${m[1]}.${m[2]}.${m[3]}`,next:`${m[1]}.${m[2]}.${Number(m[3])+1}`}:null;
+}
+function downloadText(name,text,type){const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportJs(){
+ downloadText('roast-library.js',serializeJs(),'text/javascript');
+ const v=nextVersion();
+ banner(`<p><b>roast-library.js diunduh.</b> Ganti file lama di repo dengan yang baru, lalu ${v?`naikkan <code>?v=${v.cur}</code> menjadi <code>?v=${v.next}</code>`:'naikkan angka <code>?v=</code>'} di index.html dan editor.html supaya browser tidak memakai versi lama.</p>`,'good');
+}
+function importJson(ev){
+ const f=ev.target.files?.[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{
+  try{
+   const obj=JSON.parse(r.result);if(!obj.metrics||!obj.categories)throw new Error('struktur tidak dikenali (butuh minimal metrics dan categories)');
+   data=mergeMissing(obj);draftSig=SOURCE_SIG;persist();refreshSubgroups();render();banner('<p>Backup JSON berhasil dimuat.</p>','good',4000);
+  }catch(e){banner(`<p>Import gagal: ${esc(e.message)}</p>`,'error')}
+  finally{ev.target.value=''}
+ };
+ r.readAsText(f);
+}
+
+/* ---------- wiring ---------- */
+function bind(){
+ $('#section').onchange=()=>{refreshSubgroups();render()};
+ $('#subgroup').onchange=()=>{refreshRanges();render()};
+ $('#range').onchange=()=>render();
+ $('#search').oninput=renderList;
+ $('#newRoast').onclick=()=>{startEdit(null,true);$('#editorBox').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});$('#text').focus()};
+ $('#saveRoast').onclick=saveEdit;$('#cancelEdit').onclick=()=>{startEdit(null,true);renderList()};$('#duplicateRoast').onclick=duplicateEdit;
+ $('#text').oninput=renderIssues;
+ $('#text').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();if(!$('#saveRoast').disabled)saveEdit()}});
+ $('#intensity').onchange=()=>{$('#intensityHelp').textContent=intensityHelpText($('#intensity').value)};
+ $('#exportJs').onclick=exportJs;
+ $('#exportJson').onclick=()=>{downloadText('roast-library-backup.json',JSON.stringify(data,null,2),'application/json');banner('<p>Backup JSON diunduh. Simpan di tempat aman; bisa dimuat lagi lewat Import JSON.</p>','good',5000)};
+ $('#importJsonBtn').onclick=()=>$('#importJson').click();$('#importJson').onchange=importJson;
+ $('#copyJs').onclick=async()=>{try{await navigator.clipboard.writeText(serializeJs());banner('<p>JS disalin ke clipboard. Tempel untuk menggantikan seluruh isi roast-library.js.</p>','good',5000)}catch(e){banner('<p>Browser menolak akses clipboard. Pakai tombol Export sebagai gantinya.</p>','error')}};
+ $('#resetDraft').onclick=async()=>{
+  if(await confirmDialog('Buang draft?','Seluruh draft di browser ini dibuang dan editor kembali ke roast-library.js yang sedang dimuat. Ini tidak bisa diurungkan.','Buang draft')){
+   data=clone(SOURCE);draftSig=SOURCE_SIG;try{localStorage.removeItem(STORAGE_KEY)}catch(e){}refreshSubgroups();render();banner('<p>Draft dibuang. Kembali ke file asli.</p>','good',4000);
+  }
+ };
+ window.addEventListener('beforeunload',e=>{const t=$('#text').value.trim();if(t&&t!==entryText((getArray()||[])[editingIndex])){e.preventDefault();e.returnValue=''}});
+}
+init();
+</script>
+</body>
+</html>
