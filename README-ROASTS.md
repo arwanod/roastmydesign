@@ -2,15 +2,6 @@
 
 Pengadilan desain berbasis browser. Semua diproses lokal; tidak ada server, akun, atau AI API.
 
-## File yang dipublikasikan
-
-Hanya ini (dan README kalau mau):
-
-- `index.html` — app / Judgment Engine
-- `roast-library.js` — semua teks roasting
-- `editor.html` — editor visual untuk Roast Library (internal, sudah `noindex`)
-- `fonts.css` dan folder `fonts/` — font yang dihosting sendiri (5 file `.woff2` + 3 file lisensi OFL; lisensi harus ikut dipublikasikan)
-
 ## Cara menambah roasting
 
 1. Buka `editor.html` dari site yang sama dengan `roast-library.js`.
